@@ -51,6 +51,7 @@ export default class Form extends Component {
 
     componentWillMount() {
         let elements = [];
+        console.log(this.props.children)
         this.props.children.forEach((input) => {
             if (input.props.id) {
                 elements[input.props.id] = input.props.value;

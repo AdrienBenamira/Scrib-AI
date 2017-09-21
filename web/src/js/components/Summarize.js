@@ -3,10 +3,6 @@ import StarSelection from "./StarSelection";
 
 export default class Summarize extends Component {
 
-    constructor() {
-        super();
-    }
-
     render() {
         return (
             <div>

@@ -79,6 +79,7 @@ let config = {
     devtool: dev ? 'cheap-module-eval-source-map ' : false,
     devServer: {
         contentBase: path.resolve('./public'),
+        historyApiFallback: true
     },
     plugins: [
         new ExtractTextPlugin({
