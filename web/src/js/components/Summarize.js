@@ -3,6 +3,14 @@ import StarSelection from "./StarSelection";
 
 export default class Summarize extends Component {
 
+    constructor() {
+        super();
+
+        this.state = {
+            disabled: true
+        }
+    }
+
     render() {
         return (
             <div>
@@ -20,16 +28,16 @@ export default class Summarize extends Component {
                     <div className="scrib-article">
                         <textarea className="disabled" disabled placeholder="Awaiting for something to sum up!"/>
                         <div className="actions">
-                            <button className="bad-summarization btn small round error">
+                            <button disabled={this.state.disabled} className="bad-summarization btn small round error">
                                 <span className="oi" data-glyph="x"/>
                             </button>
-                            <StarSelection onClick={(number) => {
+                            <StarSelection disabled={this.state.disabled} onClick={(number) => {
                                 console.log(number);
                             }}/>
                         </div>
-                        <textarea className="disabled" disabled placeholder="Write your version here"/>
+                        <textarea className={this.state.disabled ? 'disabled' : ''} disabled={this.state.disabled} placeholder="Write your version here"/>
                         <div className="actions">
-                            <button className="confirm-summarization btn small round success">
+                            <button disabled={this.state.disabled} className="confirm-summarization btn small round success">
                                 <span className="oi" data-glyph="check"/> Send
                             </button>
                         </div>

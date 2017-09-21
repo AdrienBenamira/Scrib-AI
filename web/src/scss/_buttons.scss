@@ -32,6 +32,13 @@
     box-shadow: $button-box-shadow-hover;
   }
 
+  &:disabled {
+    background-color: $dark-grey !important;
+    color: $white !important;
+    border: $button-border !important;
+    box-shadow: none !important;
+  }
+
   &:active {
     background-color: $button-background-color-active;
   }

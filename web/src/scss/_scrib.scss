@@ -47,6 +47,14 @@
         .active {
           color: #d9cb29;
         }
+
+        .disabled {
+          color: #838383;
+
+          &.active {
+            color: #838383;
+          }
+        }
       }
     }
   }
