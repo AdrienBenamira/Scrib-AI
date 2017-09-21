@@ -7,23 +7,22 @@ export default class Login extends Component {
     render() {
         return (
             <div>
-                <h1>Se connecter</h1>
-
-                <Form action="POST" on>
 
 
+                <div className="scrib-login">
 
-                    <Input />
+                    <Form action="#" method="post" submit="Se connecter" onChange={(id, value, success, message) => {
+                        //
+                    }} onSubmit={values=>{
+                        console.log(values)
+                    }}>
 
+                        <Input id="username" label="Adresse mail" required  />
+                        <Input id="p" label="Mot de passe" required  />
 
+                    </Form>
 
-
-
-                </Form>
-
-
-
-
+                </div>
 
             </div>
 

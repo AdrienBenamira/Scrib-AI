@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Tooltip from "./glui/Tooltip";
 
 export default class Summarize extends Component {
 
