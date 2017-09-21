@@ -21,7 +21,7 @@ export default class App extends Component {
                     </ul>
                 </nav>
                 <main className="content">
-                    <h1>Summarize</h1>
+                    <h1>Let's summarize</h1>
                 </main>
             </div>
         );
