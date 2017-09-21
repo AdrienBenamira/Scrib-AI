@@ -25,6 +25,20 @@ export default class App extends Component {
                 <main className="content">
                     <Route exact path="/" component={Summarize}/>
                 </main>
+
+                <form>
+                    <ul className="menu">
+                        <div class="form-group">
+                            <label>Identification</label>
+                            <input />
+                        </div>
+                        <div class="form-group">
+                            <label>Mot de passe</label>
+                            <input />
+                        </div>
+                    </ul>
+                </form>
+
             </div>
         );
     }
