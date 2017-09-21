@@ -15,6 +15,10 @@ export default class App extends Component {
                     <ul className="menu">
                         <li>Summarize your text</li>
                     </ul>
+                    <ul/>
+                    <ul className="menu">
+                        <li><a href="#" className="btn success">Se connecter</a></li>
+                    </ul>
                 </nav>
                 <main className="content">
                     <h1>Summarize</h1>
