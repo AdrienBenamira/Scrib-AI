@@ -19,7 +19,7 @@ export default class Summarize extends Component {
                     <div className="scrib-article">
                         <textarea onChange={e => {
                             // Trim spaces in the beginning and end
-                            e.target.value = e.target.value.replace(/^\s+|\s+$/g, '');
+                            e.target.value = e.target.value.replace(/^\s+/g, '');
                             // Rescale textarea
                             e.target.style.height = 'auto';
                             e.target.style.height = e.target.scrollHeight + 'px';
