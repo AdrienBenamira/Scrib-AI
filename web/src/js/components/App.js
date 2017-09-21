@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import Summarize from "./Summarize";
-import {Link, Route} from "react-router-dom";
 
 export default class App extends Component {
     constructor() {
