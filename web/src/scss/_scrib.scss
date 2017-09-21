@@ -1,0 +1,53 @@
+.scrib-container {
+  display: flex;
+
+  .scrib-article {
+    width: 50%;
+    height: 100%;
+    padding: 10px;
+
+    textarea {
+      resize: none;
+      display: block;
+      font-size: 13px;
+      line-height: 1.4em;
+      //font-family: ;
+      overflow-y: hidden;
+      width: 100%;
+      height: 100%;
+      border: 2px dashed transparent;
+      padding: 5px;
+      box-sizing: border-box;
+      transition: border $animation-delay;
+
+      &:hover, &:focus {
+        border: 2px dashed $default-color;
+      }
+
+      &.disabled {
+        &:hover, &:focus {
+          border: 2px dashed transparent;
+        }
+      }
+    }
+
+    .actions {
+      margin: 20px 0;
+
+      .bad-summarization, .confirm-summarization {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .grades {
+        display: inline-block;
+        font-size: 25px;
+        vertical-align: middle;
+
+        .active {
+          color: #d9cb29;
+        }
+      }
+    }
+  }
+}

@@ -14,6 +14,19 @@
   color: $black !important;
   text-decoration: none !important;
 
+  &.small {
+    height: $button-small-height;
+    line-height: $button-small-height;
+
+    &.round {
+      border-radius: $button-small-height;
+    }
+  }
+
+  &.round {
+    border-radius: $button-height;
+  }
+
   &:hover {
     border: $button-border-hover;
     box-shadow: $button-box-shadow-hover;
