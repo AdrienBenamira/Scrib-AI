@@ -18,7 +18,7 @@ export default class Login extends Component {
                     }}>
 
                         <Input id="username" label="Adresse mail" required  />
-                        <Input id="p" label="Mot de passe" required  />
+                        <Input id="password" label="Mot de passe" required  />
 
                     </Form>
 
