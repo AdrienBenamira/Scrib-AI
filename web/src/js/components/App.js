@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import Summarize from "./Summarize";
+import {Link, Route} from "react-router-dom";
 
 export default class App extends Component {
     constructor() {
@@ -13,7 +15,7 @@ export default class App extends Component {
                         Scrib-AI
                     </a>
                     <ul className="menu">
-                        <li>Summarize your text</li>
+                        <li><Link to="/">Summarize your text</Link></li>
                     </ul>
                     <ul/>
                     <ul className="menu">
@@ -21,7 +23,7 @@ export default class App extends Component {
                     </ul>
                 </nav>
                 <main className="content">
-                    <h1>Summarize</h1>
+                    <Route exact path="/" component={Summarize}/>
                 </main>
             </div>
         );
