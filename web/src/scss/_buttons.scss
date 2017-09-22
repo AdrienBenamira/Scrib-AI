@@ -13,7 +13,7 @@
   outline: none;
   color: $black !important;
   text-decoration: none !important;
-
+  font-size: $button-font-size;
   &.small {
     height: $button-small-height;
     line-height: $button-small-height;
@@ -62,6 +62,7 @@
     color: $button-color-success !important;
     background-color: $button-background-color-success;
     border: $button-border-success;
+
 
     &:hover {
       border: $button-border-success-hover;
