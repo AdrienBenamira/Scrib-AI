@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link, Route} from "react-router-dom";
 import Summarize from "./Summarize";
 import Login from "./Login";
-
+import Stats from "./Stats";
 
 export default class App extends Component {
     constructor() {
@@ -27,6 +27,7 @@ export default class App extends Component {
                 <main className="content">
                     <Route exact path="/" component={Summarize}/>
                     <Route path="/login" component={Login}/>
+                    <Route path="/stats" component={Stats}/>
                 </main>
 
 
