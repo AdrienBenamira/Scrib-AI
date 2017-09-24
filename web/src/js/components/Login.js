@@ -11,23 +11,20 @@ export default class Login extends Component {
 
                 <div className="scrib-login">
 
-                    <Form action="#" method="post" submit="Se connecter" onChange={(id, value, success, message) => {
+                    <Form action="#" method="post" submit="Login" onChange={(id, value, success, message) => {
                         //
                     }} onSubmit={values=>{
                         console.log(values)
                     }}>
 
-                        <Input id="username" label="Adresse mail" required  />
-                        <Input id="password" label="Mot de passe" required  />
+                        <Input id="username" label="Email Adress" required  />
+                        <Input id="password" label="Password" required  />
 
                     </Form>
 
                 </div>
 
             </div>
-
-
-
 
 
 

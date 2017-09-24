@@ -7,6 +7,9 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "react-d3-basic": "^1.6.11",
+    "react-chartjs-2": "^2.6.2",
+    "chart.js": "^2.7.0",
     "autoprefixer": "^7.1.4",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

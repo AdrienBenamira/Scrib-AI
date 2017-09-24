@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import {Link, Route, Switch} from "react-router-dom";
-import Summarize from "./Summarize";
-import Login from "./Login";
+import {Link, Route, Switch, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import * as user from "../actions/userAction";
+import Summarize from "./Summarize";
+import Login from "./Login";
+import Stats from "./Stats";
+import {Intro} from "./Intro";
 
+@withRouter
 @connect(state => {
     return {
         //TODO
@@ -24,21 +27,26 @@ export default class App extends Component {
         return (
             <div className="container grid-container">
                 <nav className="navbar">
-                    <a href="#" className="logo">
+                    <Link to="/" className="logo">
                         Scrib-AI
-                    </a>
+                    </Link>
                     <ul className="menu">
-                        <li><Link to="/">Summarize your text</Link></li>
+                        <li><Link to="/">Presentation of the project</Link></li>
+                    </ul>
+                    <ul className="menu">
+                        <li><Link to="/summarize">Summarize your text</Link></li>
                     </ul>
                     <ul/>
                     <ul className="menu">
-                        <li><Link to="/login" className="btn success">Se connecter</Link></li>
+                        <li><Link to="/login" className="btn success">Login</Link></li>
                     </ul>
                 </nav>
                 <main className="content">
                     <Switch>
-                        <Route exact path="/" component={Summarize}/>
+                        <Route exact path="/" component={Intro}/>
+                        <Route path="/summarize" component={Summarize}/>
                         <Route path="/login" component={Login}/>
+                        <Route path="/stats" component={Stats}/>
                     </Switch>
                 </main>
             </div>
