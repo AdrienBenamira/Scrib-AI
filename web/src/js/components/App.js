@@ -1,12 +1,23 @@
 import React, {Component} from 'react';
-import {Link, Route} from "react-router-dom";
+import {Link, Route, Switch} from "react-router-dom";
 import Summarize from "./Summarize";
 import Login from "./Login";
+import {connect} from "react-redux";
+import * as user from "../actions/userAction";
 
-
+@connect(state => {
+    return {
+        //TODO
+    };
+})
 export default class App extends Component {
     constructor() {
         super();
+    }
+
+    componentWillMount() {
+        // Test connection
+        this.props.dispatch(user.connectUser("bob"));
     }
 
     render() {
@@ -25,12 +36,11 @@ export default class App extends Component {
                     </ul>
                 </nav>
                 <main className="content">
-                    <Route exact path="/" component={Summarize}/>
-                    <Route path="/login" component={Login}/>
+                    <Switch>
+                        <Route exact path="/" component={Summarize}/>
+                        <Route path="/login" component={Login}/>
+                    </Switch>
                 </main>
-
-
-
             </div>
         );
     }
