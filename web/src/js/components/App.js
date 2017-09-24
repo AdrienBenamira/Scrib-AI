@@ -3,6 +3,7 @@ import {Link, Route} from "react-router-dom";
 import Summarize from "./Summarize";
 import Login from "./Login";
 import Stats from "./Stats";
+import Intro from "./Intro";
 
 export default class App extends Component {
     constructor() {
@@ -19,12 +20,16 @@ export default class App extends Component {
                     <ul className="menu">
                         <li><Link to="/">Summarize your text</Link></li>
                     </ul>
+                    <ul className="menu">
+                        <li><Link to="/intro">Presentation of our project</Link></li>
+                    </ul>
                     <ul/>
                     <ul className="menu">
                         <li><Link to="/login" className="btn success">Se connecter</Link></li>
                     </ul>
                 </nav>
                 <main className="content">
+                    <Route path="/intro" component={Intro}/>
                     <Route exact path="/" component={Summarize}/>
                     <Route path="/login" component={Login}/>
                     <Route path="/stats" component={Stats}/>
