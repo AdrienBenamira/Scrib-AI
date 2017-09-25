@@ -1,8 +1,14 @@
 
-export const connectUser = (username) => {
+export const connectUser = (values) => {
     return {
         type: 'CONNECT_USER',
-        payload: username
+        payload: values
+    };
+};
+
+export const userConnected = () => {
+    return {
+        type: 'CONNECTION_FULFILLED'
     };
 };
 
