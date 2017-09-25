@@ -11,7 +11,7 @@ export default class Login extends Component {
 
                 <div className="scrib-login">
 
-                    <Form action="#" method="post" submit="Login" onChange={(id, value, success, message) => {
+                    <Form vertical action="#" method="post" submit="Login" onChange={(id, value, success, message) => {
                         //
                     }} onSubmit={values=>{
                         console.log(values)
