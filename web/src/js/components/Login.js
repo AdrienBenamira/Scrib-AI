@@ -7,7 +7,7 @@ export const Login = (props) => {
     return (
         <div>
             <div className="scrib-login">
-                <Form action="#" method="post" submit="Login"
+                <Form vertical action="#" method="post" submit="Login"
                 onSubmit={values => props.dispatch(dispatch => {
                     dispatch(connectUser(values));
                     //TODO: API CALL
