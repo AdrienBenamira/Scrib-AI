@@ -1,0 +1,16 @@
+{
+  "name": "API",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+  },
+  "dependencies": {
+    "basic-auth": "^2.0.0",
+    "bcrypt": "^1.0.3",
+    "express": "^4.15.5",
+    "mysql2": "^1.4.2",
+    "sequelize": "^4.11.3",
+    "sequelize-cli": "^3.0.0"
+  }
+}
