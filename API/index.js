@@ -11,7 +11,7 @@ const app = express();
 app.use('/user', utils.basicAuth);
 
 // Routes
-app.get('/users/login', (req, res) => {
+app.get('/user/login', (req, res) => {
     // If the username/password of the Basic header is false, this will not return
     res.json({success: true});
 });

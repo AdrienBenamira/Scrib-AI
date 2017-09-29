@@ -1,5 +1,8 @@
 const basicAuth = require('basic-auth');
 const bcrypt = require('bcrypt');
+const sequelize = require('./db');
+const DataTypes = require('sequelize').DataTypes;
+const User = require('./models/user')(sequelize, DataTypes);
 
 /**
  * basicAuth
@@ -8,24 +11,23 @@ const bcrypt = require('bcrypt');
  * @param next
  */
 exports.basicAuth = (req, res, next) => {
-    console.log("basic Auth");
-    //TODO: Find username/password in database
-    let username = 'root';
-    let password = '$2a$10$icT47lGzFZrutfHhRIyut.tuRlIhOrbhxcnIzk/1EqdpqTJgSuzWq'; // root
+    // Get login given by the user
     let user = basicAuth(req);
-    // Compare password with bcrypt
-    let isValid = true;
-    if (!user || user.name !== username) {
-        isValid = false;
-    }else {
-        bcrypt.compare(user.pass, password, (err, result) => {
-            if (!result) isValid = false;
+    if (!user) return res.sendStatus(401);
+    else {
+        // Fetch the user to the database
+        User.findOne({
+            where: {
+                username: user.name
+            }
+        }).then(fetchedUser => {
+            if(fetchedUser !== null) {
+                // Compare the hashed password
+                bcrypt.compare(user.pass, fetchedUser.password, (err, result) => {
+                    if (!result) res.sendStatus(401);
+                    else next();
+                });
+            } else res.sendStatus(401);
         });
     }
-    if(!isValid) {
-        res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-        return res.send(401);
-    }
-    console.log(isValid);
-    next();
 };
