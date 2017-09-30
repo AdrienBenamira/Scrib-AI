@@ -14,7 +14,7 @@ export const Login = (props) => {
     return (
         <div>
             {props.failed ? (
-                <Message error timer={60}>
+                <Message error timer={10}>
                     Your login or password is incorrect.
                 </Message>
             ) : null}

@@ -64,6 +64,8 @@ export default class Form extends Component {
                 elements[this.props.children.props.id] = this.props.children.props.value;
             }
         }
+
+        if (this.props.children.length > 0) {
         const inputs = this.props.children.map((input) => {
             if (input.props.id) {
                 return cloneElement(input, {
@@ -73,6 +75,15 @@ export default class Form extends Component {
                 });
             } else return input;
         });
+        } else if (this.props.children !== undefined) {
+            if (this.props.children.props.id) {
+                return cloneElement(this.props.children, {
+                    onChange: this.onChange,
+                    key: this.props.children.props.id,
+                    value: this.state.elements[this.props.children.props.id]
+                });
+            } else return this.props.children;
+        }
         this.setState({elements, inputs});
     }
 

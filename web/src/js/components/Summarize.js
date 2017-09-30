@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 import StarSelection from "./StarSelection";
+import * as textAction from "../actions/textActions";
+import {config} from "../config/default";
 
 export default class Summarize extends Component {
 
@@ -7,8 +10,28 @@ export default class Summarize extends Component {
         super();
 
         this.state = {
-            disabled: true
-        }
+            fullText: '',
+        };
+
+        this.onSummarizeHandler = this.onSummarizeHandler.bind(this);
+    }
+
+    /**
+     * When we click on Summarize
+     */
+    onSummarizeHandler() {
+        this.props.dispatch((dispatch) => {
+            dispatch(textAction.summarize(this.state.fullText));
+            axios.post(config.api.host + '/summarization', {
+                article: this.state.fullText
+            }).then((res) => {
+                console.log(res.data);
+                dispatch(textAction.summarizationFullfiled(res.data));
+            }).catch(err => {
+                //TODO: Different error according to the error
+                dispatch(textAction.summarizationFailed('An error has occured... Please try again.'))
+            });
+        });
     }
 
     render() {
@@ -19,29 +42,31 @@ export default class Summarize extends Component {
                     <div className="scrib-article">
                         <textarea className="article" onChange={e => {
                             // Trim spaces in the beginning and end
-                            e.target.value = e.target.value.replace(/^\s+/g, '');
+                            this.setState({fullText: e.target.value.replace(/^\s+/g, '')});
                             // Rescale textarea
                             e.target.style.height = 'auto';
                             e.target.style.height = e.target.scrollHeight + 'px';
-                        }} placeholder="Paste your article here..."/>
+                        }} value={this.state.fullText} placeholder="Paste your article here..."/>
 
-                        <button className="confirm-summarization btn small round success">
+                        <button onClick={this.onSummarizeHandler} className="confirm-summarization btn small round success">
                             <span className="oi" data-glyph="check"/> Summarize!
                         </button>
                     </div>
                     <div className="scrib-article">
-                        <textarea className="disabled" disabled placeholder="Awaiting for something to sum up!"/>
+                        <div className="response disabled">
+                            {this.props.text.summary.content !== null ? this.props.text.summary.content : 'Awaiting for something to sum up!' }
+                        </div>
                         <div className="actions">
-                            <button disabled={this.state.disabled} className="bad-summarization btn small round error">
+                            <button disabled={this.props.text.summary.content === null} className="bad-summarization btn small round error">
                                 <span className="oi" data-glyph="x"/>
                             </button>
-                            <StarSelection disabled={this.state.disabled} onClick={(number) => {
+                            <StarSelection disabled={this.props.text.summary.content === null} onClick={(number) => {
                                 console.log(number);
                             }}/>
                         </div>
-                        <textarea className={this.state.disabled ? 'disabled' : ''} disabled={this.state.disabled} placeholder="Write your version here"/>
+                        <textarea className={this.props.text.summary.content === null ? 'disabled' : ''} disabled={this.props.text.summary.content === null} placeholder="Write your version here"/>
                         <div className="actions">
-                            <button disabled={this.state.disabled} className="confirm-summarization btn small round success">
+                            <button disabled={this.props.text.summary.content === null} className="confirm-summarization btn small round success">
                                 <span className="oi" data-glyph="check"/> Send
                             </button>
                         </div>

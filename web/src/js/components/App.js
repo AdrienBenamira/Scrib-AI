@@ -9,14 +9,10 @@ import {Intro} from "./Intro";
 import {Login} from "./Login";
 import * as Cookies from 'js-cookie';
 import {config} from "../config/default";
-import {Settings} from "./Settings";
+import Settings from "./Settings";
 
 @withRouter
-@connect(state => {
-    return {
-        user: state.user
-    };
-})
+@connect(state => state)
 export default class App extends Component {
     constructor() {
         super();
@@ -74,7 +70,9 @@ export default class App extends Component {
                 <main className="content">
                     <Switch>
                         <Route exact path="/" component={Intro}/>
-                        <Route path="/summarize" component={Summarize}/>
+                        <Route path="/summarize" render={(props) => (
+                            <Summarize {...props} dispatch={this.props.dispatch} text={this.props.text} />
+                        )}/>
                         <Route path="/login" render={(props) => (
                             this.props.user.connected ?
                                 <Redirect to="/stats"/> :
@@ -88,7 +86,7 @@ export default class App extends Component {
                         )}/>
                         <Route path="/settings" render={(props) => (
                             this.props.user.connected ?
-                                <Settings {...props} /> :
+                                <Settings dispatch={this.props.dispatch} user={this.props.user} {...props} /> :
                                 <Redirect to='/'/>
                         )}/>
                     </Switch>

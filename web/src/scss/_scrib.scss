@@ -6,7 +6,7 @@
     height: 100%;
     padding: 10px;
 
-    textarea {
+    textarea, .response {
       resize: none;
       display: block;
       font-size: 13px;
@@ -29,6 +29,9 @@
       }
 
       &.disabled {
+        background-color: $lighter-grey;
+        color: $darker-grey;
+
         &:hover, &:focus {
           border: 2px dashed transparent;
         }
