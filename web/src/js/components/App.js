@@ -9,6 +9,7 @@ import {Intro} from "./Intro";
 import {Login} from "./Login";
 import * as Cookies from 'js-cookie';
 import {config} from "../config/default";
+import {Settings} from "./Settings";
 
 @withRouter
 @connect(state => {
@@ -54,9 +55,14 @@ export default class App extends Component {
                     </Link>
                     <ul className="menu">
                         <li><Link to="/">Presentation of the project</Link></li>
-                        <li><Link to="/summarize">Summarize your text</Link></li>
+                        <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link></li>
                         {this.props.user.connected ?
-                            <li><Link to="/stats">Statistics</Link></li> :
+                            <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link></li> :
+                            null}
+                    </ul>
+                    <ul className="menu">
+                        {this.props.user.connected ?
+                            <li><Link to="/settings"><span className="oi" data-glyph="wrench"/> Settings</Link></li> :
                             null}
                     </ul>
                     <ul className="menu">
@@ -78,6 +84,11 @@ export default class App extends Component {
                         <Route path="/stats" render={(props) => (
                             this.props.user.connected ?
                                 <Stats {...props} /> :
+                                <Redirect to='/'/>
+                        )}/>
+                        <Route path="/settings" render={(props) => (
+                            this.props.user.connected ?
+                                <Settings {...props} /> :
                                 <Redirect to='/'/>
                         )}/>
                     </Switch>

@@ -20,6 +20,10 @@
       box-sizing: border-box;
       transition: border $animation-delay;
 
+      &.article {
+        margin-bottom: 20px;
+      }
+
       &:hover, &:focus {
         border: 2px dashed $default-color;
       }

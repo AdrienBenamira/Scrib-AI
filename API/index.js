@@ -38,6 +38,7 @@ app.get('/user/login', (req, res) => {
     });
 });
 
+// Add a user
 app.post('/user', (req, res) => {
     let {username, password} = req.query;
     bcrypt.hash(password, config.security.saltRounds).then((password) => {

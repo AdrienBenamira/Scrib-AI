@@ -14,16 +14,20 @@ export default class Summarize extends Component {
     render() {
         return (
             <div>
-                <h1>Summarize</h1>
+                <h1><span className="oi" data-glyph="excerpt"/> Summarize</h1>
                 <div className="scrib-container">
                     <div className="scrib-article">
-                        <textarea onChange={e => {
+                        <textarea className="article" onChange={e => {
                             // Trim spaces in the beginning and end
                             e.target.value = e.target.value.replace(/^\s+/g, '');
                             // Rescale textarea
                             e.target.style.height = 'auto';
                             e.target.style.height = e.target.scrollHeight + 'px';
                         }} placeholder="Paste your article here..."/>
+
+                        <button className="confirm-summarization btn small round success">
+                            <span className="oi" data-glyph="check"/> Summarize!
+                        </button>
                     </div>
                     <div className="scrib-article">
                         <textarea className="disabled" disabled placeholder="Awaiting for something to sum up!"/>
