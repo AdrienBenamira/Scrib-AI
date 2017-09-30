@@ -5,6 +5,7 @@ let config = {
     app: {
         host: "localhost",
         port: 3000,
+        timezone: 'Europe/Paris'
     },
     security: {
         saltRounds: 10

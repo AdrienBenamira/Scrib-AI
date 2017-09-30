@@ -39,7 +39,9 @@ export default class Input extends Component {
             <div className={"form-group" + inputStatus}>
                 <label htmlFor={this.props.id}>{this.props.label}</label>
                 <input type={type} id={this.props.id} name={this.props.id} value={this.props.value}
-                       onChange={(e) => this.onChange(e)} disabled={this.props.disabled} checked={this.props.checked}/>
+                       onChange={(e) => this.onChange(e)} disabled={this.props.disabled} checked={this.props.checked}
+                       autoFocus={this.props.autofocus}
+                />
                 {errorMessage !== null ? errorMessage : helpText}
             </div>
         );

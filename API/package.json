@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
     "basic-auth": "^2.0.0",
     "bcrypt": "^1.0.3",
+    "cors": "^2.8.4",
     "express": "^4.15.5",
+    "moment": "^2.18.1",
     "mysql2": "^1.4.2",
     "sequelize": "^4.11.3",
     "sequelize-cli": "^3.0.0"

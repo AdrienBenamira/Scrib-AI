@@ -46,23 +46,13 @@ export default class Stats extends Component {
 
     render() {
         return (
-
-
-
             <div>
-
-                <nav className="navbar">
-
+                <div className="menu-bar">
                     <ul className="menu">
                         <li><Link to="#">Stats 1</Link></li>
-                    </ul>
-                    
-                    <ul className="menu">
                         <li><Link to="#">Stats 2</Link></li>
                     </ul>
-
-
-                </nav>
+                </div>
 
                 <Chart chartData={this.state.chartData}/>
 
