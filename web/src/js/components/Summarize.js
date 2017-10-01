@@ -22,6 +22,7 @@ export default class Summarize extends Component {
     onSummarizeHandler() {
         this.props.dispatch((dispatch) => {
             dispatch(textAction.summarize(this.state.fullText));
+            window.scrollTo(0, 0);
             axios.post(config.api.host + '/summarization', {
                 article: this.state.fullText
             }).then((res) => {
@@ -48,25 +49,40 @@ export default class Summarize extends Component {
                             e.target.style.height = e.target.scrollHeight + 'px';
                         }} value={this.state.fullText} placeholder="Paste your article here..."/>
 
-                        <button onClick={this.onSummarizeHandler} className="confirm-summarization btn small round success">
+                        <button onClick={this.onSummarizeHandler}
+                                disabled={this.props.text.summarizing}
+                                className="confirm-summarization btn small round success">
                             <span className="oi" data-glyph="check"/> Summarize!
                         </button>
                     </div>
                     <div className="scrib-article">
                         <div className="response disabled">
-                            {this.props.text.summary.content !== null ? this.props.text.summary.content : 'Awaiting for something to sum up!' }
+                            {this.props.text.summarizing ? <div className="loader"/> : null}
+                            <div className="response-content">
+                                {
+                                    this.props.text.summarized ?
+                                        this.props.text.summary.content :
+                                        (this.props.text.summarizing ?
+                                            "We're summarizing... Please wait, this can take a minute." :
+                                            'Awaiting for something to sum up!')
+                                }
+                            </div>
                         </div>
                         <div className="actions">
-                            <button disabled={this.props.text.summary.content === null} className="bad-summarization btn small round error">
+                            <button disabled={!this.props.text.summarized}
+                                    className="bad-summarization btn small round error">
                                 <span className="oi" data-glyph="x"/>
                             </button>
-                            <StarSelection disabled={this.props.text.summary.content === null} onClick={(number) => {
+                            <StarSelection disabled={!this.props.text.summarized} onClick={(number) => {
                                 console.log(number);
                             }}/>
                         </div>
-                        <textarea className={this.props.text.summary.content === null ? 'disabled' : ''} disabled={this.props.text.summary.content === null} placeholder="Write your version here"/>
+                        <textarea className={!this.props.text.summarized ? 'disabled' : ''}
+                                  disabled={!this.props.text.summarized}
+                                  placeholder="Write your version here"/>
                         <div className="actions">
-                            <button disabled={this.props.text.summary.content === null} className="confirm-summarization btn small round success">
+                            <button disabled={!this.props.text.summarized}
+                                    className="confirm-summarization btn small round success">
                                 <span className="oi" data-glyph="check"/> Send
                             </button>
                         </div>

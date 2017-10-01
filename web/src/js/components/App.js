@@ -10,6 +10,7 @@ import {Login} from "./Login";
 import * as Cookies from 'js-cookie';
 import {config} from "../config/default";
 import Settings from "./Settings";
+import Message from "./glui/messages/Message";
 
 @withRouter
 @connect(state => state)
@@ -67,6 +68,23 @@ export default class App extends Component {
                             <li><Link to="/login" className="btn success">Login</Link></li>}
                     </ul>
                 </nav>
+                <div className="messages">
+                    {this.props.text.failed ? (
+                        <Message timer={30} error>
+                            {this.props.text.errorMessage}
+                        </Message>
+                    ) : null}
+                    {this.props.text.summarized ? (
+                       <Message success timer={10}>
+                            Your summary is ready!
+                       </Message>
+                    ): null}
+                    {this.props.text.summarizing ? (
+                        <Message default>
+                            Summarization in progress...
+                        </Message>
+                    ): null}
+                </div>
                 <main className="content">
                     <Switch>
                         <Route exact path="/" component={Intro}/>

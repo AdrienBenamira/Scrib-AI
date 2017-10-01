@@ -20,6 +20,20 @@
       box-sizing: border-box;
       transition: border $animation-delay;
 
+      .response-content {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .loader {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 5px;
+        background: url(../images/tail-spin.svg) top left no-repeat;
+        height: 38px;
+        width: 38px;
+      }
+
       &.article {
         margin-bottom: 20px;
       }
