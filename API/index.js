@@ -24,7 +24,7 @@ app.get('/user/login', (req, res) => userActions.login(req, res));
 app.post('/user', bodyParser.json(), (req, res) => userActions.add(req, res));
 
 // Text Routes
-app.post('/summarization', (req, res) => textActions.summarize(req, res));
+app.post('/summarization', bodyParser.json(),( req, res) => textActions.summarize(req, res));
 
 
 // Start application

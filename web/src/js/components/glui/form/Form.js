@@ -75,16 +75,22 @@ export default class Form extends Component {
                 });
             } else return input;
         });
+
+	this.setState({elements, inputs});
+
         } else if (this.props.children !== undefined) {
+	    let input = null;
             if (this.props.children.props.id) {
-                return cloneElement(this.props.children, {
+                input = cloneElement(this.props.children, {
                     onChange: this.onChange,
                     key: this.props.children.props.id,
                     value: this.state.elements[this.props.children.props.id]
                 });
-            } else return this.props.children;
+            } else {
+		input = this.props.children;
+	    }
+		this.setState({elements, inputs: [input]});
         }
-        this.setState({elements, inputs});
     }
 
     render() {

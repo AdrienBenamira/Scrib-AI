@@ -1,21 +1,17 @@
 import os
-import subprocess
 import time
 import falcon
-import request
 import json
-import time
-#
-print('ok1')
 import re
+#
+
+
 
 def uppercase(matchobj):
     return matchobj.group(0).upper()
 
 def capitalize(s):
     return re.sub('^([a-z])|[\.|\?|\!]\s*([a-z])|\s+([a-z])(?=\.)', uppercase, s)
-
-
 
 
 class LetsSummarize:
@@ -52,4 +48,4 @@ class LetsSummarize:
 
 
 api=falcon.API()
-api.add_route('/test2',LetsSummarize())
+api.add_route('/summary',LetsSummarize())

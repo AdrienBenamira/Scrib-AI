@@ -6,8 +6,10 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
       return bcrypt.hash("root", config.security.saltRounds).then((hash) => {
           return queryInterface.bulkInsert('Users', [{
-              username: 'root',
-              password: hash
+              username: 'root', 
+	      createdAt: new Date(),
+	      updatedAt: new Date(),
+              password: hash, 
           }], {});
       });
   },

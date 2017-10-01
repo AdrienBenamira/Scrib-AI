@@ -1,9 +1,17 @@
+const axios = require('axios')
+const config = require('../config/default');
+
 
 exports.summarize = (req, res) => {
     //TODO
-    console.log(req.body);
-    // Simulating the time to summarize...
-    setTimeout(() => {
-        res.send('Lorem ipsum dolor sit amet, consectetur adipiscing elit. In faucibus mi sit amet tellus viverra, dapibus fringilla magna cursus. Nunc in tortor eu ante consectetur consequat eget vel lacus. Proin lectus leo, blandit ut elementum a, feugiat eget purus. Maecenas quis turpis quam.');
-    }, 5000);
+    console.log(req.body.article);
+    console.log(config.api.host);
+    axios.post(config.api.host,{article: req.body.article}).then(result => {
+      console.log(result.data);
+      res.send(result.data.resp_resume)
+    }).catch(err => {
+      console.log(err);
+    })
+
+
 };
