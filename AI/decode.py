@@ -116,7 +116,7 @@ class BeamSearchDecoder(object):
         counter += 1 # this is how many examples we've decoded
       else:
 
-        #print_results(article_withunks, abstract_withunks, decoded_output) # log output to screen
+        print_results(article_withunks, abstract_withunks, decoded_output) # log output to screen
         self.write_for_attnvis(article_withunks, abstract_withunks, decoded_words, best_hyp.attn_dists, best_hyp.p_gens) # write info to .json file for visualization tool
         if counter==1:
             return(decoded_output)
