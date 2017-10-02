@@ -1,9 +1,14 @@
 import requests
 import justext
-import requests
 import json
+import os
+import time
+import falcon
+import re
 
-def article_from_url(url):
+print('START')
+
+def HTML_from_url(url):
     #url as string
     texte=''
     response = requests.get(url)
@@ -13,13 +18,47 @@ def article_from_url(url):
           path=paragraph.dom_path.split('.')
           if path[len(path)-1]=='p':
               texte=texte+paragraph.text.encode('utf8')
-    return(texte)
+    print(texte)
+    url_resume = "http://127.0.0.1:8000/summarize_site"
+    headers = {}
+    response = requests.post(url_resume, data=json.dumps({'article':str(texte)}),headers=headers)
+    article_resume=json.loads(response.text)['resp_resume']
+    site = requests.get("https://www.nytimes.com/2017/10/01/arts/television/snl-trump-puerto-rico.html")
+    compteur=0
+    paragraphs = justext.justext(site.content, justext.get_stoplist("English"))
+    for paragraph in paragraphs:
+      if not paragraph.is_boilerplate:
+          path=paragraph.dom_path.split('.')
+          if path[len(path)-1]=='p':
+              compteur=compteur+1
+              if compteur==1:
+                  site_final=site.text.replace(paragraph.text,article_resume)
+              else:
+                  site_final=site_final.replace(paragraph.text,'')
+    return(site_final)
 
 
+class LetsTransformeSite:
+    def on_post(self, req,resp):
+        t0=time.time()
+        compteur=0
+        try:
+            response=req.stream.read()
+            print(response)
+            response=json.loads(response)
+            new_site=HTML_from_url(str(response['url']))
+            t1=time.time()
+            content={
+                'status':'sucess',
+                'site_resume':new_site,
+                'chrono': t1-t0
+            }
+            print(t1-t0)
+            resp.body = json.dumps(content)
+        except IOError as e:
+            print e
 
-url = "http://127.0.0.1:8000/parse"
-texte=article_from_url("https://www.nytimes.com/2017/10/01/arts/television/snl-trump-puerto-rico.html")
-headers = {}
-response = requests.post(url, data=json.dumps({'article':str(texte)}),headers=headers)
+api2=falcon.API()
+api2.add_route('/newsite',LetsTransformeSite())
 
-print(response.text)
+print('FIN')

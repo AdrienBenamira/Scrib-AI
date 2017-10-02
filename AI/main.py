@@ -51,7 +51,7 @@ class LetsSummarize:
         except IOError as e:
             print e
 
-class LetsParse:
+class LetsSummarizeSite:
     def on_post(self, req,resp):
         t0=time.time()
         compteur=0
@@ -92,4 +92,4 @@ class LetsParse:
 
 api=falcon.API()
 api.add_route('/summary',LetsSummarize())
-api.add_route('/parse',LetsParse())
+api.add_route('/summarize_site',LetsSummarizeSite())
