@@ -18,3 +18,9 @@ export const connectionFailed = () => {
     };
 };
 
+export const logout = () => {
+    return {
+        type: 'LOGOUT'
+    };
+};
+

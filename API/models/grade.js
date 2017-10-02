@@ -17,15 +17,13 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         }
-    }, {
-        classMethods: {
-            associate: function (models) {
-                Grade.belongsTo(models.Summary, {
-                    foreignKey: 'summary_id',
-                    targetKey: 'id'
-                })
-            }
-        }
     });
+    Grade.associate = function (models) {
+        Grade.Summary = Grade.belongsTo(models.Summary, {
+            foreignKey: 'summary_id',
+            targetKey: 'id'
+        })
+    };
+
     return Grade;
 };

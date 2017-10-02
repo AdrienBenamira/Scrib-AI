@@ -5,29 +5,21 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT('medium'),
             allowNull: false
         },
-        article_id: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            references: 'Articles',
-            referenceKey: 'id'
-        },
         is_generated: {
             type: DataTypes.BOOLEAN,
             defaultValue: true
         }
-    }, {
-        classMethods: {
-            associate: function (models) {
-                Summary.belongsTo(models.Article, {
-                    foreignKey: 'article_id',
-                    targetKey: 'id'
-                });
-
-                Summary.hasMany(models.Grade, {
-                    foreignKey: 'summary_id',
-                    sourceKey: 'id'
-                });
-            }
-        }
     });
+
+    Summary.associate = function (models) {
+        Summary.Article = Summary.belongsTo(models.Article, {
+            foreignKey: 'article_id'
+        });
+
+        Summary.Grades = Summary.hasMany(models.Grade, {
+            foreignKey: 'summary_id'
+        });
+    };
+
     return Summary;
 };

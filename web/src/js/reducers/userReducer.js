@@ -22,6 +22,8 @@ export const user = (state = {
         case 'CONNECTION_FAILED':
             state = {...state, connecting: false, failed: true};
             break;
+        case 'LOGOUT':
+            state = {...state, connected: false, username: '', password: ''};
         default:
             state = {...state};
             break;

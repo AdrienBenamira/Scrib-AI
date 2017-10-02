@@ -10,7 +10,7 @@ import {Login} from "./Login";
 import * as Cookies from 'js-cookie';
 import {config} from "../config/default";
 import Settings from "./Settings";
-import Message from "./glui/messages/Message";
+import Notifications from "./Notifications";
 
 @withRouter
 @connect(state => state)
@@ -26,21 +26,27 @@ export default class App extends Component {
 
             if (rememberToken !== undefined) {
                 this.props.dispatch(dispatch => {
-                      dispatch(user.connectUser());
-                      const url = config.api.host + '/user/login';
-                      const authInfo = {username: rememberToken.username, password: rememberToken.token};
-                      axios.get(url, {auth: authInfo}).then((res) => {
-                          // Update cookie
-                          Cookies.set('remember', {username: rememberToken.username, token: res.data.token}, {
-                              expires: 15 //days
-                          });
-                          dispatch(user.userConnected({...authInfo, password: res.data.token}));
-                      }).catch((err) => {
-                          dispatch(user.connectionFailed())
-                      });
+                    dispatch(user.connectUser());
+                    const url = config.api.host + '/user/login';
+                    const authInfo = {username: rememberToken.username, password: rememberToken.token};
+                    axios.get(url, {auth: authInfo}).then((res) => {
+                        // Update cookie
+                        Cookies.set('remember', {username: rememberToken.username, token: res.data.token}, {
+                            expires: 15 //days
+                        });
+                        dispatch(user.userConnected({...authInfo, password: res.data.token}));
+                    }).catch((err) => {
+                        dispatch(user.connectionFailed())
+                    });
                 })
             }
         }
+    }
+
+    logoutHandler(e) {
+        e.preventDefault();
+        Cookies.remove('remember');
+        this.props.dispatch(user.logout());
     }
 
     render() {
@@ -52,7 +58,8 @@ export default class App extends Component {
                     </Link>
                     <ul className="menu">
                         <li><Link to="/">Presentation of the project</Link></li>
-                        <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link></li>
+                        <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link>
+                        </li>
                         {this.props.user.connected ?
                             <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link></li> :
                             null}
@@ -64,32 +71,22 @@ export default class App extends Component {
                     </ul>
                     <ul className="menu">
                         {this.props.user.connected ?
-                            <li>Hello, {this.props.user.username}</li> :
+                            (
+                                <div>
+                                    <li>Hello, {this.props.user.username}</li>
+                                    <li><a onClick={(e) => this.logoutHandler.bind(this)(e)} className="btn error">Logout</a>
+                                    </li>
+                                </div>
+                            ) :
                             <li><Link to="/login" className="btn success">Login</Link></li>}
                     </ul>
                 </nav>
-                <div className="messages">
-                    {this.props.text.failed ? (
-                        <Message timer={30} error>
-                            {this.props.text.errorMessage}
-                        </Message>
-                    ) : null}
-                    {this.props.text.summarized ? (
-                       <Message success timer={10}>
-                            Your summary is ready!
-                       </Message>
-                    ): null}
-                    {this.props.text.summarizing ? (
-                        <Message default>
-                            Summarization in progress...
-                        </Message>
-                    ): null}
-                </div>
+                <Notifications dispatch={this.props.dispatch} text={this.props.text}/>
                 <main className="content">
                     <Switch>
                         <Route exact path="/" component={Intro}/>
                         <Route path="/summarize" render={(props) => (
-                            <Summarize {...props} dispatch={this.props.dispatch} text={this.props.text} />
+                            <Summarize {...props} dispatch={this.props.dispatch} text={this.props.text}/>
                         )}/>
                         <Route path="/login" render={(props) => (
                             this.props.user.connected ?

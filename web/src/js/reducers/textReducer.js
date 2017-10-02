@@ -6,39 +6,68 @@ export const text = (state = {
     summarized: false,
     summary: {
         content: null,
-        userVersion: null,
-        quality: 0,
-        isAccepted: null
+        chrono: null,
+        userVersion: 'Loading',
+        hasUserEdited: false,
+        grade: 0,
+        isAccepted: true
+    },
+    upload: {
+        uploading: false,
+        done: false,
+        failed: false,
+        errorMessage: ''
     }
 }, action) => {
     switch (action.type) {
         case 'SUMMARIZATION_STARTED':
-            state = {...state, fullText: action.payload, summarized: false, summarizing: true, summary: {
+            state = {...state, upload: {
+                uploading: false,
+                done: false,
+                failed: false,
+                errorMessage: ''
+            }, fullText: action.payload, summarized: false, summarizing: true, summary: {
                 content: null,
-                quality: 0,
+                chrono: null,
+                grade: 0,
                 isAccepted: false
             }};
             break;
         case 'SUMMARIZATION_FULFILED':
             state = {...state, summary: {
-                content: action.payload,
-                quality: 0,
+                content: action.payload.summary,
+                userVersion: 'Loading...',
+                hasUserEdited: false,
+                chrono: action.payload.chrono,
+                grade: 0,
                 isAccepted: null
             }, summarizing: false, failed: false, errorMessage: '', summarized: true};
             break;
         case 'SUMMARIZATION_FAILED':
-            state = {...state, failed: true, errorMessage: action.payload, summarizing: false};
+            state = {...state, failed: true, errorMessage: action.payload, summarizing: false, summarized: false};
             break;
-        case 'ACCEPT_SUMMARY':
-            //TODO
-            state = {...state};
+        case 'REFUSE_SUMMARY':
+            state = {...state, summary: {...state.summary, isAccepted: false, grade: 0}};
             break;
         case 'GRADE_SUMMARY':
-            //TODO
-            state = {...state};
+            state = {...state, summary: {...state.summary, isAccepted: true, grade: action.payload}};
+            break;
+        case 'EDIT_SUMMARY':
+            state = {...state, summary: {...state.summary, userVersion: state.summary.content}};
+            break;
+        case 'UPDATE_USER_VERSION':
+            state = {...state, summary: {...state.summary, hasUserEdited: true, userVersion: action.payload}};
+            break;
+        case 'SUMMARY_UPLOADED':
+            state = {...state, upload: {...state.upload, done: true, uploading: false}};
+            break;
+        case 'SUMMARY_UPLOAD_FAILED':
+            state = {...state, upload: {...state.upload, failed: true, errorMessage: action.payload, uploading: false}};
+            break;
+        case 'SUMARRY_UPLOADING':
+            state = {...state, upload: {...state.upload, uploading: true, failed: false, errorMessage: ''}};
             break;
         default:
-            //TODO
             state = {...state};
             break;
     }

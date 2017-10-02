@@ -1,12 +1,7 @@
-const config = require('../config/default');
-
 const basicAuth = require('basic-auth');
-const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const DataTypes = require('sequelize').DataTypes;
-
-const sequelize = require('../db');
-const User = require('../models/user')(sequelize, DataTypes);
+const db = require('../models');
+const User = require('../models/user')(db.sequelize, db.Sequelize.DataTypes);
 
 
 /**

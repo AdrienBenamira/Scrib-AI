@@ -11,9 +11,12 @@ export default class Summarize extends Component {
 
         this.state = {
             fullText: '',
+            editing: false
         };
 
         this.onSummarizeHandler = this.onSummarizeHandler.bind(this);
+        this.onEditSummary = this.onEditSummary.bind(this);
+        this.onSendHandler = this.onSendHandler.bind(this);
     }
 
     /**
@@ -26,13 +29,45 @@ export default class Summarize extends Component {
             axios.post(config.api.host + '/summarization', {
                 article: this.state.fullText
             }).then((res) => {
-                console.log(res.data);
                 dispatch(textAction.summarizationFullfiled(res.data));
             }).catch(err => {
-                //TODO: Different error according to the error
-                dispatch(textAction.summarizationFailed('An error has occured... Please try again.'))
+                if (err.response.data.message !== undefined) {
+                    dispatch(textAction.summarizationFailed(err.response.data.message));
+                } else {
+                    dispatch(textAction.summarizationFailed('An error has occured... Please try again.'));
+                }
             });
         });
+    }
+
+    onEditSummary(e) {
+        e.preventDefault();
+        this.setState({editing: !this.state.editing}, () => {
+            if (!this.props.text.summary.hasUserEdited) {
+                this.props.dispatch(textAction.editSummary());
+            }
+        });
+    }
+
+    /**
+     * When sending summary
+     * @param e
+     */
+    onSendHandler(e) {
+        e.preventDefault();
+        if(!this.props.text.upload.done) {
+            this.props.dispatch(textAction.startUpload());
+            axios.post(config.api.host + '/summary/store' + (this.props.text.summary.hasUserEdited ? '?edited=1' : ''), {
+                summary: this.props.text.summary,
+                article: {
+                    fullText: this.props.text.fullText
+                }
+            }).then(() => {
+                this.props.dispatch(textAction.uploadFulfilled());
+            }).catch(err => {
+                this.props.dispatch(textAction.uploadFailed(err.response.data.message));
+            });
+        }
     }
 
     render() {
@@ -56,32 +91,53 @@ export default class Summarize extends Component {
                         </button>
                     </div>
                     <div className="scrib-article">
-                        <div className="response disabled">
-                            {this.props.text.summarizing ? <div className="loader"/> : null}
-                            <div className="response-content">
-                                {
-                                    this.props.text.summarized ?
-                                        this.props.text.summary.content :
-                                        (this.props.text.summarizing ?
-                                            "We're summarizing... Please wait, this can take a minute." :
-                                            'Awaiting for something to sum up!')
-                                }
-                            </div>
-                        </div>
+                        {this.state.editing ? (
+                                <textarea onChange={e => {
+                                    this.props.dispatch(textAction.updateUserVersion(e.target.value));
+                                    e.target.style.height = 'auto';
+                                    e.target.style.height = e.target.scrollHeight + 'px';
+                                }}
+                                          value={this.props.text.summary.userVersion}
+                                          className="response"
+                                />) :
+                            (<div onClick={(e) => {
+                                    if (this.props.text.summarized) {
+                                        this.onEditSummary(e);
+                                    }
+                                    console.log('click');
+                                }} className="response disabled">
+                                    {this.props.text.summarizing ? <div className="loader"/> : null}
+                                    <div className="response-content">
+                                        {
+                                            this.props.text.summarized ?
+                                                ( this.props.text.summary.hasUserEdited ?
+                                                    this.props.text.summary.userVersion :
+                                                    this.props.text.summary.content) :
+                                                (this.props.text.summarizing ?
+                                                    "We're summarizing... Please wait, this can take a minute." :
+                                                    'Awaiting for something to sum up!')
+                                        }
+                                    </div>
+                                </div>
+                            )}
                         <div className="actions">
-                            <button disabled={!this.props.text.summarized}
+                            <button onClick={() => this.props.dispatch(textAction.refuseSummary())}
+                                    disabled={!this.props.text.summarized}
                                     className="bad-summarization btn small round error">
                                 <span className="oi" data-glyph="x"/>
+                                Poor
                             </button>
-                            <StarSelection disabled={!this.props.text.summarized} onClick={(number) => {
-                                console.log(number);
-                            }}/>
+                            <StarSelection disabled={!this.props.text.summarized}
+                                           dispatch={this.props.dispatch} text={this.props.text}/>
+                            <button disabled={!this.props.text.summarized} onClick={(e) => this.onEditSummary(e)}
+                                    className={"edit-summary btn small round" + (this.state.editing ? ' success' : '')}>
+                                {this.state.editing ? <span className="oi" data-glyph="check"/> :
+                                    <span className="oi" data-glyph="pencil"/>}
+                                {this.state.editing ? 'Confirm' : 'Edit'}
+                            </button>
                         </div>
-                        <textarea className={!this.props.text.summarized ? 'disabled' : ''}
-                                  disabled={!this.props.text.summarized}
-                                  placeholder="Write your version here"/>
                         <div className="actions">
-                            <button disabled={!this.props.text.summarized}
+                            <button onClick={(e) => this.onSendHandler(e)} disabled={!this.props.text.summarized}
                                     className="confirm-summarization btn small round success">
                                 <span className="oi" data-glyph="check"/> Send
                             </button>

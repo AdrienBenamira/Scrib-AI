@@ -16,15 +16,12 @@ module.exports = (sequelize, DataTypes) => {
                 isUrl: true
             }
         }
-    }, {
-        classMethods: {
-            associate: function (models) {
-                Article.hasMany(models.Summary, {
-                    foreignKey: 'article_id',
-                    sourceKey: 'id'
-                });
-            }
-        }
     });
+
+    Article.associate = function (models) {
+        Article.Summaries = Article.hasMany(models.Summary, {
+            foreignKey: 'article_id',
+        });
+    };
     return Article;
 };

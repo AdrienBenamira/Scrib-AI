@@ -16,7 +16,7 @@
   font-size: $button-font-size;
   &.small {
     height: $button-small-height;
-    line-height: $button-small-height;
+    line-height: $button-small-height - 5px;
 
     &.round {
       border-radius: $button-small-height;

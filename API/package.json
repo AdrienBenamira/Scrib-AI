@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {},
   "dependencies": {
+    "axios": "^0.16.2",
     "basic-auth": "^2.0.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",

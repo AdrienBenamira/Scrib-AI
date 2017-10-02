@@ -20,9 +20,12 @@
       box-sizing: border-box;
       transition: border $animation-delay;
 
+
       .response-content {
         display: inline-block;
         vertical-align: middle;
+        font-size: 15px;
+        line-height: 1.3em;
       }
 
       .loader {
@@ -55,7 +58,7 @@
     .actions {
       margin: 20px 0;
 
-      .bad-summarization, .confirm-summarization {
+      .bad-summarization, .confirm-summarization, .edit-summary {
         display: inline-block;
         vertical-align: middle;
       }
@@ -69,11 +72,14 @@
           color: #d9cb29;
         }
 
-        .disabled {
-          color: #838383;
+        &.disabled {
 
-          &.active {
+          span {
             color: #838383;
+
+            &.active {
+              color: #838383;
+            }
           }
         }
       }

@@ -1,8 +1,7 @@
 const basicAuth = require('basic-auth');
 const bcrypt = require('bcrypt');
-const sequelize = require('./db');
-const DataTypes = require('sequelize').DataTypes;
-const User = require('./models/user')(sequelize, DataTypes);
+const db = require('./models');
+const User = require('./models/user')(db.sequelize, db.Sequelize.DataTypes);
 const moment = require('moment');
 const config = require('./config/default');
 moment.locale(config.app.timezone);
