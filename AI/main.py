@@ -25,8 +25,8 @@ class LetsSummarize:
                 response=json.loads(req.stream.read())
                 with open("test.source", "w") as output:
                     output.write(str(response['article'].encode('utf-8')))
-                os.system("python make_datafiles.py")
-                os.system("python run_summarization.py --mode=decode  --data_path=finished_files/test.bin --vocab_path=finished_files/vocab --log_root= --exp_name=pretrained_model_tf1.2.1/ ")
+                os.system("python2 make_datafiles.py")
+                os.system("python2 run_summarization.py --mode=decode  --data_path=finished_files/test.bin --vocab_path=finished_files/vocab --log_root= --exp_name=pretrained_model_tf1.2.1/ ")
                 t1=time.time()
                 with open("resume.txt", "r") as output:
                     resultat=output.read()
