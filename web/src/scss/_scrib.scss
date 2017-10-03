@@ -6,6 +6,10 @@
     height: 100%;
     padding: 10px;
 
+    textarea.response {
+      min-height: 200px;
+    }
+
     textarea, .response {
       resize: none;
       display: block;

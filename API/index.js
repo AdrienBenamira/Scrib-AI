@@ -14,6 +14,7 @@ app.use(cors());
 
 // Use the basicAuth middleware for all /user routes
 app.use('/user', utils.basicAuth);
+app.use('/users', utils.basicAuth);
 
 // Routes
 
@@ -22,6 +23,8 @@ app.use('/user', utils.basicAuth);
 app.get('/user/login', (req, res) => userActions.login(req, res));
 // Register a new user
 app.post('/user', bodyParser.json(), (req, res) => userActions.add(req, res));
+app.get('/users', (req, res) => userActions.get(req, res));
+app.delete('/user', (req, res) => userActions.delete(req, res));
 
 // Text Routes
 app.post('/summarization', bodyParser.json(), (req, res) => textActions.summarize(req, res));

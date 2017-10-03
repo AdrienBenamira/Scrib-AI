@@ -3,7 +3,13 @@ export const user = (state = {
     password: '',
     failed: false,
     connecting: false,
-    connected: false
+    connected: false,
+    signup: {
+        signingup: false,
+        done: false,
+        failed: false,
+        errorMessage: ''
+    }
 }, action) => {
     switch (action.type) {
         case 'CONNECT_USER':
@@ -24,6 +30,16 @@ export const user = (state = {
             break;
         case 'LOGOUT':
             state = {...state, connected: false, username: '', password: ''};
+            break;
+        case 'ADD_USER':
+            state = {...state, signup: {...state.signup, signingup: true, failed: false, done: false}};
+            break;
+        case 'SIGNUP_FAILED':
+            state = {...state, signup: {...state.signup, signingup: false, failed: true, errorMessage: action.payload}};
+            break;
+        case 'USER_ADDED':
+            state = {...state, signup: {...state.signup, signingup: false, done: true}};
+            break;
         default:
             state = {...state};
             break;

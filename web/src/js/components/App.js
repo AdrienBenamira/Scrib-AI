@@ -81,7 +81,7 @@ export default class App extends Component {
                             <li><Link to="/login" className="btn success">Login</Link></li>}
                     </ul>
                 </nav>
-                <Notifications dispatch={this.props.dispatch} text={this.props.text}/>
+                <Notifications dispatch={this.props.dispatch} user={this.props.user} text={this.props.text}/>
                 <main className="content">
                     <Switch>
                         <Route exact path="/" component={Intro}/>

@@ -47,7 +47,7 @@ export default class Table extends Component {
                 </a>
             </th>;
         }) : null;
-        const tr = this.state.data ? this.state.data.map((d, k) => {
+        const tr = this.props.data ? this.props.data.map((d, k) => {
             return <tr key={k}>
                 {d.map((td, key) => {
                     return <td key={key}>{td}</td>

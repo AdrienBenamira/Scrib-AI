@@ -24,3 +24,21 @@ export const logout = () => {
     };
 };
 
+export const addUser = () => {
+    return {
+        type: 'ADD_USER'
+    };
+};
+
+export const signupFailed = (message) => {
+    return {
+        type: 'SIGNUP_FAILED',
+        payload: message
+    };
+};
+
+export const userAdded = () => {
+    return {
+        type: 'USER_ADDED'
+    };
+};

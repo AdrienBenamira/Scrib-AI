@@ -43,6 +43,18 @@ export default class Notifications extends React.Component {
                         {this.props.text.upload.errorMessage}
                     </Message>
                 ):null}
+                {/*User added*/}
+                {this.props.user.signup.done ? (
+                    <Message success timer={10}>
+                        The user has successfully been added.
+                    </Message>
+                ):null}
+                {/*Error user upload*/}
+                {this.props.user.signup.failed ? (
+                    <Message error timer={10}>
+                        {this.props.user.signup.errorMessage}
+                    </Message>
+                ):null}
             </div>
         );
     }
