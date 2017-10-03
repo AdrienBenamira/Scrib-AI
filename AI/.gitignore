@@ -3,4 +3,7 @@ pretrained_model*
 data/*
 cnn_stories_tokenized/*
 finished_files/*
-
+resume.txt
+test.source
+re
+sys
