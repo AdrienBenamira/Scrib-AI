@@ -6,7 +6,7 @@ import time
 import falcon
 import re
 
-print('START')
+print('Ready')
 
 def HTML_from_url(url):
     #url as string
@@ -18,12 +18,13 @@ def HTML_from_url(url):
           path=paragraph.dom_path.split('.')
           if path[len(path)-1]=='p':
               texte=texte+paragraph.text.encode('utf8')
-    print(texte)
+
     url_resume = "http://127.0.0.1:8000/summarize_site"
     headers = {}
     response = requests.post(url_resume, data=json.dumps({'article':str(texte)}),headers=headers)
     article_resume=json.loads(response.text)['resp_resume']
-    site = requests.get("https://www.nytimes.com/2017/10/01/arts/television/snl-trump-puerto-rico.html")
+
+    site = requests.get(url)
     compteur=0
     paragraphs = justext.justext(site.content, justext.get_stoplist("English"))
     for paragraph in paragraphs:
@@ -31,9 +32,12 @@ def HTML_from_url(url):
           path=paragraph.dom_path.split('.')
           if path[len(path)-1]=='p':
               compteur=compteur+1
+              print('compteur='+str(compteur))
               if compteur==1:
-                  site_final=site.text.replace(paragraph.text,article_resume)
+                  print(paragraph.text)
+                  site_final=site.content.replace(paragraph.text,article_resume)
               else:
+                  print(paragraph.text)
                   site_final=site_final.replace(paragraph.text,'')
     return(site_final)
 
@@ -44,7 +48,7 @@ class LetsTransformeSite:
         compteur=0
         try:
             response=req.stream.read()
-            print(response)
+            #print(response)
             response=json.loads(response)
             new_site=HTML_from_url(str(response['url']))
             t1=time.time()
@@ -60,5 +64,3 @@ class LetsTransformeSite:
 
 api2=falcon.API()
 api2.add_route('/newsite',LetsTransformeSite())
-
-print('FIN')
