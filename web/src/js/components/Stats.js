@@ -19,6 +19,7 @@ export default class Stats extends Component
         this.getChartData();
     }
 
+
     getChartData() {
         //TODO call API
         this.setState({
