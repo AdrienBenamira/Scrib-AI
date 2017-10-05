@@ -11,6 +11,7 @@ import * as Cookies from 'js-cookie';
 import {config} from "../config/default";
 import Settings from "./Settings";
 import Notifications from "./Notifications";
+import {SummarizeSite} from "./SummarizeSite";
 
 @withRouter
 @connect(state => state)
@@ -58,8 +59,8 @@ export default class App extends Component {
                     </Link>
                     <ul className="menu">
                         <li><Link to="/">Presentation of the project</Link></li>
-                        <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link>
-                        </li>
+                        <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link></li>
+                        <li><Link to="/summarize_site"><span className="oi" data-glyph="link-intact"/> Summarize from website</Link></li>
                         {this.props.user.connected ?
                             <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link></li> :
                             null}
@@ -80,11 +81,13 @@ export default class App extends Component {
                             ) :
                             <li><Link to="/login" className="btn success">Login</Link></li>}
                     </ul>
+
                 </nav>
                 <Notifications dispatch={this.props.dispatch} user={this.props.user} text={this.props.text}/>
                 <main className="content">
                     <Switch>
                         <Route exact path="/" component={Intro}/>
+                        <Route exact path="/summarize_site" component={SummarizeSite}/>
                         <Route path="/summarize" render={(props) => (
                             <Summarize {...props} dispatch={this.props.dispatch} text={this.props.text}/>
                         )}/>
