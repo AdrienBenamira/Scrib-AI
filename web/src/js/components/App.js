@@ -60,7 +60,7 @@ export default class App extends Component {
                     <ul className="menu">
                         <li><Link to="/">Presentation of the project</Link></li>
                         <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link></li>
-                        <li><Link to="/summarize_site"><span className="oi" data-glyph="link-intact"/> Summarize your article from a website</Link></li>
+                        <li><Link to="/summarize_site"><span className="oi" data-glyph="link-intact"/> Summarize from website</Link></li>
                         {this.props.user.connected ?
                             <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link></li> :
                             null}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import Input from './glui/form/Input';
 
 export default class SummarizeSite extends Component {
 

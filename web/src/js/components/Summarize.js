@@ -3,6 +3,7 @@ import axios from 'axios';
 import StarSelection from "./StarSelection";
 import * as textAction from "../actions/textActions";
 import {config} from "../config/default";
+import Input from './glui/form/Input';
 
 export default class Summarize extends Component {
 
@@ -11,7 +12,8 @@ export default class Summarize extends Component {
 
         this.state = {
             fullText: '',
-            editing: false
+            editing: false,
+            ratio:0.4
         };
 
         this.onSummarizeHandler = this.onSummarizeHandler.bind(this);
@@ -27,7 +29,8 @@ export default class Summarize extends Component {
             dispatch(textAction.summarize(this.state.fullText));
             window.scrollTo(0, 0);
             axios.post(config.api.host + '/summarization', {
-                article: this.state.fullText
+                article: this.state.fullText,
+                ratio: this.state.ratio
             }).then((res) => {
                 dispatch(textAction.summarizationFullfiled(res.data));
             }).catch(err => {
@@ -73,7 +76,11 @@ export default class Summarize extends Component {
     render() {
         return (
             <div>
-                <h1><span className="oi" data-glyph="excerpt"/> Summarize</h1>
+
+                <Input id="ratio" label="Ratio" required style={{display: 'block', width: 400,  margin: "0 auto"}} value={this.state.ratio} />
+
+                <h1><span className="oi" data-glyph="excerpt" /> Summarize</h1>
+
                 <div className="scrib-container">
                     <div className="scrib-article">
                         <textarea className="article" onChange={e => {
