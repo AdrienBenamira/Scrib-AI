@@ -1,6 +1,6 @@
 import requests
 import json
-url_resume = "http://127.0.0.1:8001/newsite"
+url_resume = "http://127.0.0.1:8000/summarize_site"
 headers = {}
 response = requests.post(url_resume, data=json.dumps({'url':'https://gizmodo.com/us-homeland-security-will-start-collecting-social-media-1818777094'}),headers=headers)
 print(response)

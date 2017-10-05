@@ -229,7 +229,7 @@ if __name__ == '__main__':
   if len(sys.argv) != 1:
     print "USAGE: python make_datafiles.py <cnn_stories_dir> <dailymail_stories_dir>"
     sys.exit()
-  cnn_stories_dir = 'test.source'
+  cnn_stories_dir = 'finished_files/original.source'
   #dm_stories_dir = sys.argv[2]
 
   # Check the stories directories contain the correct number of .story files
@@ -237,7 +237,7 @@ if __name__ == '__main__':
   #check_num_stories(dm_stories_dir, num_expected_dm_stories)
 
   # Create some new directories
-  if not os.path.exists(cnn_tokenized_stories_dir): os.makedirs(cnn_tokenized_stories_dir)
+  #if not os.path.exists(cnn_tokenized_stories_dir): os.makedirs(cnn_tokenized_stories_dir)
   #if not os.path.exists(dm_tokenized_stories_dir): os.makedirs(dm_tokenized_stories_dir)
   #if not os.path.exists(finished_files_dir): os.makedirs(finished_files_dir)
 
@@ -246,7 +246,7 @@ if __name__ == '__main__':
   #tokenize_stories(dm_stories_dir, dm_tokenized_stories_dir)
 
   # Read the tokenized stories, do a little postprocessing then write to bin files
-  write_to_bin(cnn_stories_dir, os.path.join(finished_files_dir, "test.bin"))
+  write_to_bin(cnn_stories_dir, os.path.join(finished_files_dir, "intermediaire.bin"))
   #write_to_bin(all_val_urls, os.path.join(finished_files_dir, "val.bin"))
   #write_to_bin(all_train_urls, os.path.join(finished_files_dir, "train.bin"), makevocab=True)
 

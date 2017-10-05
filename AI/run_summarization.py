@@ -335,7 +335,7 @@ def main(unused_argv):
     t1=time.time()
     print('temps resume'+str(t1-t0))
 
-    with open("resume.txt", "w") as output:
+    with open("finished_files/resume.txt", "w") as output:
         output.write(str(resume))
 
 
