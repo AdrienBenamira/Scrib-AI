@@ -22,6 +22,8 @@ module.exports = (sequelize, DataTypes) => {
         Article.Summaries = Article.hasMany(models.Summary, {
             foreignKey: 'article_id',
         });
+        Article.Category = Article.belongsTo(models.Category, {foreignKey: 'category_id'});
+        Article.Keywords = Article.belongsToMany(models.Keyword, {through: 'ArticleKeyword', foreignKey: 'article_id'});
     };
     return Article;
 };

@@ -4,6 +4,9 @@ module.exports = {
         port: 3000,
         timezone: 'Europe/Paris'
     },
+    summary: {
+        minCharacter: 0
+    },
     api: {
         host: "http://127.0.0.1:8000/summary",
     },

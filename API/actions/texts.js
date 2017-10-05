@@ -1,3 +1,4 @@
+const statsQueries = require('./statsQueries');
 const axios = require('axios');
 const config = require('../config/default');
 const db = require('../models');
@@ -13,14 +14,16 @@ const db = require('../models');
  */
 exports.summarize = (req, res) => {
     if (req.body.article.length > config.summary.minCharacter) {
-        // axios.post(config.api.host, { article: req.body.article }).then(result => {
-        //     console.log('article summarized');
-        //     res.json({ summary: result.data.resp_resume, chrono: result.data.chrono });
-        // }).catch(err => {
-        //     console.log('an error has occured during summarization', err);
-        //     res.sendStatus(500);
-        // });
-        res.json({chrono: 2, summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu massa interdum urna rutrum aliquam. Nam ultricies, ex nec pulvinar scelerisque, dui odio efficitur sapien, id volutpat lorem dui et felis. Vivamus dictum sagittis est, sed placerat odio congue venenatis.'})
+        axios.post(config.api.host, { article: req.body.article }).then(result => {
+            console.log('article summarized');
+            res.json({ summary: result.data.resp_resume, chrono: result.data.chrono });
+        }).catch(err => {
+            console.log('an error has occured during summarization', err);
+            res.sendStatus(500);
+        });
+        // res.json({chrono: 2, summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu massa
+        // interdum urna rutrum aliquam. Nam ultricies, ex nec pulvinar scelerisque, dui odio efficitur sapien, id
+        // volutpat lorem dui et felis. Vivamus dictum sagittis est, sed placerat odio congue venenatis.'})
     } else {
         res.status(400).json({ message: 'The text must be at least 500 characters.' });
     }
@@ -64,4 +67,54 @@ exports.store = (req, res) => {
                 break;
         }
     });
+};
+
+exports.get = (req, res) => {
+    const query = req.query;
+
+    let dbReq = {
+        attributes: [],
+        where: {},
+        include: [
+            {
+                model: db.Grade,
+                where: {}
+            }, {
+                model: db.Article,
+                where: {},
+                include: [
+                    {
+                        model: db.Category,
+                        where: {}
+                    },
+                    {
+                        model: db.Keyword,
+                        where: {}
+                    }
+                ]
+            }
+        ]
+    };
+
+    dbReq = statsQueries.grade(query, dbReq);
+    dbReq = statsQueries.isIncorrect(query, dbReq);
+    dbReq = statsQueries.date(query, dbReq);
+    dbReq = statsQueries.category(query, dbReq);
+    dbReq = statsQueries.keywords(query, dbReq);
+    dbReq = statsQueries.count(query, dbReq);
+    dbReq = statsQueries.summaryId(query, dbReq);
+    dbReq = statsQueries.articleId(query, dbReq);
+    dbReq = statsQueries.origin(query, dbReq);
+    dbReq = statsQueries.isGenerated(query, dbReq);
+
+    console.log(dbReq);
+
+    db.Summary.findAll(dbReq).then((result) => {
+        console.log(result);
+        res.json(result);
+    }).catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+
 };

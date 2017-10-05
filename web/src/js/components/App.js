@@ -96,7 +96,7 @@ export default class App extends Component {
                         )}/>
                         <Route path="/stats" render={(props) => (
                             this.props.user.connected ?
-                                <Stats {...props} /> :
+                                <Stats {...props} user={this.props.user} /> :
                                 <Redirect to='/'/>
                         )}/>
                         <Route path="/settings" render={(props) => (
