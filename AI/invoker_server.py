@@ -21,7 +21,8 @@ class LetsSummarize:
         response=json.loads(req.stream.read())
         nbre_words_input=len(response['article'].encode('utf-8').split())
         nbre_words_input=nbre_words_input+int(nbre_words_input*0.1)
-        ratio=0.30
+        ratio=float(response['ratio'])
+        print(ratio)
         nbre_words_output=int(nbre_words_input*ratio)
         print(nbre_words_input,nbre_words_output)
         #try:
@@ -77,6 +78,7 @@ class LetsSummarizeSite:
             'authors':authors,
             'publish_date':publish_date,
             'keywords':keywords,
+            'images':images,
             'chrono': t1-t0
         }
         print(t1-t0)
