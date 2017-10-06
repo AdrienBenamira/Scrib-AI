@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { config } from '../config/default';
 import Chart from './Chart';
 import { Link } from 'react-router-dom';
-import * as textAction from "../actions/textActions";
+import * as statsActions from '../actions/statsActions';
 
 export default class Stats extends Component
 {
@@ -55,11 +53,11 @@ export default class Stats extends Component
                 <button onClick={(e) => {
                     e.preventDefault();
                     console.log('click');
-                    axios.get(config.api.host + '/user/article', {
-                        auth: {
-                            username: this.props.user.username, password: this.props.user.password
-                        }
-                    }).then((res) => {
+                    const opt = {
+                        user: this.props.user,
+                        count: 1
+                    };
+                    statsActions.fetchStats(opt).then(res => {
                         console.log(res.data);
                     });
                 }}>Click</button>

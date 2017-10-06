@@ -30,7 +30,8 @@ app.delete('/user', (req, res) => userActions.delete(req, res));
 app.post('/summarization', bodyParser.json(), (req, res) => textActions.summarize(req, res));
 app.post('/summarize_site', bodyParser.json(), (req, res) => textActions.summarizeSite(req, res));
 app.post('/summary/store',bodyParser.json(), (req, res) => textActions.store(req, res));
-app.get('/user/article', (req, res) => textActions.get(req, res));
+app.get('/user/summary', (req, res) => textActions.getSummary(req, res));
+app.get('/user/article', (req, res) => textActions.getArticle(req, res));
 
 
 // Start application

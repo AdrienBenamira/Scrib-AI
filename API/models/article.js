@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
                 len: [500]
             }
         },
-        fullText: {
+        origin: {
             type: DataTypes.STRING,
             allowNull: true,
             defaultValue: null,
@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
                 isUrl: true
             }
         }
+    }, {
+        tableName: 'Articles'
     });
 
     Article.associate = function (models) {

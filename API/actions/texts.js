@@ -1,10 +1,8 @@
+const statsSummaryQueries = require('./statsSummaryQueries');
+const statsArticleQueries = require('./statsArticleQueries');
 const axios = require('axios');
 const config = require('../config/default');
 const db = require('../models');
-
-// const Article = require('../models/article')(db.sequelize, db.Sequelize.DataTypes);
-// const Summary = require('../models/summary')(db.sequelize, db.Sequelize.DataTypes);
-// const Grade = require('../models/grade')(db.sequelize, db.Sequelize.DataTypes);
 
 /**
  * Execute summarization
@@ -25,9 +23,6 @@ exports.summarize = (req, res) => {
         res.status(400).json({ message: 'The text must be at least '+ config.summary.minCharacter +' characters.' });
     }
 };
-
-
-
 
 /**
  * Execute summarization for website
@@ -89,11 +84,10 @@ exports.store = (req, res) => {
     });
 };
 
-exports.get = (req, res) => {
+exports.getSummary = (req, res) => {
     const query = req.query;
 
     let dbReq = {
-        attributes: [],
         where: {},
         include: [
             {
@@ -102,39 +96,57 @@ exports.get = (req, res) => {
             }, {
                 model: db.Article,
                 where: {},
-                include: [
-                    {
-                        model: db.Category,
-                        where: {}
-                    },
-                    {
-                        model: db.Keyword,
-                        where: {}
-                    }
-                ]
             }
         ]
     };
 
-    dbReq = statsQueries.grade(query, dbReq);
-    dbReq = statsQueries.isIncorrect(query, dbReq);
-    dbReq = statsQueries.date(query, dbReq);
-    dbReq = statsQueries.category(query, dbReq);
-    dbReq = statsQueries.keywords(query, dbReq);
-    dbReq = statsQueries.count(query, dbReq);
-    dbReq = statsQueries.summaryId(query, dbReq);
-    dbReq = statsQueries.articleId(query, dbReq);
-    dbReq = statsQueries.fullText(query, dbReq);
-    dbReq = statsQueries.isGenerated(query, dbReq);
-
-    console.log(dbReq);
+    dbReq = statsSummaryQueries.grade(query, dbReq);
+    dbReq = statsSummaryQueries.isIncorrect(query, dbReq);
+    dbReq = statsSummaryQueries.date(query, dbReq);
+    dbReq = statsSummaryQueries.category(query, dbReq);
+    dbReq = statsSummaryQueries.keywords(query, dbReq);
+    dbReq = statsSummaryQueries.count(query, dbReq);
+    dbReq = statsSummaryQueries.id(query, dbReq);
+    dbReq = statsSummaryQueries.articleId(query, dbReq);
+    dbReq = statsSummaryQueries.fullText(query, dbReq);
+    dbReq = statsSummaryQueries.isGenerated(query, dbReq);
 
     db.Summary.findAll(dbReq).then((result) => {
-        console.log(result);
         res.json(result);
     }).catch(err => {
         console.log(err);
         res.sendStatus(500);
     });
 
+};
+
+exports.getArticle = (req, res) => {
+    const query = req.query;
+
+    let dbReq = {
+        where: {},
+        include: [
+            {
+                model: db.Summary,
+                where: {}
+            }
+        ]
+    };
+
+    dbReq = statsArticleQueries.date(query, dbReq);
+    dbReq = statsArticleQueries.category(query, dbReq);
+    dbReq = statsArticleQueries.keywords(query, dbReq);
+    dbReq = statsArticleQueries.count(query, dbReq);
+    dbReq = statsArticleQueries.summaryId(query, dbReq);
+    dbReq = statsArticleQueries.category(query, dbReq);
+    dbReq = statsArticleQueries.keywords(query, dbReq);
+    dbReq = statsArticleQueries.id(query, dbReq);
+    dbReq = statsArticleQueries.fullText(query, dbReq);
+    dbReq = statsArticleQueries.isGenerated(query, dbReq);
+
+    db.Article.findAll(dbReq).then((result) => {
+        res.json(result);
+    }).catch(err => {
+        res.sendStatus(500);
+    });
 };
