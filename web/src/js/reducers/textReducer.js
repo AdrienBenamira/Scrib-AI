@@ -1,5 +1,5 @@
 export const text = (state = {
-    origin: '',
+    fullText: '',
     origin: '',
     errorMessage: '',
     failed: false,
@@ -9,6 +9,7 @@ export const text = (state = {
     summary: {
         content: null,
         chrono: null,
+        title:''
         userVersion: 'Loading',
         hasUserEdited: false,
         grade: 0,
@@ -28,7 +29,7 @@ export const text = (state = {
                 done: false,
                 failed: false,
                 errorMessage: ''
-            }, origin: action.payload, summarized: false, summarizing: true, summary: {
+            }, fullText: action.payload, summarized: false, summarizing: true, summary: {
                 content: null,
                 chrono: null,
                 grade: 0,
@@ -41,7 +42,7 @@ export const text = (state = {
                 done: false,
                 failed: false,
                 errorMessage: ''
-            }, origin: '',
+            }, fullText: '',
                 origin: action.payload,
                 summarized: false, summarizing: true, summary: {
                 content: null,

@@ -27,10 +27,10 @@ export default class Summarize extends Component {
      */
     onSummarizeHandler() {
         this.props.dispatch((dispatch) => {
-            dispatch(textAction.summarize(this.state.origin));
+            dispatch(textAction.summarize(this.state.fullText));
             window.scrollTo(0, 0);
             axios.post(config.api.host + '/summarization', {
-                article: this.state.origin,
+                article: this.state.fullText,
                 ratio: this.props.text.ratio
             }).then((res) => {
                 dispatch(textAction.summarizationFullfiled(res.data));
@@ -64,7 +64,7 @@ export default class Summarize extends Component {
             axios.post(config.api.host + '/summary/store' + (this.props.text.summary.hasUserEdited ? '?edited=1' : ''), {
                 summary: this.props.text.summary,
                 article: {
-                    fullText: this.props.text.origin
+                    fullText: this.props.text.fullText
                 }
             }).then(() => {
                 this.props.dispatch(textAction.uploadFulfilled());
@@ -91,7 +91,7 @@ export default class Summarize extends Component {
                             // Rescale textarea
                             e.target.style.height = 'auto';
                             e.target.style.height = e.target.scrollHeight + 'px';
-                        }} value={this.state.origin} placeholder="Paste your article here..."/>
+                        }} value={this.state.fullText} placeholder="Paste your article here..."/>
 
                         <button onClick={this.onSummarizeHandler}
                                 disabled={this.props.text.summarizing}

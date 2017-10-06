@@ -8,10 +8,10 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            origin: {
+            fullText: {
                 type: Sequelize.TEXT('large')
             },
-            origin: {
+            fullText: {
                 type: Sequelize.STRING,
                 allowNull: true,
                 defaultValue: null

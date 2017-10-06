@@ -1,14 +1,14 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Article = sequelize.define('Article', {
-        origin: {
+        fullText: {
             type: DataTypes.TEXT('long'),
             validate:{
                 notEmpty: true,
                 len: [500]
             }
         },
-        origin: {
+        fullText: {
             type: DataTypes.STRING,
             allowNull: true,
             defaultValue: null,

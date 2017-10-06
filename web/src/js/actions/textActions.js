@@ -26,6 +26,8 @@ export const summarizationFullfiled = (response) => {
     };
 };
 
+
+
 export const gradeSummary = (grade) => {
     return {
         type: 'GRADE_SUMMARY',

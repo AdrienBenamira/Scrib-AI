@@ -82,12 +82,12 @@ exports.articleId = (query, req) => {
     return req;
 };
 
-exports.origin = (query, req) => {
-    if(query.origin !== undefined) {
+exports.fullText = (query, req) => {
+    if(query.fullText !== undefined) {
         req.include.map(inc => {
             if(inc.model === db.Article) {
-                inc.where = {...inc.where, origin: {
-                    [db.Sequelize.Op.like]: '%' + query.origin + '%'
+                inc.where = {...inc.where, fullText: {
+                    [db.Sequelize.Op.like]: '%' + query.fullText + '%'
                 }};
             }
         });

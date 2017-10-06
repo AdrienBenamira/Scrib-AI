@@ -25,7 +25,7 @@ export default class Stats extends Component
     getChartData() {
         //this.props.dispatch((dispatch) => {
         //axios.get(config.api.host + '/grade', {
-            //article: this.state.origin
+            //article: this.state.fullText
         //}).then((res) => {
         //    this.state.n5=res.data;
         //}).catch(err => {

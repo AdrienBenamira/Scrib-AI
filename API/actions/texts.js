@@ -38,7 +38,7 @@ exports.summarizeSite = (req, res) => {
     if (req.body.article.length > config.summary.minCharacter) {
         axios.post(config.api.host_site, { url: req.body.article, ratio: req.body.ratio}).then(result => {
             console.log('website summarized');
-            res.json({ summary: result.data.resp_resume, chrono: result.data.chrono,gain: result.data.gain,texte_original: result.data.texte_original,titre:result.data.titre, authors:result.data.authors, publish_date:result.data.publish_date, keywords:result.data.keywords });
+            res.json({ summary: result.data.resp_resume, chrono: result.data.chrono,gain: result.data.gain,texte_original: result.data.texte_original,titre:result.data.titre, authors:result.data.authors, publish_date:result.data.publish_date, keywords:result.data.keywords, image: result.data.images });
         }).catch(err => {
             console.log('an error has occured during summarization', err);
             res.sendStatus(500);
@@ -69,7 +69,7 @@ exports.store = (req, res) => {
     }
     // Add the article
     db.Article.create({
-        origin: body.article.origin, origin: null, Summaries: summaries
+        fullText: body.article.fullText, fullText: null, Summaries: summaries
     }, {
         include: {
             association: db.Article.Summaries, // Association with the summaries
@@ -124,7 +124,7 @@ exports.get = (req, res) => {
     dbReq = statsQueries.count(query, dbReq);
     dbReq = statsQueries.summaryId(query, dbReq);
     dbReq = statsQueries.articleId(query, dbReq);
-    dbReq = statsQueries.origin(query, dbReq);
+    dbReq = statsQueries.fullText(query, dbReq);
     dbReq = statsQueries.isGenerated(query, dbReq);
 
     console.log(dbReq);
