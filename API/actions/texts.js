@@ -34,8 +34,7 @@ exports.summarize = (req, res) => {
  * @param req
  * @param res
  */
-/**
-exports.summarizeSite() = (req, res) => {
+exports.summarizeSite = (req, res) => {
     if (req.body.article.length > config.summary.minCharacter) {
         axios.post(config.api.host_site, { url: req.body.article, ratio: req.body.ratio}).then(result => {
             console.log('website summarized');
@@ -46,9 +45,9 @@ exports.summarizeSite() = (req, res) => {
         });
         //res.json({chrono: 2, summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu massa interdum urna rutrum aliquam. Nam ultricies, ex nec pulvinar scelerisque, dui odio efficitur sapien, id volutpat lorem dui et felis. Vivamus dictum sagittis est, sed placerat odio congue venenatis.'})
     } else {
-        res.status(400).json({ message: 'The text must be at least '+ config.summary.minCharacter +' characters.' });
+        res.status(400).json({ message: 'coucouThe text must be at least '+ config.summary.minCharacter +' characters.' });
     }
-};/**
+};
 
 /**
  * Add a summary to the database
@@ -70,7 +69,7 @@ exports.store = (req, res) => {
     }
     // Add the article
     db.Article.create({
-        fullText: body.article.fullText, origin: null, Summaries: summaries
+        origin: body.article.origin, origin: null, Summaries: summaries
     }, {
         include: {
             association: db.Article.Summaries, // Association with the summaries

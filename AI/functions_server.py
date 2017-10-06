@@ -39,4 +39,5 @@ def article_from_url(url, req, resp):
     article.download()
     article.parse()
     texte=article.text
-    return(texte, article.title,article.authors,article.publish_date,article.keywords)
+    image=article.top_image
+    return(texte, article.title,article.authors,article.publish_date,article.keywords,image)

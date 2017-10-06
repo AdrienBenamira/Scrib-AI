@@ -8,7 +8,7 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            fullText: {
+            origin: {
                 type: Sequelize.TEXT('large')
             },
             origin: {

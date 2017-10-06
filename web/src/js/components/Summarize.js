@@ -5,6 +5,7 @@ import * as textAction from "../actions/textActions";
 import {config} from "../config/default";
 import Input from './glui/form/Input';
 
+
 export default class Summarize extends Component {
 
     constructor() {
@@ -13,7 +14,7 @@ export default class Summarize extends Component {
         this.state = {
             fullText: '',
             editing: false,
-            ratio:0.4
+            //ratio:0.4
         };
 
         this.onSummarizeHandler = this.onSummarizeHandler.bind(this);
@@ -26,11 +27,11 @@ export default class Summarize extends Component {
      */
     onSummarizeHandler() {
         this.props.dispatch((dispatch) => {
-            dispatch(textAction.summarize(this.state.fullText));
+            dispatch(textAction.summarize(this.state.origin));
             window.scrollTo(0, 0);
             axios.post(config.api.host + '/summarization', {
-                article: this.state.fullText,
-                ratio: this.state.ratio
+                article: this.state.origin,
+                ratio: this.props.text.ratio
             }).then((res) => {
                 dispatch(textAction.summarizationFullfiled(res.data));
             }).catch(err => {
@@ -63,7 +64,7 @@ export default class Summarize extends Component {
             axios.post(config.api.host + '/summary/store' + (this.props.text.summary.hasUserEdited ? '?edited=1' : ''), {
                 summary: this.props.text.summary,
                 article: {
-                    fullText: this.props.text.fullText
+                    fullText: this.props.text.origin
                 }
             }).then(() => {
                 this.props.dispatch(textAction.uploadFulfilled());
@@ -77,8 +78,9 @@ export default class Summarize extends Component {
         return (
             <div>
 
-                <Input id="ratio" label="Ratio" required style={{display: 'block', width: 400,  margin: "0 auto"}} value={this.state.ratio} />
-
+                <Input onChange={(id, value, isCorret, mess) => {
+                    this.props.dispatch(textAction.changeRatio(value))
+                }} id="ratio" label="Ratio" required style={{display: 'block', width: 400,  margin: "0 auto"}} value={this.props.text.ratio}/>
                 <h1><span className="oi" data-glyph="excerpt" /> Summarize</h1>
 
                 <div className="scrib-container">
@@ -89,7 +91,7 @@ export default class Summarize extends Component {
                             // Rescale textarea
                             e.target.style.height = 'auto';
                             e.target.style.height = e.target.scrollHeight + 'px';
-                        }} value={this.state.fullText} placeholder="Paste your article here..."/>
+                        }} value={this.state.origin} placeholder="Paste your article here..."/>
 
                         <button onClick={this.onSummarizeHandler}
                                 disabled={this.props.text.summarizing}

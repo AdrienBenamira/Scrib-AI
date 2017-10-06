@@ -1,7 +1,9 @@
 export const text = (state = {
-    fullText: '',
+    origin: '',
+    origin: '',
     errorMessage: '',
     failed: false,
+    ratio:0.4,
     summarizing: false,
     summarized: false,
     summary: {
@@ -26,7 +28,22 @@ export const text = (state = {
                 done: false,
                 failed: false,
                 errorMessage: ''
-            }, fullText: action.payload, summarized: false, summarizing: true, summary: {
+            }, origin: action.payload, summarized: false, summarizing: true, summary: {
+                content: null,
+                chrono: null,
+                grade: 0,
+                isAccepted: false
+            }};
+            break;
+        case 'START_SUMMARIZATION_FROM_URL':
+            state = {...state, upload: {
+                uploading: false,
+                done: false,
+                failed: false,
+                errorMessage: ''
+            }, origin: '',
+                origin: action.payload,
+                summarized: false, summarizing: true, summary: {
                 content: null,
                 chrono: null,
                 grade: 0,
@@ -67,6 +84,10 @@ export const text = (state = {
         case 'SUMARRY_UPLOADING':
             state = {...state, upload: {...state.upload, uploading: true, failed: false, errorMessage: ''}};
             break;
+        case 'CHANGE_RATIO':
+            state = {...state, ratio: action.payload};
+            break;
+
         default:
             state = {...state};
             break;

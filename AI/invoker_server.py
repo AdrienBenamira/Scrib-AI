@@ -56,7 +56,7 @@ class LetsSummarizeSite:
         response=req.stream.read()
         #print(response)
         response=json.loads(response)
-        (art, titre,authors,publish_date,keywords)=article_from_url(str(response['url']), req, resp)
+        (art, titre,authors,publish_date,keywords, images)=article_from_url(str(response['url']), req, resp)
         nbre_words_input=len(art.encode('utf-8').split())
         nbre_words_input=nbre_words_input+int(nbre_words_input*0.1)
         ratio=0.30

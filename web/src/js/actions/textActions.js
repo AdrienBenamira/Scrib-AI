@@ -5,6 +5,13 @@ export const summarize = (summary) => {
     };
 };
 
+export const summarize_site = (origin) => {
+    return {
+        type: 'START_SUMMARIZATION_FROM_URL',
+        payload: origin
+    };
+};
+
 export const summarizationFailed = (message) => {
     return {
         type: 'SUMMARIZATION_FAILED',
@@ -23,6 +30,14 @@ export const gradeSummary = (grade) => {
     return {
         type: 'GRADE_SUMMARY',
         payload: grade
+    };
+};
+
+
+export const changeRatio = (ratio) => {
+    return {
+        type: 'CHANGE_RATIO',
+        payload: ratio
     };
 };
 

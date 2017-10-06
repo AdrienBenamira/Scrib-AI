@@ -11,7 +11,7 @@ import * as Cookies from 'js-cookie';
 import {config} from "../config/default";
 import Settings from "./Settings";
 import Notifications from "./Notifications";
-import {SummarizeSite} from "./SummarizeSite";
+import SummarizeSite from "./SummarizeSite";
 
 @withRouter
 @connect(state => state)
@@ -87,7 +87,9 @@ export default class App extends Component {
                 <main className="content">
                     <Switch>
                         <Route exact path="/" component={Intro}/>
-                        <Route exact path="/summarize_site" component={SummarizeSite}/>
+                        <Route path="/summarize_site" render={(props) => (
+                            <SummarizeSite {...props} dispatch={this.props.dispatch} text={this.props.text}/>
+                        )}/>
                         <Route path="/summarize" render={(props) => (
                             <Summarize {...props} dispatch={this.props.dispatch} text={this.props.text}/>
                         )}/>

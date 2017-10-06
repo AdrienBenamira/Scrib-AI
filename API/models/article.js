@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Article = sequelize.define('Article', {
-        fullText: {
+        origin: {
             type: DataTypes.TEXT('long'),
             validate:{
                 notEmpty: true,
