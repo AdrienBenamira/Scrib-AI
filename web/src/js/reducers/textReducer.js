@@ -9,7 +9,7 @@ export const text = (state = {
     summary: {
         content: null,
         chrono: null,
-        title:''
+        title:'',
         userVersion: 'Loading',
         hasUserEdited: false,
         grade: 0,
