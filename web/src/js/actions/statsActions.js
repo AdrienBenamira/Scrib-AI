@@ -2,9 +2,9 @@ import axios from 'axios';
 import { config } from '../config/default';
 
 
-export const fetchStats = (opt) => {
+export const fetchStats = (opt, article=false) => {
 
-    let url = config.api.host + '/user/summary';
+    let url = config.api.host + '/user/' + (article ? 'article' : 'summary');
     let params = [];
 
     if(opt.grade) params.push('grade=' + opt.grade);
@@ -19,8 +19,6 @@ export const fetchStats = (opt) => {
     if(opt.isGenerated) params.push('fullText=' + opt.isGenerated);
 
     if(params.length > 0) url = url + '?' + params.join('&');
-
-    console.log(url);
 
     return axios.get(url, {
         auth: {

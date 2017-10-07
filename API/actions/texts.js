@@ -128,7 +128,11 @@ exports.getArticle = (req, res) => {
         include: [
             {
                 model: db.Summary,
-                where: {}
+                where: {},
+                include: [{
+                    model: db.Grade,
+                    where: {}
+                }]
             }
         ]
     };

@@ -15,7 +15,17 @@ module.exports = (sequelize, DataTypes) => {
             validate: {
                 isUrl: true
             }
-        }
+        },
+        title: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
+        },
+        author: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
+        },
     }, {
         tableName: 'Articles'
     });

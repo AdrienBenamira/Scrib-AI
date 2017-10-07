@@ -78,8 +78,8 @@ export default class Settings extends React.Component
                         <Input id="password_repeat" type="password" label="Repeat Password" required/>
                     </Form>
                 </Panel>
-
-                <Table headers={ ['Username', 'Actions'] } data={ this.state.fetchedUsers.map(user => {
+                <h2>Users</h2>
+                <Table headers={ ['Username', 'Delete'] } data={ this.state.fetchedUsers.map(user => {
                     return [
                         user.username,
                         <button onClick={(e) => this.handleDeleteClick(e, user.username)} className="btn error small">

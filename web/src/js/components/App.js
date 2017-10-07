@@ -12,6 +12,7 @@ import {config} from "../config/default";
 import Settings from "./Settings";
 import Notifications from "./Notifications";
 import SummarizeSite from "./SummarizeSite";
+import ShowArticle from './ShowArticle';
 
 @withRouter
 @connect(state => state)
@@ -69,6 +70,7 @@ export default class App extends Component {
                         {this.props.user.connected ?
                             <li><Link to="/settings"><span className="oi" data-glyph="wrench"/> Settings</Link></li> :
                             null}
+                        <li><Link to="/article/2">Article</Link></li>
                     </ul>
                     <ul className="menu">
                         {this.props.user.connected ?
@@ -109,6 +111,9 @@ export default class App extends Component {
                                 <Settings dispatch={this.props.dispatch} user={this.props.user} {...props} /> :
                                 <Redirect to='/'/>
                         )}/>
+                        <Route path="/article/:id" render={(match) => (
+                            <ShowArticle user={this.props.user} id={match.id}/>
+                        )} />
                     </Switch>
                 </main>
             </div>

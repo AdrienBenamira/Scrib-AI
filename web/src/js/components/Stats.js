@@ -52,7 +52,6 @@ export default class Stats extends Component
             <div>
                 <button onClick={(e) => {
                     e.preventDefault();
-                    console.log('click');
                     const opt = {
                         user: this.props.user,
                         count: 1
