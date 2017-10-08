@@ -117,7 +117,6 @@ exports.getSummary = (req, res) => {
         console.log(err);
         res.sendStatus(500);
     });
-
 };
 
 exports.getArticle = (req, res) => {

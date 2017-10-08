@@ -16,33 +16,24 @@ export default class Stats extends Component
     }
 
     componentWillMount() {
+        statsActions.fetchStats({
+            count: 1,
+            user: this.props.user
+        }).then(res => {
+            console.log(res.data);
+        });
         this.getChartData();
     }
 
 
     getChartData() {
-        //this.props.dispatch((dispatch) => {
-        //axios.get(config.api.host + '/grade', {
-            //article: this.state.fullText
-        //}).then((res) => {
-        //    this.state.n5=res.data;
-        //}).catch(err => {
-        //    if (err.response.data.message !== undefined) {
-        //        dispatch(textAction.summarizationFailed(err.response.data.message));
-        //    } else {
-        //        dispatch(textAction.summarizationFailed('An error has occured... Please try again.'));
-        //    }
-        //});
-        //});
         this.setState({
             chartData: {
                 labels: ['ND', '1 étoile', '2 étoiles', '3 étoiles', '4 étoiles', '5 étoiles'], datasets: [{
                     label: 'Nombre',
                     data: [1, 2, 3, 4, this.state.n5, 6],
                     backgroundColor: ['rgba(255,99,132,0.6)', 'rgba(54,162,235,0.6)', 'rgba(255,206,86,0.6)', 'rgba(75,192,192,0.6)', 'rgba(0,0,0,0.6)', 'rgba(153,102,255,0.6)']
-
                 }]
-
             }
         });
     }

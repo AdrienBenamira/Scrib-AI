@@ -13,6 +13,7 @@ import Settings from "./Settings";
 import Notifications from "./Notifications";
 import SummarizeSite from "./SummarizeSite";
 import ShowArticle from './ShowArticle';
+import Preview from './Preview';
 
 @withRouter
 @connect(state => state)
@@ -63,14 +64,16 @@ export default class App extends Component {
                         <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link></li>
                         <li><Link to="/summarize_site"><span className="oi" data-glyph="link-intact"/> Summarize from website</Link></li>
                         {this.props.user.connected ?
-                            <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link></li> :
+                            <div>
+                                <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link></li>
+                                <li><Link to="/search"><span className="oi" data-glyph="magnifying-glass"/> Search</Link></li>
+                            </div> :
                             null}
                     </ul>
                     <ul className="menu">
                         {this.props.user.connected ?
                             <li><Link to="/settings"><span className="oi" data-glyph="wrench"/> Settings</Link></li> :
                             null}
-                        <li><Link to="/article/2">Article</Link></li>
                     </ul>
                     <ul className="menu">
                         {this.props.user.connected ?
@@ -104,6 +107,11 @@ export default class App extends Component {
                         <Route path="/stats" render={(props) => (
                             this.props.user.connected ?
                                 <Stats {...props} user={this.props.user} /> :
+                                <Redirect to='/'/>
+                        )}/>
+                        <Route path="/search" render={(props) => (
+                            this.props.user.connected ?
+                                <Preview {...props} user={this.props.user} /> :
                                 <Redirect to='/'/>
                         )}/>
                         <Route path="/settings" render={(props) => (
