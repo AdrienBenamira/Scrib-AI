@@ -5,7 +5,7 @@ import json
 import re
 from functions_server import article_from_url, fonction_principale
 import nltk
-
+from bson import json_util
 
 #
 #Commande a executer : gunicorn invoker_server:api -t 200 --worker-connections 10
@@ -70,6 +70,8 @@ class LetsSummarizeSite:
             output.write(str(art.encode('utf-8')))
         resultat=fonction_principale(nbre_words_input,nbre_words_output)
         t1=time.time()
+        Nc=len(resultat.split())
+        gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
         content={
             'status':'sucess',
             'resp_resume':resultat,
@@ -81,9 +83,9 @@ class LetsSummarizeSite:
             'images':images,
             'chrono': t1-t0
         }
-        print(t1-t0)
+        print(t1-t0, gain)
         print("END TRANSFORM SITE")
-        resp.body = json.dumps(content)
+        resp.body = json.dumps(content, default=json_util.default)
 
 
 
