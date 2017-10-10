@@ -1,14 +1,11 @@
 *.pyc
 pretrained_model*
 data/*
+data
 cnn_stories_tokenized/*
 finished_files/*
-<<<<<<< a05d12d5cf2ab5fb0039bfa3f9995eedee9d4612
 resume.txt
 test.source
 re
 sys
 site.html/
-
-
->>>>>>> 5952ab6cb1fb11abe9bfecdcf39abcd89a81aae0
