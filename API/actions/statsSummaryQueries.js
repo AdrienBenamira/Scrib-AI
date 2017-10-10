@@ -46,6 +46,7 @@ exports.date = (query, req) => {
 exports.count = (query, req) => {
     if(query.count !== undefined) {
         req.attributes = [[db.sequelize.fn('COUNT', db.sequelize.col('Summary.id')), 'count']];
+        req.group = 'Grades.grade';
     }
     return req;
 };

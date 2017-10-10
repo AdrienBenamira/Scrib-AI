@@ -6,9 +6,9 @@ export default class Chart extends Component
 
     constructor(props) {
         super(props);
-        this.state = {
+        /*this.state = {
             chartData: props.chartData
-        };
+        };*/
     }
 
     render() {
@@ -16,7 +16,7 @@ export default class Chart extends Component
             <div className="chart">
 
                 <Bar
-                    data={ this.state.chartData }
+                    data={ this.props.chartData }
                     options={ {
                         title: {
                             display: true, text: 'Base de donnees', fontSize: 25
