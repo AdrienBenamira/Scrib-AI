@@ -58,7 +58,7 @@ export const text = (state = {
                 }
             };
             break;
-        case 'SUMMARIZATION_FULFILLED_FROM_URL':
+        case 'SUMMARIZATION_FULFILED_FROM_URL':
             state = {
                 ...state,
                 summary: {
