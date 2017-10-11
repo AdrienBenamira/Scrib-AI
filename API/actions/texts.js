@@ -141,8 +141,6 @@ exports.getArticle = (req, res) => {
     dbReq = statsArticleQueries.keywords(query, dbReq);
     dbReq = statsArticleQueries.count(query, dbReq);
     dbReq = statsArticleQueries.summaryId(query, dbReq);
-    dbReq = statsArticleQueries.category(query, dbReq);
-    dbReq = statsArticleQueries.keywords(query, dbReq);
     dbReq = statsArticleQueries.id(query, dbReq);
     dbReq = statsArticleQueries.fullText(query, dbReq);
     dbReq = statsArticleQueries.isGenerated(query, dbReq);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Input from './glui/form/Input';
-import Form from './glui/form/Form';
+// import Form from './glui/form/Form';
 import * as textAction from '../actions/textActions';
 import { config } from '../config/default';
 import axios from 'axios';
@@ -29,13 +29,13 @@ export default class SummarizeSite extends Component
         e.preventDefault();
         this.props.dispatch((dispatch) => {
             dispatch(textAction.summarize_site(this.state.origin));
+            this.setState({ redirect: true });
             console.log(this.state.origin);
             axios.post(config.api.host + '/summarize_site', {
                 article: this.state.origin,
                 ratio: this.state.ratio
             }).then((res) => {
                 dispatch(textAction.summarizationFullfiled(res.data));
-                this.setState({ redirect: true });
             }).catch(err => {
                 if (err.response.data.message !== undefined) {
                     dispatch(textAction.summarizationFailed(err.response.data.message));
