@@ -53,11 +53,11 @@ export default class SummarizeSite extends Component
 
                 <form className="vertical">
                     <Input onChange={ (id, value, isCorret, mess) => {
-                        this.state.ratio = value;
+                        this.setState({ratio: value});
                     } } id="ratio" label="Ratio" value={ this.state.ratio } required/>
                     <Input onChange={ (id, value, isCorrect, mess) => {
                         if (id === 'url') {
-                            this.state.origin = value;
+                            this.setState({origin: value});
                             console.log(this.state.origin);
                         }
                     } } id="url" label="Website" value={ this.state.origin } required/>
