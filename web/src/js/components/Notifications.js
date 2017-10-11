@@ -55,6 +55,12 @@ export default class Notifications extends React.Component {
                         {this.props.user.signup.errorMessage}
                     </Message>
                 ):null}
+                {/*Error stats*/}
+                {this.props.stats.failed ? (
+                    <Message error timer={10}>
+                        {this.props.stats.errorMessage}
+                    </Message>
+                ):null}
             </div>
         );
     }

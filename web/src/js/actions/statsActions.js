@@ -28,3 +28,30 @@ export const fetchStats = (opt, article=false) => {
         }
     });
 };
+
+export const updateOptions = (opt) => {
+    return {
+        type: 'OPTIONS_UPDATED',
+        payload: opt
+    };
+};
+
+export const fetchResults = () => {
+    return {
+        type: 'FETCHING_RESULTS'
+    };
+};
+
+export const fetchResultsFulfilled = (results) => {
+    return {
+        type: 'RESULTS_FETCHED',
+        payload: results
+    };
+};
+
+export const fetchingFailed = (error) => {
+    return {
+        type: 'FETCHING_FAILED',
+        payload: error
+    };
+};

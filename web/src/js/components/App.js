@@ -1,23 +1,25 @@
-import React, {Component} from 'react';
-import {Link, Redirect, Route, Switch, withRouter} from "react-router-dom";
+import React, { Component } from 'react';
+import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import axios from 'axios';
-import {connect} from "react-redux";
-import * as user from "../actions/userActions";
-import Summarize from "./Summarize";
-import Stats from "./Stats";
-import {Intro} from "./Intro";
-import {Login} from "./Login";
+import { connect } from 'react-redux';
+import * as user from '../actions/userActions';
+import Summarize from './Summarize';
+import Stats from './Stats';
+import { Intro } from './Intro';
+import { Login } from './Login';
 import * as Cookies from 'js-cookie';
-import {config} from "../config/default";
-import Settings from "./Settings";
-import Notifications from "./Notifications";
-import SummarizeSite from "./SummarizeSite";
+import { config } from '../config/default';
+import Settings from './Settings';
+import Notifications from './Notifications';
+import SummarizeSite from './SummarizeSite';
 import ShowArticle from './ShowArticle';
-import Preview from './Preview';
+import { Search } from './Search';
+
 
 @withRouter
 @connect(state => state)
-export default class App extends Component {
+export default class App extends Component
+{
     constructor() {
         super();
     }
@@ -31,17 +33,17 @@ export default class App extends Component {
                 this.props.dispatch(dispatch => {
                     dispatch(user.connectUser());
                     const url = config.api.host + '/user/login';
-                    const authInfo = {username: rememberToken.username, password: rememberToken.token};
-                    axios.get(url, {auth: authInfo}).then((res) => {
+                    const authInfo = { username: rememberToken.username, password: rememberToken.token };
+                    axios.get(url, { auth: authInfo }).then((res) => {
                         // Update cookie
-                        Cookies.set('remember', {username: rememberToken.username, token: res.data.token}, {
+                        Cookies.set('remember', { username: rememberToken.username, token: res.data.token }, {
                             expires: 15 //days
                         });
-                        dispatch(user.userConnected({...authInfo, password: res.data.token}));
+                        dispatch(user.userConnected({ ...authInfo, password: res.data.token }));
                     }).catch((err) => {
-                        dispatch(user.connectionFailed())
+                        dispatch(user.connectionFailed());
                     });
-                })
+                });
             }
         }
     }
@@ -61,67 +63,71 @@ export default class App extends Component {
                     </Link>
                     <ul className="menu">
                         <li><Link to="/">Presentation of the project</Link></li>
-                        <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link></li>
-                        <li><Link to="/summarize_site"><span className="oi" data-glyph="link-intact"/> Summarize from website</Link></li>
-                        {this.props.user.connected ?
-                            <div>
-                                <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link></li>
-                                <li><Link to="/search"><span className="oi" data-glyph="magnifying-glass"/> Search</Link></li>
-                            </div> :
-                            null}
+                        <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link>
+                        </li>
+                        <li><Link to="/summarize_site"><span className="oi" data-glyph="link-intact"/> Summarize from
+                            website</Link></li>
+                        { this.props.user.connected ?
+                            <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link></li>
+                            : null }
+                        { this.props.user.connected ?
+                            <li><Link to="/search"><span className="oi" data-glyph="magnifying-glass"/> Search</Link>
+                            </li>
+                            : null }
                     </ul>
                     <ul className="menu">
-                        {this.props.user.connected ?
+                        { this.props.user.connected ?
                             <li><Link to="/settings"><span className="oi" data-glyph="wrench"/> Settings</Link></li> :
-                            null}
+                            null }
                     </ul>
                     <ul className="menu">
-                        {this.props.user.connected ?
+                        { this.props.user.connected ?
                             (
                                 <div>
-                                    <li>Hello, {this.props.user.username}</li>
-                                    <li><a onClick={(e) => this.logoutHandler.bind(this)(e)} className="btn error">Logout</a>
+                                    <li>Hello, { this.props.user.username }</li>
+                                    <li><a onClick={ (e) => this.logoutHandler.bind(this)(e) } className="btn error">Logout</a>
                                     </li>
                                 </div>
                             ) :
-                            <li><Link to="/login" className="btn success">Login</Link></li>}
+                            <li><Link to="/login" className="btn success">Login</Link></li> }
                     </ul>
 
                 </nav>
-                <Notifications dispatch={this.props.dispatch} user={this.props.user} text={this.props.text}/>
+                <Notifications { ...this.props } />
                 <main className="content">
                     <Switch>
-                        <Route exact path="/" component={Intro}/>
-                        <Route path="/summarize_site" render={(props) => (
-                            <SummarizeSite {...props} dispatch={this.props.dispatch} text={this.props.text}/>
-                        )}/>
-                        <Route path="/summarize" render={(props) => (
-                            <Summarize {...props} dispatch={this.props.dispatch} text={this.props.text}/>
-                        )}/>
-                        <Route path="/login" render={(props) => (
+                        <Route exact path="/" component={ Intro }/>
+                        <Route path="/summarize_site" render={ (props) => (
+                            <SummarizeSite { ...props } dispatch={ this.props.dispatch } text={ this.props.text }/>
+                        ) }/>
+                        <Route path="/summarize" render={ (props) => (
+                            <Summarize { ...props } dispatch={ this.props.dispatch } text={ this.props.text }/>
+                        ) }/>
+                        <Route path="/login" render={ (props) => (
                             this.props.user.connected ?
                                 <Redirect to="/stats"/> :
-                                <Login {...props} dispatch={this.props.dispatch} failed={this.props.user.failed}
-                                       connecting={this.props.user.connecting}/>
-                        )}/>
-                        <Route path="/stats" render={(props) => (
+                                <Login { ...props } dispatch={ this.props.dispatch } failed={ this.props.user.failed }
+                                       connecting={ this.props.user.connecting }/>
+                        ) }/>
+                        <Route path="/stats" render={ (props) => (
                             this.props.user.connected ?
-                                <Stats {...props} user={this.props.user} /> :
+                                <Stats { ...props } user={ this.props.user }/> :
                                 <Redirect to='/'/>
-                        )}/>
-                        <Route path="/search" render={(props) => (
+                        ) }/>
+                        <Route path="/search" render={ (props) => (
                             this.props.user.connected ?
-                                <Preview {...props} user={this.props.user} /> :
+                                <Search { ...props } stats={ this.props.stats } dispatch={ this.props.dispatch }
+                                        user={ this.props.user }/> :
                                 <Redirect to='/'/>
-                        )}/>
-                        <Route path="/settings" render={(props) => (
+                        ) }/>
+                        <Route path="/settings" render={ (props) => (
                             this.props.user.connected ?
-                                <Settings dispatch={this.props.dispatch} user={this.props.user} {...props} /> :
+                                <Settings dispatch={ this.props.dispatch } user={ this.props.user } { ...props } /> :
                                 <Redirect to='/'/>
-                        )}/>
-                        <Route path="/article/:id" render={(match) => (
-                            <ShowArticle user={this.props.user} id={match.id}/>
-                        )} />
+                        ) }/>
+                        <Route path="/article/:id" render={ (match) => (
+                            <ShowArticle user={ this.props.user } id={ match.id }/>
+                        ) }/>
                     </Switch>
                 </main>
             </div>

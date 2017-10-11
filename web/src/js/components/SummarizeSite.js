@@ -1,19 +1,23 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Input from './glui/form/Input';
-import Form from "./glui/form/Form";
-import * as textAction from "../actions/textActions";
-import {config} from "../config/default";
+import Form from './glui/form/Form';
+import * as textAction from '../actions/textActions';
+import { config } from '../config/default';
 import axios from 'axios';
 
-export default class SummarizeSite extends Component {
+
+export default class SummarizeSite extends Component
+{
 
     constructor() {
         super();
         this.state = {
             origin: '',
             editing: false,
-            ratio:0.4,
-            titre:''
+            ratio: 0.4,
+            titre: '',
+            redirect: false
         };
         this.onSummarizeHandler = this.onSummarizeHandler.bind(this);
     }
@@ -31,6 +35,7 @@ export default class SummarizeSite extends Component {
                 ratio: this.state.ratio
             }).then((res) => {
                 dispatch(textAction.summarizationFullfiled(res.data));
+                this.setState({ redirect: true });
             }).catch(err => {
                 if (err.response.data.message !== undefined) {
                     dispatch(textAction.summarizationFailed(err.response.data.message));
@@ -41,35 +46,29 @@ export default class SummarizeSite extends Component {
         });
     }
 
-
-
-
     render() {
-        return (
+        return this.state.redirect ? <Redirect to="/summarize"/> : (
             <div>
                 <h1><span className="oi" data-glyph="link-intact"/> Summarize from a website</h1>
 
                 <form className="vertical">
-                    <Input onChange={(id, value, isCorret, mess) => {
-                    this.state.ratio=value
-                }} id="ratio" label="Ratio" value={this.state.ratio} required/>
-                    <Input onChange={(id, value, isCorrect, mess) => {
-                        if(id === 'url') {
-                            this.state.origin=value;
+                    <Input onChange={ (id, value, isCorret, mess) => {
+                        this.state.ratio = value;
+                    } } id="ratio" label="Ratio" value={ this.state.ratio } required/>
+                    <Input onChange={ (id, value, isCorrect, mess) => {
+                        if (id === 'url') {
+                            this.state.origin = value;
                             console.log(this.state.origin);
                         }
-                    }} id="url" label="Website" value={this.state.origin} required/>
+                    } } id="url" label="Website" value={ this.state.origin } required/>
 
-                    <button onClick={(e) => this.onSummarizeHandler(e)}
-                            disabled={this.state.origin}
+                    <button onClick={ (e) => this.onSummarizeHandler(e) }
+                            disabled={ this.state.origin }
                             className="confirm-summarization-site btn small round success">
                         <span className="oi" data-glyph="check"/> Summarize!
                     </button>
 
-
-
                 </form>
-
             </div>
         );
     }
