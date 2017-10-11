@@ -32,33 +32,37 @@ exports.summarize = (req, res) => {
  * @param res
  */
 exports.summarizeSite = (req, res) => {
-    // axios.post(config.api.host_site, { url: req.body.article, ratio: req.body.ratio }).then(result => {
-    //     console.log('website summarized');
-    //     res.json({
-    //         summary: result.data.resp_resume,
-    //         chrono: result.data.chrono,
-    //         gain: result.data.gain,
-    //         fullText: result.data.texte_original,
-    //         titre: result.data.titre,
-    //         authors: result.data.authors,
-    //         publish_date: result.data.publish_date,
-    //         keywords: result.data.keywords,
-    //         image: result.data.images
-    //     });
-    // }).catch(err => {
-    //     console.log('an error has occured during summarization', err);
-    //     res.sendStatus(500);
-    // });
-    res.json({chrono: 2, summary: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu massa
-    interdum urna rutrum aliquam. Nam ultricies, ex nec pulvinar scelerisque, dui odio efficitur sapien, id
-    volutpat lorem dui et felis. Vivamus dictum sagittis est, sed placerat odio congue venenatis.`,
-            gain: 1,
-            fullText: "lorem ipsum blabla",
-            titre: "title",
-            authors: "author",
-            publish_date: "sdsdf",
-            keywords: "",
-            image: ""});
+    axios.post(config.api.host_site, { url: req.body.article, ratio: req.body.ratio }).then(result => {
+        console.log('website summarized');
+        res.json({
+            summary: result.data.resp_resume,
+            chrono: result.data.chrono,
+            gain: result.data.gain,
+            fullText: result.data.texte_original,
+            titre: result.data.titre,
+            authors: result.data.authors,
+            publish_date: result.data.publish_date,
+            keywords: result.data.keywords,
+            image: result.data.images
+        });
+    }).catch(err => {
+        console.log('an error has occured during summarization', err);
+        res.sendStatus(500);
+    });
+    // res.json({chrono: 2, summary: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu massa
+    // interdum urna rutrum aliquam. Nam ultricies, ex nec pulvinar scelerisque, dui odio efficitur sapien, id
+    // volutpat lorem dui et felis. Vivamus dictum sagittis est, sed placerat odio congue venenatis.`,
+    //         gain: 1,
+    //         fullText: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean finibus pretium leo sit amet suscipit. Morbi vel ligula nec ipsum aliquam porttitor quis quis velit. Aenean mattis tellus metus, fringilla mattis lectus imperdiet vel. Maecenas finibus lorem sapien, non tempor orci bibendum vel. Integer aliquet consequat nisi, vitae tincidunt nulla varius vitae. Pellentesque in eleifend mi, porta hendrerit libero. Quisque lacinia, mauris nec iaculis mollis, odio tellus pharetra nibh, nec ultricies nisi quam eget eros. Fusce quis efficitur urna. Mauris molestie ullamcorper velit quis mattis. Praesent dignissim ligula neque, in blandit sapien ultrices in. Maecenas bibendum velit orci, in aliquam quam placerat at. Ut eget rhoncus sem. Praesent iaculis lorem quis lobortis tempus. Aliquam venenatis vehicula nisl eget auctor. Integer ac fringilla felis, ac consequat nulla. Nulla sed vulputate velit.\n" +
+    //         "\n" +
+    //         "Vivamus dictum commodo turpis. Fusce vehicula purus eu ante pellentesque ullamcorper. Maecenas sollicitudin ante dui, at interdum lorem dictum id. Aliquam et enim at ligula tincidunt euismod ac et ipsum. In at viverra turpis, consectetur euismod felis. Sed a mollis velit. Vivamus sed auctor tortor. Donec leo augue, volutpat id tellus ac, placerat tempus nunc. Maecenas lobortis euismod leo eget tincidunt.\n" +
+    //         "\n" +
+    //         "Praesent malesuada quam eu facilisis malesuada. Vestibulum condimentum malesuada tempus. Sed scelerisque aliquam ligula, ac efficitur orci gravida nec. Aenean eleifend dui vitae vehicula malesuada. Nunc vel congue quam. Suspendisse vel congue sem, vitae suscipit massa. Nullam lacinia mattis erat non semper. Nam ultricies mi sit amet commodo iaculis. Phasellus dictum faucibus lectus ut ornare. Ut at lectus bibendum velit vestibulum lobortis. Curabitur quam lorem, tempor sed vestibulum sit amet, faucibus et orci. Integer tempor velit vitae eleifend finibus. Suspendisse et lectus mollis, ullamcorper augue ac, dignissim nisl. Ut at consectetur nunc, a malesuada ligula. ",
+    //         titre: "title",
+    //         authors: "author",
+    //         publish_date: "sdsdf",
+    //         keywords: "",
+    //         image: ""});
 };
 
 /**

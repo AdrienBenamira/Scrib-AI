@@ -17,15 +17,23 @@ export default class Summarize extends Component {
         };
 
         this.articleTextarea = null;
+        this.summaryTextarea = null;
 
         this.onSummarizeHandler = this.onSummarizeHandler.bind(this);
-        this.updateTextareaHeight = this.updateTextareaHeight.bind(this);
         this.onEditSummary = this.onEditSummary.bind(this);
         this.onSendHandler = this.onSendHandler.bind(this);
     }
 
-    updateTextareaHeight(e) {
-        console.log(e);
+    componentDidUpdate() {
+        if(this.props.text.summarized) {
+            this.articleTextarea.style.height = 'auto';
+            this.articleTextarea.style.height = this.articleTextarea.scrollHeight + 'px';
+        }
+        if(this.state.editing && this.summaryTextarea !== null) {
+            console.log('oui');
+            this.summaryTextarea.style.height = 'auto';
+            this.summaryTextarea.style.height = this.summaryTextarea.scrollHeight + 'px';
+        }
     }
 
     /**
@@ -81,9 +89,6 @@ export default class Summarize extends Component {
     }
 
     render() {
-        if(this.props.text.summarized) {
-            this.updateTextareaHeight(this.articleTextarea);
-        }
         return (
             <div>
                 <Input onChange={(id, value, isCorret, mess) => {
@@ -109,7 +114,7 @@ export default class Summarize extends Component {
                     </div>
                     <div className="scrib-article">
                         {this.state.editing ? (
-                                <textarea onChange={e => {
+                                <textarea ref={(textarea) => this.summaryTextarea = textarea} onChange={e => {
                                     this.props.dispatch(textAction.updateUserVersion(e.target.value));
                                     e.target.style.height = 'auto';
                                     e.target.style.height = e.target.scrollHeight + 'px';
