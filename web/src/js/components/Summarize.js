@@ -12,7 +12,6 @@ export default class Summarize extends Component {
         super();
 
         this.state = {
-            fullText: '',
             editing: false,
             //ratio:0.4
         };
@@ -27,10 +26,10 @@ export default class Summarize extends Component {
      */
     onSummarizeHandler() {
         this.props.dispatch((dispatch) => {
-            dispatch(textAction.summarize(this.state.fullText));
+            dispatch(textAction.summarize(this.props.text.fullText));
             window.scrollTo(0, 0);
             axios.post(config.api.host + '/summarization', {
-                article: this.state.fullText,
+                article: this.props.text.fullText,
                 ratio: this.props.text.ratio
             }).then((res) => {
                 dispatch(textAction.summarizationFullfiled(res.data));
@@ -87,11 +86,11 @@ export default class Summarize extends Component {
                     <div className="scrib-article">
                         <textarea className="article" onChange={e => {
                             // Trim spaces in the beginning and end
-                            this.setState({fullText: e.target.value.replace(/^\s+/g, '')});
+                            this.props.dispatch(textAction.updateArticle(e.target.value.replace(/^\s+/g, '')));
                             // Rescale textarea
                             e.target.style.height = 'auto';
                             e.target.style.height = e.target.scrollHeight + 'px';
-                        }} value={this.state.fullText} placeholder="Paste your article here..."/>
+                        }} value={this.props.text.fullText} placeholder="Paste your article here..."/>
 
                         <button onClick={this.onSummarizeHandler}
                                 disabled={this.props.text.summarizing}

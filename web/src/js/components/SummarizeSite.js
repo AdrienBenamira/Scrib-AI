@@ -35,7 +35,7 @@ export default class SummarizeSite extends Component
                 article: this.state.origin,
                 ratio: this.state.ratio
             }).then((res) => {
-                dispatch(textAction.summarizationFullfiled(res.data));
+                dispatch(textAction.summarizationFullfiledFromURL(res.data));
             }).catch(err => {
                 if (err.response.data.message !== undefined) {
                     dispatch(textAction.summarizationFailed(err.response.data.message));

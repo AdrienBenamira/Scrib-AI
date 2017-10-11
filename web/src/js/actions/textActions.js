@@ -1,3 +1,10 @@
+export const updateArticle = (content) => {
+    return {
+        type: 'ARTICLE_UPDATED',
+        payload: content
+    };
+};
+
 export const summarize = (summary) => {
     return {
         type: 'SUMMARIZATION_STARTED',
@@ -26,7 +33,12 @@ export const summarizationFullfiled = (response) => {
     };
 };
 
-
+export const summarizationFullfiledFromURL = (response) => {
+    return {
+        type: 'SUMMARIZATION_FULFILED_FROM_URL',
+        payload: response
+    };
+};
 
 export const gradeSummary = (grade) => {
     return {
