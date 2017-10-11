@@ -41,6 +41,7 @@ exports.keywords = (query, req) => {
 exports.count = (query, req) => {
     if (query.count !== undefined) {
         req.attributes = [[db.sequelize.fn('COUNT', db.sequelize.col('id')), 'count']];
+        req.group = 'id';
     }
     return req;
 };

@@ -33,7 +33,7 @@ export default class Stats extends Component
 
     componentWillMount() {
         statsActions.fetchStats({
-            count: 1,
+            count: 0,
             user: this.props.user
         }).then(res => {
 
