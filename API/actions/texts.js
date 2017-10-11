@@ -32,8 +32,9 @@ exports.summarize = (req, res) => {
  * @param res
  */
 exports.summarizeSite = (req, res) => {
+    console.log('sumarization site',config.api.host_site )
     axios.post(config.api.host_site, { url: req.body.article, ratio: req.body.ratio }).then(result => {
-        console.log('website summarized');
+        console.log('website summarized', result.data);
         res.json({
             summary: result.data.resp_resume,
             chrono: result.data.chrono,

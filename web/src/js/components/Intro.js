@@ -16,12 +16,14 @@ export const Intro = (props) => (
                 words. The objective is not to achieve a lossless compression of the article but rather select the
                 most important pieces of information to fill a given text length. For instance, we would like to summarize well with a ratio of 40% of the original
                 text length.</p>
-                <h3>The project is available online on github https://github.com/AdriBenben/Scrib-AI.</h3>
+            <h3>The project is available online on github <a href={"https://github.com/AdriBenben/Scrib-AI"}>https://github.com/AdriBenben/Scrib-AI</a></h3>
                 <p>The software part of the projet aims to build an interface to:</p>
-                    <p>• Summarize articles from plain text grade it and correct it</p>
-                        <p>• Extract the article of a given website and summarize it</p>
-                            <p>• Make an article & summary dataset for the implementation of the neural network</p>
-                                <p>• Visualize our data</p>
+                <ul>
+                    <li>Summarize articles from plain text grade it and correct it</li>
+                        <li>Extract the article of a given website and summarize it</li>
+                            <li>Make an article & summary dataset for the implementation of the neural network</li>
+                                <li>Visualize our data</li>
+                </ul>
 
 
 
