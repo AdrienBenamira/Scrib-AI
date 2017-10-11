@@ -16,9 +16,16 @@ export default class Summarize extends Component {
             //ratio:0.4
         };
 
+        this.articleTextarea = null;
+
         this.onSummarizeHandler = this.onSummarizeHandler.bind(this);
+        this.updateTextareaHeight = this.updateTextareaHeight.bind(this);
         this.onEditSummary = this.onEditSummary.bind(this);
         this.onSendHandler = this.onSendHandler.bind(this);
+    }
+
+    updateTextareaHeight(e) {
+        console.log(e);
     }
 
     /**
@@ -74,9 +81,11 @@ export default class Summarize extends Component {
     }
 
     render() {
+        if(this.props.text.summarized) {
+            this.updateTextareaHeight(this.articleTextarea);
+        }
         return (
             <div>
-
                 <Input onChange={(id, value, isCorret, mess) => {
                     this.props.dispatch(textAction.changeRatio(value))
                 }} id="ratio" label="Ratio" required style={{display: 'block', width: 400,  margin: "0 auto"}} value={this.props.text.ratio}/>
@@ -84,7 +93,7 @@ export default class Summarize extends Component {
 
                 <div className="scrib-container">
                     <div className="scrib-article">
-                        <textarea className="article" onChange={e => {
+                        <textarea ref={(textarea) => this.articleTextarea = textarea} className="article" onChange={e => {
                             // Trim spaces in the beginning and end
                             this.props.dispatch(textAction.updateArticle(e.target.value.replace(/^\s+/g, '')));
                             // Rescale textarea
