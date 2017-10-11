@@ -32,30 +32,26 @@ exports.summarize = (req, res) => {
  * @param res
  */
 exports.summarizeSite = (req, res) => {
-    if (req.body.article.length > config.summary.minCharacter) {
-        axios.post(config.api.host_site, { url: req.body.article, ratio: req.body.ratio }).then(result => {
-            console.log('website summarized');
-            res.json({
-                summary: result.data.resp_resume,
-                chrono: result.data.chrono,
-                gain: result.data.gain,
-                fullText: result.data.texte_original,
-                titre: result.data.titre,
-                authors: result.data.authors,
-                publish_date: result.data.publish_date,
-                keywords: result.data.keywords,
-                image: result.data.images
-            });
-        }).catch(err => {
-            console.log('an error has occured during summarization', err);
-            res.sendStatus(500);
+    axios.post(config.api.host_site, { url: req.body.article, ratio: req.body.ratio }).then(result => {
+        console.log('website summarized');
+        res.json({
+            summary: result.data.resp_resume,
+            chrono: result.data.chrono,
+            gain: result.data.gain,
+            fullText: result.data.texte_original,
+            titre: result.data.titre,
+            authors: result.data.authors,
+            publish_date: result.data.publish_date,
+            keywords: result.data.keywords,
+            image: result.data.images
         });
-        //res.json({chrono: 2, summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu massa
-        // interdum urna rutrum aliquam. Nam ultricies, ex nec pulvinar scelerisque, dui odio efficitur sapien, id
-        // volutpat lorem dui et felis. Vivamus dictum sagittis est, sed placerat odio congue venenatis.'})
-    } else {
-        res.status(400).json({ message: 'coucouThe text must be at least ' + config.summary.minCharacter + ' characters.' });
-    }
+    }).catch(err => {
+        console.log('an error has occured during summarization', err);
+        res.sendStatus(500);
+    });
+    //res.json({chrono: 2, summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu massa
+    // interdum urna rutrum aliquam. Nam ultricies, ex nec pulvinar scelerisque, dui odio efficitur sapien, id
+    // volutpat lorem dui et felis. Vivamus dictum sagittis est, sed placerat odio congue venenatis.'})
 };
 
 /**
