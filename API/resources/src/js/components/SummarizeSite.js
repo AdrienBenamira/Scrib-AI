@@ -31,16 +31,11 @@ export default class SummarizeSite extends Component
             dispatch(textAction.summarize_site(this.state.origin));
             this.setState({ redirect: true });
             console.log(this.state.origin);
-            axios.post(config.api.host + '/summarize_site', {
-                article: this.state.origin,
-                ratio: this.state.ratio
-            }).then((res) => {
-                dispatch(textAction.summarizationFullfiledFromURL(res.data));
-            }).catch(err => {
-                if (err.response.data.message !== undefined) {
-                    dispatch(textAction.summarizationFailed(err.response.data.message));
-                } else {
-                    dispatch(textAction.summarizationFailed('An error has occured... Please try again.'));
+            this.props.socket.emit('pushQueue', {
+                payload: {
+                    type: 'url',
+                    article: this.props.text.fullText,
+                    ratio: this.props.text.ratio
                 }
             });
         });

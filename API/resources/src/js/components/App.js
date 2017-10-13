@@ -15,6 +15,7 @@ import Notifications from './Notifications';
 import SummarizeSite from './SummarizeSite';
 import ShowArticle from './ShowArticle';
 import { Search } from './Search';
+import * as textAction from '../actions/textActions';
 
 
 @withRouter
@@ -27,7 +28,24 @@ export default class App extends Component
     }
 
     componentDidMount() {
-        this.socket.emit('pushQueue', {payload: {}});
+        // Wait for response
+        this.socket.on('responseTask', data => {
+            if(data.status === 200)
+                this.props.dispatch(textAction.summarizationFullfiled(data));
+            else if (data.message !== undefined)
+                this.props.dispatch(textAction.summarizationFailed(data.message));
+            else
+                this.props.dispatch(textAction.summarizationFailed('An error has occured... Please try again.'));
+        });
+        // Summarize from URL
+        this.socket.on('responseTaskUrl', data => {
+            if(data.status === 200)
+                this.props.dispatch(textAction.summarizationFullfiledFromURL(data));
+            else if (data.message !== undefined)
+                this.props.dispatch(textAction.summarizationFailed(data.message));
+            else
+                this.props.dispatch(textAction.summarizationFailed('An error has occured... Please try again.'));
+        });
     }
 
     componentWillMount() {
@@ -104,10 +122,11 @@ export default class App extends Component
                     <Switch>
                         <Route exact path="/" component={ Intro }/>
                         <Route path="/summarize_site" render={ (props) => (
-                            <SummarizeSite { ...props } dispatch={ this.props.dispatch } text={ this.props.text }/>
+                            <SummarizeSite { ...props } socket={this.socket} dispatch={ this.props.dispatch } text={ this.props.text }/>
                         ) }/>
                         <Route path="/summarize" render={ (props) => (
-                            <Summarize { ...props } dispatch={ this.props.dispatch } text={ this.props.text }/>
+                            <Summarize { ...props } socket={ this.socket } dispatch={ this.props.dispatch }
+                                       text={ this.props.text }/>
                         ) }/>
                         <Route path="/login" render={ (props) => (
                             this.props.user.connected ?

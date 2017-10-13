@@ -5,9 +5,9 @@ import time
 import falcon
 import json
 import re
-#from functions_server import article_from_url, fonction_principale
+from functions_server import article_from_url, fonction_principale
 import nltk
-#from bson import json_util
+from bson import json_util
 import json
 
 config = {}
@@ -33,10 +33,15 @@ def summarize():
     Nc=len(resultat.split())
     gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
     content={
-        'status':'sucess',
-        'resp_resume':resultat,
-        'chrono': t1-t0,
-        'gain':gain
+        'id': response['id'],
+        'uid': response['uid'],
+        'type': 'plain',
+        'response': {
+            'status':'sucess',
+            'resp_resume':resultat,
+            'chrono': t1-t0,
+            'gain':gain
+        }
     }
     print(t1-t0,gain)
     response_body = json.dumps(content)
@@ -60,15 +65,20 @@ def summarize():
         Nc=len(resultat.split())
         gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
         content={
-            'status':'sucess',
-            'resp_resume':resultat,
-            'texte_original':art,
-            'titre':titre,
-            'authors':authors,
-            'publish_date':publish_date,
-            'keywords':keywords,
-            'images':images,
-            'chrono': t1-t0
+            'id': response['id'],
+            'uid': response['uid'],
+            'type': 'url',
+            'response': {
+                'status':'sucess',
+                'resp_resume':resultat,
+                'texte_original':art,
+                'titre':titre,
+                'authors':authors,
+                'publish_date':publish_date,
+                'keywords':keywords,
+                'images':images,
+                'chrono': t1-t0
+            }
         }
         print(t1-t0, gain)
         requests.delete(config['host'] + '/api/queue/task', json=content)
@@ -78,8 +88,9 @@ def main():
     print('Get last file in queue')
     response = requests.get(config['host'] + '/api/queue/task')
     if response.status_code == 200:
-        response = response.json()['payload']
-        if response['type'] == 'url':
+        response = response.json()
+        print('Something in the queue...')
+        if 'type' in response.keys() and response['type'] == 'url':
             summarize_site(response)
         else:
             summarize(response)

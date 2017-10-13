@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     payload: DataTypes.TEXT,
     response: DataTypes.TEXT,
     status: DataTypes.INTEGER,
-    room: DataTypes.STRING
+    uid: DataTypes.STRING
   }, {
       tableName: 'Queue'
   });
