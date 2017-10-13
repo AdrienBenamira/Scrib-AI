@@ -11,11 +11,6 @@ module.exports = {
             fullText: {
                 type: Sequelize.TEXT('large')
             },
-            fullText: {
-                type: Sequelize.STRING,
-                allowNull: true,
-                defaultValue: null
-            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

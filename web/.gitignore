@@ -1,7 +1,0 @@
-# config
-src/js/config/default.js
-# editor
-.idea
-# Dependency directories
-node_modules/
-/public/assets/

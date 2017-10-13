@@ -4,6 +4,10 @@ module.exports = {
         port: 3000,
         timezone: 'Europe/Paris'
     },
+    interface: {
+        host: 'localhost',
+        port: '8080'
+    },
     summary: {
         minCharacter: 0
     },

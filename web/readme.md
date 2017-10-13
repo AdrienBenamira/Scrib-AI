@@ -1,2 +1,0 @@
-# Scrib AI Interface
-
