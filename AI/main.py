@@ -10,6 +10,7 @@ import nltk
 from bson import json_util
 import json
 
+
 config = {}
 config_path = path.abspath(path.join(path.dirname(__file__), './config/default.json'))
 with open(config_path, 'r') as config_file:
@@ -19,7 +20,6 @@ with open(config_path, 'r') as config_file:
 def summarize(response):
     print('START summarization')
     t0=time.time()
-    response['payload'] = json.loads(response['payload'])
     nbre_words_input=len(response['payload']['article'].encode('utf-8').split())
     nbre_words_input=nbre_words_input+int(nbre_words_input*0.1)
     ratio=float(response["payload"]['ratio'])
@@ -48,15 +48,14 @@ def summarize(response):
     requests.delete(config['host'] + '/api/queue/task', json=content)
     print('FINISH summarization')
 
-def sumarize_site(response):
+def summarize_site(response):
     print("START TRANSFORM SITE")
-    response['payload'] = json.loads(response['payload'])
     t0=time.time()
     compteur=0
-    (art, titre,authors,publish_date,keywords, images)=article_from_url(str(response['payload']['url']), req, resp)
+    (art, titre,authors,publish_date,keywords, images)=article_from_url(str(response['payload']['url']))
     nbre_words_input=len(art.encode('utf-8').split())
     nbre_words_input=nbre_words_input+int(nbre_words_input*0.1)
-    ratio=0.30
+    ratio=float(response["payload"]['ratio'])
     nbre_words_output=int(nbre_words_input*ratio)
     print(nbre_words_input,nbre_words_output)
     with open("finished_files/original.source", "w") as output:
@@ -75,12 +74,13 @@ def sumarize_site(response):
             'fullText':art,
             'titre':titre,
             'authors':authors,
-            'publish_date':publish_date,
+            'publish_date':publish_date.strftime('%Y-%m-%d'),
             'keywords':keywords,
             'image':images,
             'chrono': t1-t0
         }
     }
+    print(content)
     print(t1-t0, gain)
     requests.delete(config['host'] + '/api/queue/task', json=content)
     print("END TRANSFORM SITE")
@@ -90,8 +90,9 @@ def main():
     response = requests.get(config['host'] + '/api/queue/task')
     if response.status_code == 200:
         response = response.json()
+        response['payload'] = json.loads(response['payload'])
         print('Something in the queue...')
-        if 'type' in response.keys() and response['type'] == 'url':
+        if 'type' in response['payload'].keys() and response['payload']['type'] == 'url':
             summarize_site(response)
         else:
             summarize(response)
