@@ -1,7 +1,3 @@
-const statsSummaryQueries = require('./statsSummaryQueries');
-const statsArticleQueries = require('./statsArticleQueries');
-const axios = require('axios');
-const config = require('../config/default');
 const db = require('../models');
 
 exports.push = (socket, data) => {
