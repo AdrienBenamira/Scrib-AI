@@ -59,7 +59,7 @@ io.on('connect', (socket) => {
 });
 
 // Start application
-http.listen(config.app.port, config.app.host, () => {
+server.listen(config.app.port, config.app.host, () => {
     console.log(`API listening on port ${config.app.port}`);
     // Try connecting to the database
     db.sequelize.authenticate()
