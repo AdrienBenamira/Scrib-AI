@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT('long'),
             validate:{
                 notEmpty: true,
-                len: [300]
+                len: [200]
             }
         },
         origin: {
