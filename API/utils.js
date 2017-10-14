@@ -1,7 +1,6 @@
 const basicAuth = require('basic-auth');
 const bcrypt = require('bcrypt');
 const db = require('./models');
-const User = require('./models/user')(db.sequelize, db.Sequelize.DataTypes);
 const moment = require('moment');
 const config = require('./config/default');
 moment.locale(config.app.timezone);
@@ -18,7 +17,7 @@ exports.basicAuth = (req, res, next) => {
     if (!user) return res.sendStatus(401);
     else {
         // Fetch the user to the database
-        User.findOne({
+        db.User.findOne({
             where: {
                 username: user.name
             }
@@ -42,4 +41,24 @@ exports.basicAuth = (req, res, next) => {
     }
 };
 
-
+exports.basicAuthWorkers = (req, res, next) => {
+    // Get login given by the user
+    let user = basicAuth(req);
+    if (!user) return res.sendStatus(401);
+    else {
+        // Fetch the user to the database
+        db.Worker.findOne({
+            where: {
+                name: user.name
+            }
+        }).then(fetchedWorker => {
+            if (fetchedWorker !== null) {
+                // Compare the hashed password
+                bcrypt.compare(user.pass, fetchedWorker.password, (err, result) => {
+                    if (!result) res.sendStatus(401);
+                    else next();
+                });
+            } else res.sendStatus(401);
+        });
+    }
+};

@@ -1,5 +1,7 @@
 import os
 import os.path as path
+import sys
+import signal
 import requests
 import time
 import falcon
@@ -9,6 +11,17 @@ from functions_server import article_from_url, fonction_principale
 import nltk
 from bson import json_util
 import json
+
+
+def exit_handler(signal, frame):
+    # Remove a worker
+    requests.delete(config['host'] + '/api/worker', auth=(config['name'], config['password']))
+    print('Exciting...')
+    sys.exit(0)
+
+
+# Signal when exiting the program
+signal.signal(signal.SIGINT, exit_handler)
 
 
 config = {}
@@ -45,7 +58,7 @@ def summarize(response):
     }
     print(t1-t0,gain)
     response_body = json.dumps(content)
-    requests.delete(config['host'] + '/api/queue/task', json=content)
+    requests.delete(config['host'] + '/api/queue/task', json=content, auth=(config['name'], config['password']))
     print('FINISH summarization')
 
 def summarize_site(response):
@@ -82,12 +95,12 @@ def summarize_site(response):
     }
     print(content)
     print(t1-t0, gain)
-    requests.delete(config['host'] + '/api/queue/task', json=content)
+    requests.delete(config['host'] + '/api/queue/task', json=content, auth=(config['name'], config['password']))
     print("END TRANSFORM SITE")
 
 def main():
     print('Get last file in queue')
-    response = requests.get(config['host'] + '/api/queue/task')
+    response = requests.get(config['host'] + '/api/queue/task', auth=(config['name'], config['password']))
     if response.status_code == 200:
         response = response.json()
         response['payload'] = json.loads(response['payload'])
@@ -102,6 +115,8 @@ def main():
         return False
 
 if __name__ == '__main__':
+    # Add a new worker
+    requests.post(config['host'] + '/api/worker', auth=(config['name'], config['password']))
     while True:
         if not main():
             time.sleep(2)

@@ -11,8 +11,10 @@ const db = require('./models');
 const userActions = require('./actions/users');
 const textActions = require('./actions/texts');
 const queueActions = require('./actions/queue');
+const workerActions = require('./actions/workers');
 
 let connectedSocketUsers = {};
+let connectedWorkers = 0;
 
 // Middlewares
 
@@ -25,6 +27,8 @@ app.use(express.static('resources/public'));
 // Use the basicAuth middleware for all /user routes
 app.use('/api/user', utils.basicAuth);
 app.use('/api/users', utils.basicAuth);
+app.use('/api/worker', utils.basicAuthWorkers);
+app.use('/api/queue', utils.basicAuthWorkers);
 
 // Routes
 
@@ -44,8 +48,17 @@ app.post('/api/summary/store', bodyParser.json(), (req, res) => textActions.stor
 app.get('/api/user/summary', (req, res) => textActions.getSummary(req, res));
 app.get('/api/user/article', (req, res) => textActions.getArticle(req, res));
 
-// app.post('/api/summarization', bodyParser.json(), (req, res) => textActions.summarize(req, res));
-// app.post('/api/summarize_site', bodyParser.json(), (req, res) => textActions.summarizeSite(req, res));
+// Workers Routes
+// - Get number of workers
+app.get('/api/workers', (req, res) => res.json(connectedWorkers));
+// - Get all registered workers
+app.get('/api/user/workers', (req, res) => workerActions.get(req, res));
+// - Register a new worker
+app.post('/api/user/worker', bodyParser.json(), (req, res) => workerActions.register(req, res));
+app.delete('/api/user/worker', (req, res) => workerActions.unregister(req, res));
+// - Add a new worker
+app.post('/api/worker', (req, res) => workerActions.add(req, res, connectedSocketUsers));
+app.delete('/api/worker', (req, res) => workerActions.remove(req, res, connectedSocketUsers));
 
 // Fallback *Must be the last route*
 
@@ -54,8 +67,19 @@ app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, './resources/pub
 // Websocket routes
 io.on('connect', (socket) => {
     connectedSocketUsers[socket.id] = socket;
-
+    socket.join('everyone');
     socket.on('pushQueue', data => queueActions.push(socket, data));
+    socket.on('disconnect', (reason) => {
+        // We delete the user from connected users
+        db.Queue.destroy({
+            where: {
+                uid: socket.id,
+                status: 0
+            }
+        }).then(() => {
+            delete connectedSocketUsers[socket.id];
+        });
+    });
 });
 
 // Start application

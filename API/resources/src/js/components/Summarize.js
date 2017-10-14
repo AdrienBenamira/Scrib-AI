@@ -68,7 +68,8 @@ export default class Summarize extends Component
      */
     onSendHandler(e) {
         e.preventDefault();
-        if (!this.props.text.upload.done) {
+        if (this.props.text.upload.done) {
+        } else {
             this.props.dispatch(textAction.startUpload());
             axios.post(config.api.host + '/summary/store' + (this.props.text.summary.hasUserEdited ? '?edited=1' : ''), {
                 summary: this.props.text.summary,

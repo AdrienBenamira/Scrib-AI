@@ -16,6 +16,8 @@ import SummarizeSite from './SummarizeSite';
 import ShowArticle from './ShowArticle';
 import { Search } from './Search';
 import * as textAction from '../actions/textActions';
+import Message from './glui/messages/Message';
+import * as workerActions from '../actions/workersActions';
 
 
 @withRouter
@@ -47,6 +49,14 @@ export default class App extends Component
             else
                 this.props.dispatch(textAction.summarizationFailed('An error has occured... Please try again.'));
         });
+        // A worker is added
+        this.socket.on('workerAdded', () => {
+            this.props.dispatch(workerActions.addWorker());
+        });
+        // A worker is removed
+        this.socket.on('workerRemoved', () => {
+            this.props.dispatch(workerActions.removeWorker());
+        });
     }
 
     componentWillMount() {
@@ -71,6 +81,10 @@ export default class App extends Component
                 });
             }
         }
+        // Fetch number of workers
+        axios.get(config.api.host + '/workers').then(res => {
+            this.props.dispatch(workerActions.setNumberWorkers(res.data));
+        });
     }
 
     logoutHandler(e) {
@@ -120,6 +134,9 @@ export default class App extends Component
                 </nav>
                 <Notifications { ...this.props } />
                 <main className="content">
+                    {this.props.workers.number === 0 ? (
+                        <Message warning>There is no worker started...</Message>
+                    ): null}
                     <Switch>
                         <Route exact path="/" component={ Intro }/>
                         <Route path="/summarize_site" render={ (props) => (
