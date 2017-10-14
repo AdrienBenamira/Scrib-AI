@@ -1,1 +1,4 @@
 .idea/
+Test_articles/*
+Administratif/*
+yarn*.log

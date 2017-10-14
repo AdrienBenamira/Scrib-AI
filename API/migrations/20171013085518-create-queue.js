@@ -1,15 +1,26 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('Articles', {
+        return queryInterface.createTable('Queue', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            fullText: {
+            payload: {
                 type: Sequelize.TEXT('large')
+            },
+            response: {
+                type: Sequelize.TEXT('large'),
+                allowNull: true,
+                defaultValue: null
+            },
+            status: {
+                type: Sequelize.INTEGER
+            },
+            room: {
+                type: Sequelize.STRING
             },
             createdAt: {
                 allowNull: false,
@@ -22,6 +33,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('Articles');
+        return queryInterface.dropTable('queues');
     }
 };
