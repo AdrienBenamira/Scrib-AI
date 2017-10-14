@@ -39,6 +39,8 @@ exports.endTask = (req, res, connectedUser) => {
         }
     }).then(() => {
         const socketName = req.body.type === 'url' ? 'responseTaskUrl' : 'responseTask';
+        console.log(connectedUser);
+        console.log(req.body.uid);
         connectedUser[req.body.uid].emit(socketName, {
             response: req.body.response,
             error: false
