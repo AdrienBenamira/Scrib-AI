@@ -32,7 +32,7 @@ def fonction_principale(nbre_words_input,nbre_words_output):
     return resultat
 
 
-def article_from_url(url, req, resp):
+def article_from_url(url):
     #url as string
     texte=''
     article = Article(url, keep_article_html=True)
