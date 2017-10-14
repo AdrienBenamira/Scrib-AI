@@ -5,16 +5,16 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT('long'),
             validate:{
                 notEmpty: true,
-                len: [200]
+                len: [400]
             }
         },
         origin: {
             type: DataTypes.STRING,
             allowNull: true,
             defaultValue: null,
-            validate: {
-                isUrl: true
-            }
+            // validate: {
+            //     isUrl: true
+            // }
         },
         title: {
             type: DataTypes.STRING,

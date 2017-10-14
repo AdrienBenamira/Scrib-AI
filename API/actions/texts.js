@@ -84,7 +84,7 @@ exports.store = (req, res) => {
         console.log(err);
         switch (err.name) {
             case 'SequelizeValidationError':
-                res.status(400).json({ message: 'The article or summary is not correct (article at least 200 characters).' });
+                res.status(400).json({ message: 'The article or summary is not correct (article at least 400 characters).' });
                 break;
             default:
                 res.status(500).json({ message: 'An error has occurred, please try again.' });
