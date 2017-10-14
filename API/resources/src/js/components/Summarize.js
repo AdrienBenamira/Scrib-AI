@@ -13,7 +13,8 @@ export default class Summarize extends Component
         super();
 
         this.state = {
-            editing: false
+            editing: false,
+            send: false
             //ratio:0.4
         };
 
@@ -31,7 +32,6 @@ export default class Summarize extends Component
             this.articleTextarea.style.height = this.articleTextarea.scrollHeight + 'px';
         }
         if (this.state.editing && this.summaryTextarea !== null) {
-            console.log('oui');
             this.summaryTextarea.style.height = 'auto';
             this.summaryTextarea.style.height = this.summaryTextarea.scrollHeight + 'px';
         }
@@ -55,7 +55,7 @@ export default class Summarize extends Component
 
     onEditSummary(e) {
         e.preventDefault();
-        this.setState({ editing: !this.state.editing }, () => {
+        this.setState({ editing: !this.state.editing, send: false }, () => {
             if (!this.props.text.summary.hasUserEdited) {
                 this.props.dispatch(textAction.editSummary());
             }
@@ -73,9 +73,13 @@ export default class Summarize extends Component
             axios.post(config.api.host + '/summary/store' + (this.props.text.summary.hasUserEdited ? '?edited=1' : ''), {
                 summary: this.props.text.summary,
                 article: {
+                    origin: this.props.text.origin,
+                    author: this.props.text.author,
+                    title: this.props.text.title,
                     fullText: this.props.text.fullText
                 }
             }).then(() => {
+                this.setState({ send: true });
                 this.props.dispatch(textAction.uploadFulfilled());
             }).catch(err => {
                 this.props.dispatch(textAction.uploadFailed(err.response.data.message));
@@ -156,7 +160,8 @@ export default class Summarize extends Component
                             </button>
                         </div>
                         <div className="actions">
-                            <button onClick={ (e) => this.onSendHandler(e) } disabled={ !this.props.text.summarized }
+                            <button onClick={ (e) => this.onSendHandler(e) }
+                                    disabled={ !this.props.text.summarized || this.state.send }
                                     className="confirm-summarization btn small round success">
                                 <span className="oi" data-glyph="check"/> Send
                             </button>

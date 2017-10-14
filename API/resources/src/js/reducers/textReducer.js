@@ -1,6 +1,8 @@
 export const text = (state = {
     fullText: '',
     origin: '',
+    author: '',
+    title: '',
     errorMessage: '',
     failed: false,
     ratio: 0.4,
@@ -10,7 +12,7 @@ export const text = (state = {
         content: null,
         chrono: null,
         title: '',
-        userVersion: 'Loading',
+        userVersion: '',
         hasUserEdited: false,
         grade: 0,
         isAccepted: true
@@ -33,7 +35,7 @@ export const text = (state = {
                     done: false,
                     failed: false,
                     errorMessage: ''
-                }, fullText: action.payload, summarized: false, summarizing: true, summary: {
+                }, fullText: action.payload, origin: '', title: '', author: '', summarized: false, summarizing: true, summary: {
                     content: null,
                     chrono: null,
                     grade: 0,
@@ -70,6 +72,8 @@ export const text = (state = {
                     isAccepted: null
                 },
                 fullText: action.payload.fullText,
+                author: action.payload.authors,
+                title: action.payload.titre,
                 summarizing: false,
                 failed: false,
                 errorMessage: '',

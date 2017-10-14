@@ -68,7 +68,11 @@ exports.store = (req, res) => {
     }
     // Add the article
     db.Article.create({
-        fullText: body.article.fullText, fullText: null, Summaries: summaries
+        fullText: body.article.fullText,
+        origin: body.article.origin,
+        author: body.article.author,
+        title: body.article.title,
+        Summaries: summaries
     }, {
         include: {
             association: db.Article.Summaries, // Association with the summaries
