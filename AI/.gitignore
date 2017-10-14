@@ -9,3 +9,4 @@ test.source
 re
 sys
 site.html/
+config/default.json
