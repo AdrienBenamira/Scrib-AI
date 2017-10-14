@@ -34,7 +34,7 @@ export default class SummarizeSite extends Component
             this.props.socket.emit('pushQueue', {
                 payload: {
                     type: 'url',
-                    article: this.props.text.fullText,
+                    article: this.state.origin,
                     ratio: this.props.text.ratio
                 }
             });
