@@ -30,8 +30,9 @@ export default class App extends Component
     componentDidMount() {
         // Wait for response
         this.socket.on('responseTask', data => {
-            if(data.status === 200)
-                this.props.dispatch(textAction.summarizationFullfiled(data));
+            console.log(data);
+            if(!data.error)
+                this.props.dispatch(textAction.summarizationFullfiled(data.response));
             else if (data.message !== undefined)
                 this.props.dispatch(textAction.summarizationFailed(data.message));
             else
@@ -39,8 +40,8 @@ export default class App extends Component
         });
         // Summarize from URL
         this.socket.on('responseTaskUrl', data => {
-            if(data.status === 200)
-                this.props.dispatch(textAction.summarizationFullfiledFromURL(data));
+            if(!data.error)
+                this.props.dispatch(textAction.summarizationFullfiledFromURL(data.response));
             else if (data.message !== undefined)
                 this.props.dispatch(textAction.summarizationFailed(data.message));
             else

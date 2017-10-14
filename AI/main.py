@@ -38,7 +38,7 @@ def summarize(response):
         'type': 'plain',
         'response': {
             'status':'sucess',
-            'resp_resume':resultat,
+            'summary':resultat,
             'chrono': t1-t0,
             'gain':gain
         }
@@ -70,15 +70,15 @@ def sumarize_site(response):
         'uid': response['uid'],
         'type': 'url',
         'response': {
-    	'status':'sucess',
-    	'resp_resume':resultat,
-    	'texte_original':art,
-    	'titre':titre,
-    	'authors':authors,
-    	'publish_date':publish_date,
-    	'keywords':keywords,
-    	'images':images,
-    	'chrono': t1-t0
+            'status':'sucess',
+            'summary':resultat,
+            'fullText':art,
+            'titre':titre,
+            'authors':authors,
+            'publish_date':publish_date,
+            'keywords':keywords,
+            'image':images,
+            'chrono': t1-t0
         }
     }
     print(t1-t0, gain)
