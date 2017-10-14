@@ -1,8 +1,9 @@
 // const cors = require('cors');
+const sticky = require('sticky-session');
 const express = require('express');
 const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 const path = require('path');
 const bodyParser = require('body-parser');
 const config = require('./config/default');
@@ -59,12 +60,14 @@ io.on('connect', (socket) => {
 });
 
 // Start application
-http.listen(config.app.port, config.app.host, () => {
-    console.log(`API listening on port ${config.app.port}`);
-    // Try connecting to the database
-    db.sequelize.authenticate()
-        .then(() => console.log('Successfully logged to the database'))
-        .catch(err => {
-            console.error('Unable to connect to the database:', err);
-        });
-});
+if(!sticky.listen(server, config.app.port, config.app.host)){
+    server.once('listening', () => {
+        console.log(`API listening on port ${config.app.port}`);
+        // Try connecting to the database
+        db.sequelize.authenticate()
+            .then(() => console.log('Successfully logged to the database'))
+            .catch(err => {
+                console.error('Unable to connect to the database:', err);
+            });
+    });
+}
