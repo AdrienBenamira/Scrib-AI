@@ -6,6 +6,7 @@
   border-radius: $message-border-radius;
   box-shadow: $message-box-shadow;
   margin: $message-margin;
+  z-index: 90000;
 
   p {
     padding: $message-padding;
