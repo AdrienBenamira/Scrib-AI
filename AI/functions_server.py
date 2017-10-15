@@ -23,7 +23,8 @@ def fonction_principale(nbre_words_input,nbre_words_output):
     print('END make data')
     print('')
     print('START run_summarization')
-    os.system("python2 run_summarization.py --mode=decode  --data_path=finished_files/intermediaire.bin --vocab_path=finished_files/vocab --log_root= --exp_name=pretrained_model_tf1.2.1/ "+"--max_enc_steps="+str(nbre_words_input)+" --max_dec_steps="+str(nbre_words_output))
+    #os.system("python2 run_summarization.py --mode=decode  --data_path=finished_files/intermediaire.bin --vocab_path=finished_files/vocab --log_root= --exp_name=pretrained_model_tf1.2.1/ "+"--max_enc_steps="+str(nbre_words_input)+" --max_dec_steps="+str(nbre_words_output))
+    os.system("python2 run_summarization.py --mode=decode  --data_path=finished_files/intermediaire.bin --vocab_path=finished_files/vocab --log_root= --exp_name=pretrained_model_tf1.2.1/ ")
     print('End run_summarization')
     with open("finished_files/resume.txt", "r") as output:
         resultat=output.read()

@@ -35,28 +35,41 @@ def summarize(response):
     nbre_words_input=len(response['payload']['article'].encode('utf-8').split())
     nbre_words_input=nbre_words_input+int(nbre_words_input*0.1)
     ratio=float(response["payload"]['ratio'])
-    print(ratio)
+    #print(ratio)
     nbre_words_output=int(nbre_words_input*ratio)
     print(nbre_words_input,nbre_words_output)
-    with open("finished_files/original.source", "w") as output:
-        output.write(str(response['payload']['article'].encode('utf-8')))
-    resultat=fonction_principale(nbre_words_input,nbre_words_output)
-    t1=time.time()
-    Nc=len(resultat.split())
-    gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
-    content={
-        'id': response['id'],
-        'uid': response['uid'],
-        'type': 'plain',
-        'response': {
-            'status':'sucess',
-            'summary':resultat,
-            'chrono': t1-t0,
-            'gain':gain
+    if nbre_words_input>400:
+        with open("finished_files/original.source", "w") as output:
+            output.write(str(response['payload']['article'].encode('utf-8')))
+        resultat=fonction_principale(nbre_words_input,nbre_words_output)
+        t1=time.time()
+        Nc=len(resultat.split())
+        gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
+        content={
+            'id': response['id'],
+            'uid': response['uid'],
+            'type': 'plain',
+            'response': {
+                'status':'sucess',
+                'summary':resultat,
+                'chrono': t1-t0,
+                'gain':gain
+            }
         }
-    }
-    print(t1-t0,gain)
-    response_body = json.dumps(content)
+        print(t1-t0,gain)
+        response_body = json.dumps(content)
+    else:
+        t1=time.time()
+        content={
+            'id': response['id'],
+            'uid': response['uid'],
+            'type': 'plain',
+            'response': {
+                'status':'failed',
+                'summary':'',
+                'chrono': t1-t0,
+            }
+        }
     requests.delete(config['host'] + '/api/queue/task', json=content, auth=(config['name'], config['password']))
     print('FINISH summarization')
 
@@ -70,30 +83,43 @@ def summarize_site(response):
     ratio=float(response["payload"]['ratio'])
     nbre_words_output=int(nbre_words_input*ratio)
     print(nbre_words_input,nbre_words_output)
-    with open("finished_files/original.source", "w") as output:
-        output.write(str(art.encode('utf-8')))
-    resultat=fonction_principale(nbre_words_input,nbre_words_output)
-    t1=time.time()
-    Nc=len(resultat.split())
-    gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
-    content={
-        'id': response['id'],
-        'uid': response['uid'],
-        'type': 'url',
-        'response': {
-            'status':'sucess',
-            'summary':resultat,
-            'fullText':art,
-            'titre':titre,
-            'authors':authors,
-            #'publish_date':publish_date.strftime('%Y-%m-%d'),
-            'keywords':keywords,
-            'image':images,
-            'chrono': t1-t0
+    if nbre_words_input>400:
+        with open("finished_files/original.source", "w") as output:
+            output.write(str(art.encode('utf-8')))
+        resultat=fonction_principale(nbre_words_input,nbre_words_output)
+        t1=time.time()
+        Nc=len(resultat.split())
+        gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
+        content={
+            'id': response['id'],
+            'uid': response['uid'],
+            'type': 'url',
+            'response': {
+                'status':'sucess',
+                'summary':resultat,
+                'fullText':art,
+                'titre':titre,
+                'authors':authors,
+                #'publish_date':publish_date.strftime('%Y-%m-%d'),
+                'keywords':keywords,
+                'image':images,
+                'chrono': t1-t0
+            }
         }
-    }
-    print(content)
-    print(t1-t0, gain)
+        print(content)
+        print(t1-t0, gain)
+    else:
+        t1=time.time()
+        content={
+            'id': response['id'],
+            'uid': response['uid'],
+            'type': 'plain',
+            'response': {
+                'status':'failed',
+                'summary':'',
+                'chrono': t1-t0,
+            }
+        }
     requests.delete(config['host'] + '/api/queue/task', json=content, auth=(config['name'], config['password']))
     print("END TRANSFORM SITE")
 
