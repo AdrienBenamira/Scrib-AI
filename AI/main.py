@@ -64,8 +64,8 @@ def summarize(response):
             'id': response['id'],
             'uid': response['uid'],
             'type': 'plain',
+            'error': True,
             'response': {
-                'status':'failed',
                 'summary':'',
                 'chrono': t1-t0,
             }
@@ -114,8 +114,8 @@ def summarize_site(response):
             'id': response['id'],
             'uid': response['uid'],
             'type': 'plain',
+            'error': True,
             'response': {
-                'status':'failed',
                 'summary':'',
                 'chrono': t1-t0,
             }
