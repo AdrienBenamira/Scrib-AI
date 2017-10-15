@@ -1,5 +1,6 @@
 # config
 src/js/config/default.js
+src/images/open-iconic-master
 # editor
 .idea
 # Dependency directories
