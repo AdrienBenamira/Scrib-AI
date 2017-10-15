@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export const Intro = (props) => (
         <div>
 
-            <h1>An IA for automatic and abstractive summarization</h1>
+            <h1>An AI for automatic and abstractive summarization</h1>
             <img src={require('../../images/LogoCS.png')} style={{display: 'block', width: 400,  margin: "50px auto"}} />
             <p>When we look at the progress of machine learning today, there is one of its domain that is behind
                 the others: Natural Language Processing. Yet, speech is the most important communication device

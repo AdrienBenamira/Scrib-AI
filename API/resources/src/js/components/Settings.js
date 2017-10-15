@@ -136,7 +136,7 @@ export default class Settings extends React.Component
                         <Input id="password_repeat" type="password" label="Repeat Password" required/>
                     </Form>
                 </Panel>
-                <h2>Users</h2>
+                <h2>Workers</h2>
                 <Table headers={ ['Name', 'Delete'] } data={ this.state.fetchedWorkers.map(worker => {
                     return [
                         worker.name,
