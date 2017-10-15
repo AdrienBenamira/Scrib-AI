@@ -145,6 +145,8 @@ if __name__ == '__main__':
         res = False
         try:
             res = main()
+        except requests.exceptions.ConnectionError:
+            sys.exit(0)
         except:
             print("An error has occured")
         if not res:
