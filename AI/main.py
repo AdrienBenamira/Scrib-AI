@@ -87,7 +87,7 @@ def summarize_site(response):
             'fullText':art,
             'titre':titre,
             'authors':authors,
-            'publish_date':publish_date.strftime('%Y-%m-%d'),
+            #'publish_date':publish_date.strftime('%Y-%m-%d'),
             'keywords':keywords,
             'image':images,
             'chrono': t1-t0
@@ -116,7 +116,13 @@ def main():
 
 if __name__ == '__main__':
     # Add a new worker
-    requests.post(config['host'] + '/api/worker', auth=(config['name'], config['password']))
+    response = requests.post(config['host'] + '/api/worker', auth=(config['name'], config['password']))
+    print('connected')
     while True:
-        if not main():
+        res = False
+        try:
+            res = main()
+        except:
+            print("An error has occured")
+        if not res:
             time.sleep(2)

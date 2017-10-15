@@ -51,10 +51,12 @@ export default class App extends Component
         });
         // A worker is added
         this.socket.on('workerAdded', () => {
+            console.log('workerAdded');
             this.props.dispatch(workerActions.addWorker());
         });
         // A worker is removed
         this.socket.on('workerRemoved', () => {
+            console.log('workerRemoved');
             this.props.dispatch(workerActions.removeWorker());
         });
     }
@@ -135,7 +137,9 @@ export default class App extends Component
                 <Notifications { ...this.props } />
                 <main className="content">
                     {this.props.workers.number === 0 ? (
-                        <Message warning>There is no worker started...</Message>
+                        <div style={{marginBottom: 50}}>
+                            <Message warning>There is no worker started... Please, come back later.</Message>
+                        </div>
                     ): null}
                     <Switch>
                         <Route exact path="/" component={ Intro }/>

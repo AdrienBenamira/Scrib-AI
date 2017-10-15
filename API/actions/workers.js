@@ -1,5 +1,7 @@
 // const moment = require('moment');
-// const db = require('../models');
+const db = require('../models');
+const config = require('../config/default')
+const bcrypt = require('bcrypt');
 
 // exports.get = (req, res) => {
 //     db.Worker.count({
@@ -33,11 +35,13 @@ exports.get = (req, res) => {
  * @param res
  */
 exports.register = (req, res) => {
-  db.Worker.create({
-      name: req.body.name,
-      password: req.body.password
-  }).then(() => res.sendStatus(200))
-      .catch(() => res.sendStatus(500));
+  bcrypt.hash(req.body.password, config.security.saltRounds).then((password) => {
+	  db.Worker.create({
+	      name: req.body.name,
+	      password
+	  }).then(() => res.sendStatus(200))
+	      .catch(() => res.sendStatus(500));
+   });
 };
 
 /**
@@ -55,9 +59,19 @@ exports.unregister = (req, res) => {
 };
 
 exports.add = (req, res, connectedSocketUsers) => {
-    connectedSocketUsers[Object.keys(connectedSocketUsers)[0]].broadcast.to('everyone').emit('workerAdded');
+    console.log('A worker started')
+    Object.keys(connectedSocketUsers).map(uid => {
+	    connectedSocketUsers[uid].emit('workerAdded');
+    });
+    //connectedSocketUsers[Object.keys(connectedSocketUsers)[0]].to('everyone').emit('workerAdded');
+    res.sendStatus(200);
 };
 
 exports.remove = (req, res, connectedSocketUsers) => {
-    connectedSocketUsers[Object.keys(connectedSocketUsers)[0]].broadcast.to('everyone').emit('workerRemoved');
+    console.log('A worker went away')
+    Object.keys(connectedSocketUsers).map(uid => {
+	    connectedSocketUsers[uid].emit('workerRemoved');
+    });
+    //connectedSocketUsers[Object.keys(connectedSocketUsers)[0]].to('everyone').emit('workerRemoved');
+    res.sendStatus(200);
 };
