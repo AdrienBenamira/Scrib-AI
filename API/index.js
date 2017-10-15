@@ -57,8 +57,14 @@ app.get('/api/user/workers', (req, res) => workerActions.get(req, res));
 app.post('/api/user/worker', bodyParser.json(), (req, res) => workerActions.register(req, res));
 app.delete('/api/user/worker', (req, res) => workerActions.unregister(req, res));
 // - Add a new worker
-app.post('/api/worker', (req, res) => workerActions.add(req, res, connectedSocketUsers));
-app.delete('/api/worker', (req, res) => workerActions.remove(req, res, connectedSocketUsers));
+app.post('/api/worker', (req, res) => {
+	connectedWorkers++;
+	workerActions.add(req, res, connectedSocketUsers)
+});
+app.delete('/api/worker', (req, res) => {
+	connectedWorkers--;
+	workerActions.remove(req, res, connectedSocketUsers)
+});
 
 // Fallback *Must be the last route*
 

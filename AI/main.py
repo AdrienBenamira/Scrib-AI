@@ -116,7 +116,8 @@ def main():
 
 if __name__ == '__main__':
     # Add a new worker
-    requests.post(config['host'] + '/api/worker', auth=(config['name'], config['password']))
+    response = requests.post(config['host'] + '/api/worker', auth=(config['name'], config['password']))
+    print('connected')
     while True:
         res = False
         try:

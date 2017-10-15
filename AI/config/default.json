@@ -1,3 +1,5 @@
 {
-    "host": "http://localhost:8080"
+    "host": "http://localhost:8080",
+    "name": "wookie_adri",
+    "password": "19091994"
 }

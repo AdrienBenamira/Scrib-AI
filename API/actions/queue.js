@@ -36,7 +36,7 @@ exports.endTask = (req, res, connectedUser) => {
     }).then(() => {
         const socketName = req.body.type === 'url' ? 'responseTaskUrl' : 'responseTask';
         if (Object.keys(connectedUser).indexOf(req.body.uid) !== -1) {
-            connectedUser[req.body.uid].broadcast.to(req.body.uid).emit(socketName, {
+            connectedUser[req.body.uid].emit(socketName, {
                 response: req.body.response,
                 error: false
             });
@@ -45,7 +45,7 @@ exports.endTask = (req, res, connectedUser) => {
     }).catch(err => {
         const socketName = req.body.type === 'url' ? 'responseTaskUrl' : 'responseTask';
         if (Object.keys(connectedUser).indexOf(req.body.uid) !== -1) {
-            connectedUser[req.body.uid].broadcast.to(req.body.uid).emit(socketName, {
+            connectedUser[req.body.uid].emit(socketName, {
                 response: err,
                 message: 'Could not delete the task.',
                 error: true
