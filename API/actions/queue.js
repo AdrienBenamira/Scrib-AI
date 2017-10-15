@@ -36,10 +36,18 @@ exports.endTask = (req, res, connectedUser) => {
     }).then(() => {
         const socketName = req.body.type === 'url' ? 'responseTaskUrl' : 'responseTask';
         if (Object.keys(connectedUser).indexOf(req.body.uid) !== -1) {
-            connectedUser[req.body.uid].emit(socketName, {
-                response: req.body.response,
-                error: false
-            });
+            if(req.body.error) {
+                connectedUser[req.body.uid].emit(socketName, {
+                    response: req.body.response,
+                    message: 'The page does not contain any article.',
+                    error: true
+                });
+            } else {
+                connectedUser[req.body.uid].emit(socketName, {
+                    response: req.body.response,
+                    error: false
+                });
+            }
         }
         res.sendStatus(200);
     }).catch(err => {

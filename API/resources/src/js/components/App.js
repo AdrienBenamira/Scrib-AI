@@ -172,8 +172,8 @@ export default class App extends Component
                                 <Settings dispatch={ this.props.dispatch } user={ this.props.user } { ...props } /> :
                                 <Redirect to='/'/>
                         ) }/>
-                        <Route path="/article/:id" render={ (match) => (
-                            <ShowArticle user={ this.props.user } id={ match.id }/>
+                        <Route path="/article/:id" render={ ({match}) => (
+                            <ShowArticle user={ this.props.user } articleId={ match.params.id }/>
                         ) }/>
                     </Switch>
                 </main>

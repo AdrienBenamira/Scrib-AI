@@ -70,7 +70,7 @@ exports.store = (req, res) => {
     db.Article.create({
         fullText: body.article.fullText,
         origin: body.article.origin,
-        author: body.article.author,
+        author: body.article.author.join(', '),
         title: body.article.title,
         Summaries: summaries
     }, {

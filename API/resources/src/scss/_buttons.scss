@@ -1,4 +1,5 @@
 .btn {
+  outline: none;
   box-sizing: border-box;
   height: $button-height;
   line-height: $button-height;
@@ -118,4 +119,7 @@
       background-color: $button-background-color-default-active;
     }
   }
+}
+button{
+    outline: none;
 }

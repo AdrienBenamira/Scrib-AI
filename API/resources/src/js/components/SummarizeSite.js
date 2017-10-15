@@ -47,9 +47,9 @@ export default class SummarizeSite extends Component
                 <h1><span className="oi" data-glyph="link-intact"/> Summarize from a website</h1>
 
                 <form className="vertical">
-                    <Input onChange={ (id, value, isCorret, mess) => {
+            {/*<Input onChange={ (id, value, isCorret, mess) => {
                         this.setState({ratio: value});
-                    } } id="ratio" label="Ratio" value={ this.state.ratio } required/>
+                    } } id="ratio" label="Ratio" value={ this.state.ratio } required/>*/}
                     <Input onChange={ (id, value, isCorrect, mess) => {
                         if (id === 'url') {
                             this.setState({origin: value});

@@ -91,10 +91,10 @@ export default class Summarize extends Component
     render() {
         return (
             <div>
-                <Input onChange={ (id, value, isCorret, mess) => {
+            {/*<Input onChange={ (id, value, isCorret, mess) => {
                     this.props.dispatch(textAction.changeRatio(value));
                 } } id="ratio" label="Ratio" required style={ { display: 'block', width: 400, margin: '0 auto' } }
-                       value={ this.props.text.ratio }/>
+                       value={ this.props.text.ratio }/>*/}
                 <h1><span className="oi" data-glyph="excerpt"/> Summarize</h1>
 
                 <div className="scrib-container">

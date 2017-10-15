@@ -20,7 +20,7 @@ export default class ShowArticle extends React.Component
 
     componentWillMount() {
         statsActions.fetchStats({
-            articleId: this.props.id,
+            articleId: this.props.articleId,
             user: this.props.user
         }, true).then(res => {
             if (res.data.length === 0)
@@ -53,7 +53,6 @@ export default class ShowArticle extends React.Component
                         </div>
                     )) }
                 </div>
-                { console.log(this.state.article) }
             </div>
         ) : null;
         return this.state.errorMessage !== null ? (

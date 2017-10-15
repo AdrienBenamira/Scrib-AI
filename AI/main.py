@@ -9,7 +9,6 @@ import json
 import re
 from functions_server import article_from_url, fonction_principale
 import nltk
-from bson import json_util
 import json
 
 
@@ -99,7 +98,6 @@ def summarize_site(response):
     print("END TRANSFORM SITE")
 
 def main():
-    print('Get last file in queue')
     response = requests.get(config['host'] + '/api/queue/task', auth=(config['name'], config['password']))
     if response.status_code == 200:
         response = response.json()
@@ -111,13 +109,12 @@ def main():
             summarize(response)
         return True
     else:
-        print("Nothing in queue...")
         return False
 
 if __name__ == '__main__':
     # Add a new worker
     response = requests.post(config['host'] + '/api/worker', auth=(config['name'], config['password']))
-    print('connected')
+    print('Connected')
     while True:
         res = False
         try:
