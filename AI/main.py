@@ -124,6 +124,7 @@ def summarize_site(response):
     print("END TRANSFORM SITE")
 
 def main():
+    print('Getting Last in queue...')
     response = requests.get(config['host'] + '/api/queue/task', auth=(config['name'], config['password']))
     if response.status_code == 200:
         response = response.json()
@@ -135,6 +136,7 @@ def main():
             summarize(response)
         return True
     else:
+        print('Nothing to sum up')
         return False
 
 if __name__ == '__main__':

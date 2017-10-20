@@ -18,6 +18,7 @@ import { Search } from './Search';
 import * as textAction from '../actions/textActions';
 import Message from './glui/messages/Message';
 import * as workerActions from '../actions/workersActions';
+import SwitcherClass from './glui/switchers/SwitcherClass';
 
 
 @withRouter
@@ -33,7 +34,7 @@ export default class App extends Component
         // Wait for response
         this.socket.on('responseTask', data => {
             console.log(data);
-            if(!data.error)
+            if (!data.error)
                 this.props.dispatch(textAction.summarizationFullfiled(data.response));
             else if (data.message !== undefined)
                 this.props.dispatch(textAction.summarizationFailed(data.message));
@@ -42,7 +43,7 @@ export default class App extends Component
         });
         // Summarize from URL
         this.socket.on('responseTaskUrl', data => {
-            if(!data.error)
+            if (!data.error)
                 this.props.dispatch(textAction.summarizationFullfiledFromURL(data.response));
             else if (data.message !== undefined)
                 this.props.dispatch(textAction.summarizationFailed(data.message));
@@ -102,49 +103,60 @@ export default class App extends Component
                     <Link to="/" className="logo">
                         Scrib-AI
                     </Link>
-                    <ul className="menu">
-                        <li><Link to="/">Presentation of the project</Link></li>
-                        <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your text</Link>
-                        </li>
-                        <li><Link to="/summarize_site"><span className="oi" data-glyph="link-intact"/> Summarize from
-                            website</Link></li>
-                        { this.props.user.connected ?
-                            <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link></li>
-                            : null }
-                        { this.props.user.connected ?
-                            <li><Link to="/search"><span className="oi" data-glyph="magnifying-glass"/> Search</Link>
-                            </li>
-                            : null }
-                    </ul>
-                    <ul className="menu">
-                        { this.props.user.connected ?
-                            <li><Link to="/settings"><span className="oi" data-glyph="wrench"/> Settings</Link></li> :
-                            null }
-                    </ul>
-                    <ul className="menu">
-                        { this.props.user.connected ?
-                            (
-                                <div>
-                                    <li>Hello, { this.props.user.username }</li>
-                                    <li><a onClick={ (e) => this.logoutHandler.bind(this)(e) } className="btn error">Logout</a>
+                    <SwitcherClass trigger="ham" className="active">
+                        <div className="menus">
+                            <ul className="menu">
+                                <li><Link to="/">Presentation of the project</Link></li>
+                                <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your
+                                    text</Link>
+                                </li>
+                                <li><Link to="/summarize_site"><span className="oi" data-glyph="link-intact"/> Summarize
+                                    from
+                                    website</Link></li>
+                                { this.props.user.connected ?
+                                    <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link>
                                     </li>
-                                </div>
-                            ) :
-                            <li><Link to="/login" className="btn success">Login</Link></li> }
-                    </ul>
-
+                                    : null }
+                                { this.props.user.connected ?
+                                    <li><Link to="/search"><span className="oi" data-glyph="magnifying-glass"/>
+                                        Search</Link>
+                                    </li>
+                                    : null }
+                            </ul>
+                            <ul className="menu">
+                                { this.props.user.connected ?
+                                    <li><Link to="/settings"><span className="oi" data-glyph="wrench"/> Settings</Link>
+                                    </li> :
+                                    null }
+                            </ul>
+                            <ul className="menu">
+                                { this.props.user.connected ?
+                                    (
+                                        <div>
+                                            <li>Hello, { this.props.user.username }</li>
+                                            <li><a onClick={ (e) => this.logoutHandler.bind(this)(e) }
+                                                   className="btn error">Logout</a>
+                                            </li>
+                                        </div>
+                                    ) :
+                                    <li><Link to="/login" className="btn success">Login</Link></li> }
+                            </ul>
+                        </div>
+                    </SwitcherClass>
+                    <button id="ham" role="button" className="ham btn"><span className="oi" data-glyph="menu"/></button>
                 </nav>
                 <Notifications { ...this.props } />
                 <main className="content">
-                    {this.props.workers.number === 0 ? (
-                        <div style={{marginBottom: 50}}>
+                    { this.props.workers.number === 0 ? (
+                        <div style={ { marginBottom: 50 } }>
                             <Message warning>There is no worker started... Please, come back later.</Message>
                         </div>
-                    ): null}
+                    ) : null }
                     <Switch>
                         <Route exact path="/" component={ Intro }/>
                         <Route path="/summarize_site" render={ (props) => (
-                            <SummarizeSite { ...props } socket={this.socket} dispatch={ this.props.dispatch } text={ this.props.text }/>
+                            <SummarizeSite { ...props } socket={ this.socket } dispatch={ this.props.dispatch }
+                                           text={ this.props.text }/>
                         ) }/>
                         <Route path="/summarize" render={ (props) => (
                             <Summarize { ...props } socket={ this.socket } dispatch={ this.props.dispatch }
@@ -172,7 +184,7 @@ export default class App extends Component
                                 <Settings dispatch={ this.props.dispatch } user={ this.props.user } { ...props } /> :
                                 <Redirect to='/'/>
                         ) }/>
-                        <Route path="/article/:id" render={ ({match}) => (
+                        <Route path="/article/:id" render={ ({ match }) => (
                             <ShowArticle user={ this.props.user } articleId={ match.params.id }/>
                         ) }/>
                     </Switch>

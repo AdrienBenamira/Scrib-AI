@@ -2,6 +2,7 @@ let path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const webpack = require('webpack');
 const dev = process.argv.indexOf('-p') < 0;
 
 let cssLoaders = [
@@ -97,6 +98,8 @@ if (!dev) {
         verbose: true,
         dry: false
     }))
+} else {
+
 }
 
 module.exports = config;

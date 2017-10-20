@@ -17,7 +17,7 @@ $animation-delay: .3s;
 
 $xs-breakpoint : 695px;
 $s-breakpoint : 800px;
-$l-breakpoint : 1200px;
+$l-breakpoint : 1275px;
 $wrap-max-size : 960px;
 
 //-------------
@@ -65,20 +65,22 @@ $xs-grid-template-areas :
   "#{$sidebar-grid-area}";
 
 // S
-$s-grid-template-columns : $sidebar-width ;
-$s-grid-template-rows : $navbar-height auto $footer-height;
+$s-grid-template-columns : 100%;
+$s-grid-template-rows : $navbar-height auto $footer-height auto;
 $s-grid-template-areas :
-"#{$navbar-grid-area} #{$navbar-grid-area}"
-"#{$sidebar-grid-area} #{$content-grid-area}"
-"#{$footer-grid-area} #{$footer-grid-area}";
+        "#{$navbar-grid-area}"
+        "#{$content-grid-area}"
+        "#{$footer-grid-area}"
+        "#{$sidebar-grid-area}";
 
 // L
-$l-grid-template-columns : $sidebar-width auto $sidebar-width;
-$l-grid-template-rows : $navbar-height auto $footer-height;
+$l-grid-template-columns : 100%;
+$l-grid-template-rows : $navbar-height auto $footer-height auto;
 $l-grid-template-areas :
-"#{$navbar-grid-area} #{$navbar-grid-area} #{$navbar-grid-area}"
-"#{$sidebar-grid-area} #{$content-grid-area} #{$content-grid-area}"
-"#{$footer-grid-area} #{$footer-grid-area} #{$footer-grid-area}";
+        "#{$navbar-grid-area}"
+        "#{$content-grid-area}"
+        "#{$footer-grid-area}"
+        "#{$sidebar-grid-area}";
 
 // XL
 $xl-grid-template-columns : $sidebar-width auto $sidebar-width;

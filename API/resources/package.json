@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "webpack -p",
-    "watch": "webpack --watch --hot",
+    "watch": "webpack --watch",
     "dev": "npm run watch",
     "prod": "npm run build"
   },

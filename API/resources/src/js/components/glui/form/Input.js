@@ -37,8 +37,8 @@ export default class Input extends Component {
 
         return (
             <div className={"form-group" + inputStatus}>
-                <label htmlFor={this.props.id}>{this.props.label}</label>
-                <input type={type} id={this.props.id} name={this.props.id} value={this.props.value}
+                {this.props.label ? <label htmlFor={this.props.id}>{this.props.label}</label> : null }
+                <input className={this.props.className} placeholder={this.props.placeholder} type={type} id={this.props.id} name={this.props.id} value={this.props.value}
                        onChange={(e) => this.onChange(e)} disabled={this.props.disabled} checked={this.props.checked}
                        autoFocus={this.props.autofocus}
                 />

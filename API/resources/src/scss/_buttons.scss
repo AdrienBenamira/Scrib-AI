@@ -11,7 +11,6 @@
   border: $button-border;
   cursor: pointer;
   transition: border $animation-delay, box-shadow $animation-delay, background $animation-delay;
-  outline: none;
   color: $black !important;
   text-decoration: none !important;
   font-size: $button-font-size;
@@ -53,7 +52,7 @@
       border: $button-border-error-hover;
       box-shadow: $button-box-shadow-error-hover;
     }
-    
+
     &:active {
       background-color: $button-background-color-error-active;
     }
@@ -63,7 +62,6 @@
     color: $button-color-success !important;
     background-color: $button-background-color-success;
     border: $button-border-success;
-
 
     &:hover {
       border: $button-border-success-hover;
@@ -120,6 +118,10 @@
     }
   }
 }
-button{
+
+button {
+  outline: none;
+  &:active, &:focus{
     outline: none;
+  }
 }
