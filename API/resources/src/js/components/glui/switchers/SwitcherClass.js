@@ -20,9 +20,13 @@ export default class SwitcherClass extends Component {
     }
 
     handleClickOutside(event) {
-        if (this.element && !this.element.contains(event.target)) {
+        if (this.element && !this.element.contains(event.target) && this.trigger !== null && event.target !== this.trigger) {
             this.setState({active: false});
         }
+    }
+
+    componentWillMount() {
+        this.trigger = document.getElementById(this.props.trigger);
     }
 
     componentDidMount() {

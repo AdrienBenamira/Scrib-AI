@@ -1,5 +1,8 @@
 {
-    "host": "http://localhost:8080",
-    "name": "worker-name",
-    "password": "worker-password"
+    "host": "localhost",
+    "port": 8080,
+    "auth": {
+        "name": "worker_name",
+        "password": "worker_password"
+    }
 }

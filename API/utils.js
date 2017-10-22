@@ -41,24 +41,36 @@ exports.basicAuth = (req, res, next) => {
     }
 };
 
+const authWorker = (username, password, callback, callbackFail = null) => {
+    db.Worker.findOne({
+        where: {
+            name: username
+        }
+    }).then(fetchedWorker => {
+        if (fetchedWorker !== null) {
+            // Compare the hashed password
+            bcrypt.compare(password, fetchedWorker.password, (err, result) => {
+                if(result) callback();
+                else if (callbackFail !== null) callbackFail();
+            });
+        }
+        else if (callbackFail !== null) callbackFail();
+    }).catch((err) => {
+        console.log(err);
+        if(callbackFail !== null) callbackFail();
+    });
+};
+
+exports.authWorker = authWorker;
+
 exports.basicAuthWorkers = (req, res, next) => {
     // Get login given by the user
     let user = basicAuth(req);
     if (!user) return res.sendStatus(401);
     else {
         // Fetch the user to the database
-        db.Worker.findOne({
-            where: {
-                name: user.name
-            }
-        }).then(fetchedWorker => {
-            if (fetchedWorker !== null) {
-                // Compare the hashed password
-                bcrypt.compare(user.pass, fetchedWorker.password, (err, result) => {
-                    if (!result) res.sendStatus(401);
-                    else next();
-                });
-            } else res.sendStatus(401);
+        authWorker(user.name, user.pass, next, () => {
+            res.sendStatus(401);
         });
     }
 };

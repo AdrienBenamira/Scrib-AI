@@ -1,7 +1,6 @@
 import os
 import os.path as path
 import sys
-import signal
 import requests
 import time
 import falcon
@@ -10,24 +9,33 @@ import re
 from functions_server import article_from_url, fonction_principale
 import nltk
 import json
+from socketIO_client import SocketIO, LoggingNamespace
 
 
-def exit_handler(signal, frame):
-    # Remove a worker
-    requests.delete(config['host'] + '/api/worker', auth=(config['name'], config['password']))
-    print('Exciting...')
-    sys.exit(0)
-
-
-# Signal when exiting the program
-signal.signal(signal.SIGINT, exit_handler)
-
-
+# Configuration
 config = {}
 config_path = path.abspath(path.join(path.dirname(__file__), './config/default.json'))
 with open(config_path, 'r') as config_file:
     config = json.loads(config_file.read())
+config['url'] = 'http://' + config['host'] + ':' + str(config['port'])
 
+number_of_element_in_queue = 0
+
+# Sockets
+io = SocketIO(config['host'], config['port'], params={
+    "type": "worker",
+    "name": config['auth']['name'],
+    "password": config['auth']['password']
+})
+
+def on_queue_pushed(size=None):
+    global number_of_element_in_queue
+    if size is not None:
+        number_of_element_in_queue = size
+    else:
+        number_of_element_in_queue += 1
+
+io.on('pushQueue', on_queue_pushed)
 
 def summarize(response):
     print('START summarization')
@@ -70,7 +78,7 @@ def summarize(response):
                 'chrono': t1-t0,
             }
         }
-    requests.delete(config['host'] + '/api/queue/task', json=content, auth=(config['name'], config['password']))
+    requests.delete(config['url'] + '/api/queue/task', json=content, auth=(config['auth']['name'], config['auth']['password']))
     print('FINISH summarization')
 
 def summarize_site(response):
@@ -120,36 +128,39 @@ def summarize_site(response):
                 'chrono': t1-t0,
             }
         }
-    requests.delete(config['host'] + '/api/queue/task', json=content, auth=(config['name'], config['password']))
+    requests.delete(config['url'] + '/api/queue/task', json=content, auth=(config['auth']['name'], config['auth']['password']))
     print("END TRANSFORM SITE")
 
 def main():
-    print('Getting Last in queue...')
-    response = requests.get(config['host'] + '/api/queue/task', auth=(config['name'], config['password']))
-    if response.status_code == 200:
-        response = response.json()
-        response['payload'] = json.loads(response['payload'])
-        print('Something in the queue...')
-        if 'type' in response['payload'].keys() and response['payload']['type'] == 'url':
-            summarize_site(response)
+    io.wait(seconds=2)
+    if number_of_element_in_queue > 0:
+        response = requests.get(config['url'] + '/api/queue/task', auth=(config['auth']['name'], config['auth']['password']))
+        if response.status_code == 200:
+            response = response.json()
+            response['payload'] = json.loads(response['payload'])
+            print('Something in the queue...')
+            if 'type' in response['payload'].keys() and response['payload']['type'] == 'url':
+                summarize_site(response)
+            else:
+                summarize(response)
+            print('Awaiting for something to sum up...')
+            return True
         else:
-            summarize(response)
-        return True
+            return False
     else:
-        print('Nothing to sum up')
         return False
 
 if __name__ == '__main__':
     # Add a new worker
-    response = requests.post(config['host'] + '/api/worker', auth=(config['name'], config['password']))
-    print('Connected')
+    print('Awaiting for something to sum up...')
     while True:
         res = False
         try:
-            res = main()
+             res = main()
         except requests.exceptions.ConnectionError:
             sys.exit(0)
         except:
             print("An error has occured")
         if not res:
-            time.sleep(2)
+            time.sleep(1)
+            

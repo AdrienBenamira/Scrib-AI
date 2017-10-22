@@ -48,7 +48,19 @@ export default class Settings extends React.Component
         });
     }
 
-    componentWillMount() {
+    fetchWorkers() {
+        axios.get(config.api.host + '/user/workers', {
+            auth: {
+                username: this.props.user.username, password: this.props.user.password
+            }
+        }).then(res => {
+            this.setState({
+                fetchedWorkers: res.data.map(worker => {return {name: worker.name, status: worker.status}})
+            });
+        });
+    }
+
+    fetchUsers() {
         axios.get(config.api.host + '/users', {
             auth: {
                 username: this.props.user.username, password: this.props.user.password
@@ -58,15 +70,17 @@ export default class Settings extends React.Component
                 fetchedUsers: res.data.map(user => {return {username: user.username}})
             });
         });
-        axios.get(config.api.host + '/user/workers', {
-            auth: {
-                username: this.props.user.username, password: this.props.user.password
-            }
-        }).then(res => {
-            this.setState({
-                fetchedWorkers: res.data.map(worker => {return {name: worker.name}})
-            });
+    }
+
+    componentWillMount() {
+        this.props.socket.on('workerAdded', () => {
+            this.fetchWorkers();
         });
+        this.props.socket.on('workerRemoved', () => {
+            this.fetchWorkers();
+        });
+        this.fetchUsers();
+        this.fetchWorkers();
     }
 
     render() {
@@ -137,12 +151,15 @@ export default class Settings extends React.Component
                     </Form>
                 </Panel>
                 <h2>Workers</h2>
-                <Table headers={ ['Name', 'Delete'] } data={ this.state.fetchedWorkers.map(worker => {
+                <Table headers={ ['Name', 'Delete', 'Status'] } data={ this.state.fetchedWorkers.map(worker => {
                     return [
                         worker.name,
                         <button onClick={(e) => this.handleDeleteWorkerClick(e, worker.name)} className="btn error small">
                             <span className="oi" data-glyph="x" />
-                        </button>
+                        </button>,
+                        worker.status ?
+                            (<span className="scrib-badge success"><span className="oi" data-glyph="check"/> ON</span>)
+                            : (<span className="scrib-badge error"><span className="oi" data-glyph="x"/> OFF</span> )
                     ];
                 }) }/>
             </div>

@@ -52,12 +52,10 @@ export default class App extends Component
         });
         // A worker is added
         this.socket.on('workerAdded', () => {
-            console.log('workerAdded');
             this.props.dispatch(workerActions.addWorker());
         });
         // A worker is removed
         this.socket.on('workerRemoved', () => {
-            console.log('workerRemoved');
             this.props.dispatch(workerActions.removeWorker());
         });
     }
@@ -147,7 +145,7 @@ export default class App extends Component
                 </nav>
                 <Notifications { ...this.props } />
                 <main className="content">
-                    { this.props.workers.number === 0 ? (
+                    { this.props.workers.number <= 0 ? (
                         <div style={ { marginBottom: 50 } }>
                             <Message warning>There is no worker started... Please, come back later.</Message>
                         </div>
@@ -156,11 +154,11 @@ export default class App extends Component
                         <Route exact path="/" component={ Intro }/>
                         <Route path="/summarize_site" render={ (props) => (
                             <SummarizeSite { ...props } socket={ this.socket } dispatch={ this.props.dispatch }
-                                           text={ this.props.text }/>
+                                           text={ this.props.text } workers={this.props.workers}/>
                         ) }/>
                         <Route path="/summarize" render={ (props) => (
                             <Summarize { ...props } socket={ this.socket } dispatch={ this.props.dispatch }
-                                       text={ this.props.text }/>
+                                       text={ this.props.text } workers={this.props.workers}/>
                         ) }/>
                         <Route path="/login" render={ (props) => (
                             this.props.user.connected ?
@@ -181,7 +179,7 @@ export default class App extends Component
                         ) }/>
                         <Route path="/settings" render={ (props) => (
                             this.props.user.connected ?
-                                <Settings dispatch={ this.props.dispatch } user={ this.props.user } { ...props } /> :
+                                <Settings dispatch={ this.props.dispatch } socket={this.socket} user={ this.props.user } { ...props } /> :
                                 <Redirect to='/'/>
                         ) }/>
                         <Route path="/article/:id" render={ ({ match }) => (

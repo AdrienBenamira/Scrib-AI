@@ -109,7 +109,7 @@ export default class Summarize extends Component
                                   } } value={ this.props.text.fullText } placeholder="Paste your article here..."/>
 
                         <button onClick={ this.onSummarizeHandler }
-                                disabled={ this.props.text.summarizing }
+                                disabled={ this.props.text.summarizing || this.props.workers.number <= 0 }
                                 className="confirm-summarization btn small round success">
                             <span className="oi" data-glyph="check"/> Summarize!
                         </button>

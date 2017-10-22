@@ -25,7 +25,7 @@ const bcrypt = require('bcrypt');
  */
 exports.get = (req, res) => {
   db.Worker.findAll().then(fetchedWorkers => res.json(fetchedWorkers.map(worker => {
-      return {name: worker.name};
+      return {name: worker.name, status: worker.status};
   })));
 };
 
@@ -58,20 +58,12 @@ exports.unregister = (req, res) => {
         .catch(() => res.sendStatus(500));
 };
 
-exports.add = (req, res, connectedSocketUsers) => {
-    console.log('A worker started')
-    Object.keys(connectedSocketUsers).map(uid => {
-	    connectedSocketUsers[uid].emit('workerAdded');
-    });
-    //connectedSocketUsers[Object.keys(connectedSocketUsers)[0]].to('everyone').emit('workerAdded');
-    res.sendStatus(200);
+exports.add = (io) => {
+    console.log('A worker started');
+    io.sockets.to('clients').emit('workerAdded');
 };
 
-exports.remove = (req, res, connectedSocketUsers) => {
-    console.log('A worker went away')
-    Object.keys(connectedSocketUsers).map(uid => {
-	    connectedSocketUsers[uid].emit('workerRemoved');
-    });
-    //connectedSocketUsers[Object.keys(connectedSocketUsers)[0]].to('everyone').emit('workerRemoved');
-    res.sendStatus(200);
+exports.remove = (io) => {
+    console.log('A worker went away');
+    io.sockets.to('clients').emit('workerRemoved');
 };

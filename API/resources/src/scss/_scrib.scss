@@ -95,3 +95,17 @@
   width: 100% !important;
   height: 50px !important;
 }
+
+.scrib-badge {
+  padding: 2px 5px;
+  border-radius: $border-radius;
+
+  &.success {
+    background-color: $dark-green;
+    color: $white;
+  }
+  &.error {
+    background-color: $light-red;
+    color: $white;
+  }
+}

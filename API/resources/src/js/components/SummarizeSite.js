@@ -55,7 +55,7 @@ export default class SummarizeSite extends Component
                     } } id="url" placeholder="Link..." value={ this.state.origin } required/>
 
                     <button onClick={ (e) => this.onSummarizeHandler(e) }
-                            disabled={ !this.state.origin }
+                            disabled={ !this.state.origin || this.props.workers.number <= 0 }
                             className="confirm-summarization-site btn small round success">
                         <span className="oi" data-glyph="check"/> Summarize!
                     </button>

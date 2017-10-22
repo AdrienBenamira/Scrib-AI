@@ -1,14 +1,14 @@
 const db = require('../models');
 
-exports.push = (socket, data) => {
-    console.log('pushed');
-    console.log(data);
+exports.push = (io, socket, data) => {
+    console.log('push to queue');
     db.Queue.create({
         payload: JSON.stringify(data.payload),
         status: 0,
         uid: socket.id,
         response: ''
     });
+    io.sockets.to('workers').emit('pushQueue');
 };
 
 exports.getLast = (req, res) => {
@@ -28,22 +28,26 @@ exports.getLast = (req, res) => {
     });
 };
 
-exports.endTask = (req, res, connectedUser) => {
+exports.endTask = (req, res, io) => {
+    const clients = Object.keys(io.sockets.connected).filter(id =>
+            Object.keys(io.sockets.connected[id].rooms).indexOf('clients') !== -1
+    );
+
     db.Queue.destroy({
         where: {
             id: req.body.id
         }
     }).then(() => {
         const socketName = req.body.type === 'url' ? 'responseTaskUrl' : 'responseTask';
-        if (Object.keys(connectedUser).indexOf(req.body.uid) !== -1) {
+        if (clients.indexOf(req.body.uid) !== -1) {
             if(req.body.error) {
-                connectedUser[req.body.uid].emit(socketName, {
+                io.sockets.in(req.body.uid).emit(socketName, {
                     response: req.body.response,
                     message: 'The page does not contain any article.',
                     error: true
                 });
             } else {
-                connectedUser[req.body.uid].emit(socketName, {
+                io.sockets.in(req.body.uid).emit(socketName, {
                     response: req.body.response,
                     error: false
                 });
@@ -52,8 +56,8 @@ exports.endTask = (req, res, connectedUser) => {
         res.sendStatus(200);
     }).catch(err => {
         const socketName = req.body.type === 'url' ? 'responseTaskUrl' : 'responseTask';
-        if (Object.keys(connectedUser).indexOf(req.body.uid) !== -1) {
-            connectedUser[req.body.uid].emit(socketName, {
+        if (clients.indexOf(req.body.uid) !== -1) {
+            io.sockets.in(req.body.uid).emit(socketName, {
                 response: err,
                 message: 'Could not delete the task.',
                 error: true

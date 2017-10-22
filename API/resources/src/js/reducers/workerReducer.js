@@ -1,5 +1,5 @@
 export const workers = (state = {
-    number: -1,
+    number: 1,
     workers: []
 }, action) => {
     switch (action.type) {
