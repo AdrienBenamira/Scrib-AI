@@ -10,3 +10,5 @@ re
 sys
 site.html/
 config/default.json
+node_modules/*
+config/default.js

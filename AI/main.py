@@ -3,13 +3,11 @@ import os.path as path
 import sys
 import requests
 import time
-import falcon
 import json
 import re
 from functions_server import article_from_url, fonction_principale
 import nltk
 import json
-from socketIO_client import SocketIO, LoggingNamespace
 
 
 # Configuration
@@ -19,33 +17,16 @@ with open(config_path, 'r') as config_file:
     config = json.loads(config_file.read())
 config['url'] = 'http://' + config['host'] + ':' + str(config['port'])
 
-number_of_element_in_queue = 0
-
-# Sockets
-io = SocketIO(config['host'], config['port'], params={
-    "type": "worker",
-    "name": config['auth']['name'],
-    "password": config['auth']['password']
-})
-
-def on_queue_pushed(size=None):
-    global number_of_element_in_queue
-    if size is not None:
-        number_of_element_in_queue = size
-    else:
-        number_of_element_in_queue += 1
-
-io.on('pushQueue', on_queue_pushed)
 
 def summarize(response):
-    print('START summarization')
+    #print('START summarization')
     t0=time.time()
     nbre_words_input=len(response['payload']['article'].encode('utf-8').split())
     nbre_words_input=nbre_words_input+int(nbre_words_input*0.1)
     ratio=float(response["payload"]['ratio'])
     #print(ratio)
     nbre_words_output=int(nbre_words_input*ratio)
-    print(nbre_words_input,nbre_words_output)
+    #print(nbre_words_input,nbre_words_output)
     if nbre_words_input>400:
         with open("finished_files/original.source", "w") as output:
             output.write(str(response['payload']['article'].encode('utf-8')))
@@ -64,7 +45,7 @@ def summarize(response):
                 'gain':gain
             }
         }
-        print(t1-t0,gain)
+        #print(t1-t0,gain)
         response_body = json.dumps(content)
     else:
         t1=time.time()
@@ -79,10 +60,10 @@ def summarize(response):
             }
         }
     requests.delete(config['url'] + '/api/queue/task', json=content, auth=(config['auth']['name'], config['auth']['password']))
-    print('FINISH summarization')
+    #print('FINISH summarization')
 
 def summarize_site(response):
-    print("START TRANSFORM SITE")
+    #print("START TRANSFORM SITE")
     t0=time.time()
     compteur=0
     (art, titre,authors,publish_date,keywords, images)=article_from_url(str(response['payload']['url']))
@@ -90,7 +71,7 @@ def summarize_site(response):
     nbre_words_input=nbre_words_input+int(nbre_words_input*0.1)
     ratio=float(response["payload"]['ratio'])
     nbre_words_output=int(nbre_words_input*ratio)
-    print(nbre_words_input,nbre_words_output)
+    #print(nbre_words_input,nbre_words_output)
     if nbre_words_input>400:
         with open("finished_files/original.source", "w") as output:
             output.write(str(art.encode('utf-8')))
@@ -114,8 +95,8 @@ def summarize_site(response):
                 'chrono': t1-t0
             }
         }
-        print(content)
-        print(t1-t0, gain)
+        #print(content)
+        #print(t1-t0, gain)
     else:
         t1=time.time()
         content={
@@ -129,38 +110,25 @@ def summarize_site(response):
             }
         }
     requests.delete(config['url'] + '/api/queue/task', json=content, auth=(config['auth']['name'], config['auth']['password']))
-    print("END TRANSFORM SITE")
+    #print("END TRANSFORM SITE")
 
 def main():
-    io.wait(seconds=2)
-    if number_of_element_in_queue > 0:
-        response = requests.get(config['url'] + '/api/queue/task', auth=(config['auth']['name'], config['auth']['password']))
-        if response.status_code == 200:
-            response = response.json()
-            response['payload'] = json.loads(response['payload'])
-            print('Something in the queue...')
-            if 'type' in response['payload'].keys() and response['payload']['type'] == 'url':
-                summarize_site(response)
-            else:
-                summarize(response)
-            print('Awaiting for something to sum up...')
-            return True
+    response = requests.get(config['url'] + '/api/queue/task', auth=(config['auth']['name'], config['auth']['password']))
+    if response.status_code == 200:
+        response = response.json()
+        response['payload'] = json.loads(response['payload'])
+        #print('Something in the queue...')
+        if 'type' in response['payload'].keys() and response['payload']['type'] == 'url':
+            summarize_site(response)
         else:
-            return False
+            summarize(response)
+        #print('Awaiting for something to sum up...')
+        return True
     else:
-        return False
+        sys.exit('nothing to sum up')
 
 if __name__ == '__main__':
     # Add a new worker
-    print('Awaiting for something to sum up...')
-    while True:
-        res = False
-        try:
-             res = main()
-        except requests.exceptions.ConnectionError:
-            sys.exit(0)
-        except:
-            print("An error has occured")
-        if not res:
-            time.sleep(1)
+    #print('Awaiting for something to sum up...')
+    main()
             
