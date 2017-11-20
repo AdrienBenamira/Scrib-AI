@@ -1,8 +1,0 @@
-{
-    "host": "localhost",
-    "port": 8080,
-    "auth": {
-        "name": "worker_name",
-        "password": "worker_password"
-    }
-}
