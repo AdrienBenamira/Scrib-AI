@@ -1,6 +1,6 @@
 const io = require('socket.io-client');
 const pythonShell = require('python-shell');
-const config = require('./config/default');
+const config = require('./config/default.json');
 
 let numberOfElementInQueue = 0;
 let runningScript = false;
