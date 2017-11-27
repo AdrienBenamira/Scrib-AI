@@ -26,17 +26,28 @@ export default class Summarize extends Component
         this.onSendHandler = this.onSendHandler.bind(this);
     }
 
+    componentDidMount() {
+        this.updateArticleHeight();
+    }
+
     componentDidUpdate() {
-        if (this.props.text.summarized) {
-            this.articleTextarea.style.height = 'auto';
-            this.articleTextarea.style.height = this.articleTextarea.scrollHeight + 'px';
-        }
+        this.updateArticleHeight();
+        this.updateSummaryHeight();
+    }
+
+    updateSummaryHeight() {
         if (this.state.editing && this.summaryTextarea !== null) {
             this.summaryTextarea.style.height = 'auto';
             this.summaryTextarea.style.height = this.summaryTextarea.scrollHeight + 'px';
         }
     }
 
+    updateArticleHeight() {
+        if (this.props.text.summarized) {
+            this.articleTextarea.style.height = 'auto';
+            this.articleTextarea.style.height = this.articleTextarea.scrollHeight + 'px';
+        }
+    }
     /**
      * When we click on Summarize
      */
@@ -124,12 +135,7 @@ export default class Summarize extends Component
                                           value={ this.props.text.summary.userVersion }
                                           className="response"
                                 />) :
-                            (<div onClick={ (e) => {
-                                    if (this.props.text.summarized) {
-                                        this.onEditSummary(e);
-                                    }
-                                    console.log('click');
-                                } } className="response disabled">
+                            (<div className="response disabled">
                                     { this.props.text.summarizing ? <div className="loader"/> : null }
                                     <div className="response-content">
                                         {

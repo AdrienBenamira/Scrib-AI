@@ -166,11 +166,12 @@ export default class App extends Component
                                 <Login { ...props } dispatch={ this.props.dispatch } failed={ this.props.user.failed }
                                        connecting={ this.props.user.connecting }/>
                         ) }/>
-                        <Route path="/stats" render={ (props) => (
-                            this.props.user.connected ?
+                        <Route path="/stats" render={ (props) => {
+                            console.log(this.props.user);
+                            return this.props.user.connected ?
                                 <Stats { ...props } user={ this.props.user }/> :
                                 <Redirect to='/'/>
-                        ) }/>
+                        } }/>
                         <Route path="/search" render={ (props) => (
                             this.props.user.connected ?
                                 <Search { ...props } stats={ this.props.stats } dispatch={ this.props.dispatch }

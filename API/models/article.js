@@ -3,10 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     const Article = sequelize.define('Article', {
         fullText: {
             type: DataTypes.TEXT('long'),
-            validate:{
-                notEmpty: true,
-                len: [400]
-            }
+            // validate:{
+            //     notEmpty: true,
+            //     len: [400]
+            // }
         },
         origin: {
             type: DataTypes.STRING,
@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         });
         Article.Category = Article.belongsTo(models.Category, {foreignKey: 'category_id'});
         Article.Keywords = Article.belongsToMany(models.Keyword, {through: 'ArticleKeyword', foreignKey: 'article_id'});
+        Article.Datasets = Article.belongsToMany(models.Dataset, {through: 'ArticleDataset', foreignKey: 'article_id'});
     };
     return Article;
 };

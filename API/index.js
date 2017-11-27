@@ -12,6 +12,8 @@ const userActions = require('./actions/users');
 const textActions = require('./actions/texts');
 const queueActions = require('./actions/queue');
 const workerActions = require('./actions/workers');
+const vocabularyActions = require('./actions/vocabularies');
+const datasetActions = require('./actions/datasets');
 
 // Middlewares
 
@@ -56,6 +58,17 @@ app.get('/api/user/workers', (req, res) => workerActions.get(req, res));
 // - Register a new worker
 app.post('/api/user/worker', bodyParser.json(), (req, res) => workerActions.register(req, res));
 app.delete('/api/user/worker', (req, res) => workerActions.unregister(req, res));
+
+// Routes for vocab
+app.post('/api/vocabulary', (req, res) => vocabularyActions.add(req, res));
+app.get('/api/vocabulary/one', (req, res) => vocabularyActions.getOne(req, res));
+app.get('/api/vocabulary', (req, res) => vocabularyActions.get(req, res));
+
+// Routes for datasets
+app.post('/api/dataset/article', bodyParser.json(), (req, res) => datasetActions.addArticle(req, res));
+app.post('/api/dataset', (req, res) => datasetActions.add(req, res));
+app.get('/api/dataset', (req, res) => datasetActions.getArticles(req, res));
+app.get('/api/dataset/info', (req, res) => datasetActions.get(req, res));
 
 // Fallback *Must be the last route*
 
