@@ -32,12 +32,13 @@ exports.get = (req, res) => {
     const limit = req.query.limit ? req.query.limit : 10;
     const page = req.query.page ? req.query.page : 0;
     const number = req.query.number ? req.query.number : limit;
+    const offset = req.query.offset ? req.query.offset : page*number;
     db.Vocabulary.findAll({
         order: [
             ['count', 'DESC']
         ],
         limit: parseInt(number),
-        offset: page*number
+        offset: offset
     }).then((words) => {
         if(words !== null) res.json(words);
         else res.sendStatus(404);

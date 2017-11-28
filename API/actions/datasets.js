@@ -29,13 +29,33 @@ exports.get = (req, res) => {
 };
 
 /**
+ * Count the number of article in the dataset
+ * @param req
+ *  - query { dataset }
+ * @param res
+ */
+exports.count = (req, res) => {
+    db.Dataset.findOne({where: {name: req.query.dataset}}).then((dataset) => {
+        if(dataset !== null) {
+            dataset.getArticles({
+                attributes: [[db.sequelize.fn('COUNT', db.sequelize.col('Article.id')), 'count']]
+            }).then(articles => {
+                res.json(articles);
+            }).catch(() => res.sendStatus(500));
+        } else {
+            res.sendStatus(404);
+        }
+    }).catch(() => res.sendStatus(500));
+};
+
+/**
  * Add an article to a given dataset
  * @param req
  *  - body{
  *      dataset,
- *      summaries: {
+ *      summaries: [{
  *          content
- *      },
+ *      }],
  *      article: {
  *          fullText
  *      }
@@ -43,10 +63,11 @@ exports.get = (req, res) => {
  * @param res
  */
 exports.addArticle = (req, res) => {
+    console.log(req.body);
     db.Dataset.findOne({where: {name: req.body.dataset}}).then((dataset) => {
         if(dataset !== null) {
             let summaries = [];
-            if(req.body.summaries !== null && req.body.summaries.length > 0) {
+            if(req.body.summaries !== undefined && req.body.summaries !== null  && req.body.summaries.length > 0) {
                 req.body.summaries.forEach(summary => {
                     summaries.push({
                         content: summary.content,
@@ -84,7 +105,7 @@ exports.addArticle = (req, res) => {
  * Get Articles from a dataset
  * @param req
  *  - query {
- *      dataset,
+ *      name,
  *      limit (10),
  *      page (0),
  *      number (limit)
@@ -97,10 +118,11 @@ exports.getArticles = (req, res) => {
             const limit = req.query.limit ? req.query.limit : 10;
             const page = req.query.page ? req.query.page : 0;
             const number = req.query.number ? req.query.number : limit;
+            const offset = req.query.offset ? req.query.offset : page*number;
 
             dataset.getArticles({
                 limit: parseInt(number),
-                offset: page*number,
+                offset: offset,
                 include: [
                     {
                         model: db.Summary,

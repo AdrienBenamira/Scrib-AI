@@ -66,6 +66,7 @@ app.get('/api/vocabulary', (req, res) => vocabularyActions.get(req, res));
 
 // Routes for datasets
 app.post('/api/dataset/article', bodyParser.json(), (req, res) => datasetActions.addArticle(req, res));
+app.get('/api/dataset/count', (req, res) => datasetActions.count(req, res));
 app.post('/api/dataset', (req, res) => datasetActions.add(req, res));
 app.get('/api/dataset', (req, res) => datasetActions.getArticles(req, res));
 app.get('/api/dataset/info', (req, res) => datasetActions.get(req, res));
