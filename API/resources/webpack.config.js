@@ -82,6 +82,9 @@ let config = {
         contentBase: path.resolve('./public'),
         historyApiFallback: true,
     },
+    resolve: {
+        extensions: ['.js', '.jsx', '.scss']
+    },
     plugins: [
         new ExtractTextPlugin({
             filename: "css/[name].css",

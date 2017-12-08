@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
-import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom';
-import axios from 'axios';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import io from 'socket.io-client';
-import * as user from '../actions/userActions';
-import Summarize from './Summarize';
-import Stats from './Stats';
-import { Intro } from './Intro';
-import { Login } from './Login';
 import * as Cookies from 'js-cookie';
-import { config } from '../config/default';
-import Settings from './Settings';
-import Notifications from './Notifications';
-import SummarizeSite from './SummarizeSite';
-import ShowArticle from './ShowArticle';
-import { Search } from './Search';
-import * as textAction from '../actions/textActions';
+import io from 'socket.io-client';
+import axios from 'axios';
 import Message from './glui/messages/Message';
-import * as workerActions from '../actions/workersActions';
+import * as user from '../actions/userActions';
+import { config } from '../config/default';
 import SwitcherClass from './glui/switchers/SwitcherClass';
+import Notifications from './Tools/Notifications';
+import * as textAction from '../actions/textActions';
+import * as workerActions from '../actions/workersActions';
+import { Routes } from './Tools/Routes';
 
 
 @withRouter
@@ -101,6 +94,7 @@ export default class App extends Component
                     <Link to="/" className="logo">
                         Scrib-AI
                     </Link>
+
                     <SwitcherClass trigger="ham" className="active">
                         <div className="menus">
                             <ul className="menu">
@@ -118,6 +112,10 @@ export default class App extends Component
                                 { this.props.user.connected ?
                                     <li><Link to="/search"><span className="oi" data-glyph="magnifying-glass"/>
                                         Search</Link>
+                                    </li>
+                                    : null }
+                                { this.props.user.connected ?
+                                    <li><Link to="/train"><span className="oi" data-glyph="lightbulb"/> Train</Link>
                                     </li>
                                     : null }
                             </ul>
@@ -141,6 +139,7 @@ export default class App extends Component
                             </ul>
                         </div>
                     </SwitcherClass>
+
                     <button id="ham" role="button" className="ham btn"><span className="oi" data-glyph="menu"/></button>
                 </nav>
                 <Notifications { ...this.props } />
@@ -150,43 +149,7 @@ export default class App extends Component
                             <Message warning>There is no worker started... Please, come back later.</Message>
                         </div>
                     ) : null }
-                    <Switch>
-                        <Route exact path="/" component={ Intro }/>
-                        <Route path="/summarize_site" render={ (props) => (
-                            <SummarizeSite { ...props } socket={ this.socket } dispatch={ this.props.dispatch }
-                                           text={ this.props.text } workers={this.props.workers}/>
-                        ) }/>
-                        <Route path="/summarize" render={ (props) => (
-                            <Summarize { ...props } socket={ this.socket } dispatch={ this.props.dispatch }
-                                       text={ this.props.text } workers={this.props.workers}/>
-                        ) }/>
-                        <Route path="/login" render={ (props) => (
-                            this.props.user.connected ?
-                                <Redirect to="/stats"/> :
-                                <Login { ...props } dispatch={ this.props.dispatch } failed={ this.props.user.failed }
-                                       connecting={ this.props.user.connecting }/>
-                        ) }/>
-                        <Route path="/stats" render={ (props) => {
-                            console.log(this.props.user);
-                            return this.props.user.connected ?
-                                <Stats { ...props } user={ this.props.user }/> :
-                                <Redirect to='/'/>
-                        } }/>
-                        <Route path="/search" render={ (props) => (
-                            this.props.user.connected ?
-                                <Search { ...props } stats={ this.props.stats } dispatch={ this.props.dispatch }
-                                        user={ this.props.user }/> :
-                                <Redirect to='/'/>
-                        ) }/>
-                        <Route path="/settings" render={ (props) => (
-                            this.props.user.connected ?
-                                <Settings dispatch={ this.props.dispatch } socket={this.socket} user={ this.props.user } { ...props } /> :
-                                <Redirect to='/'/>
-                        ) }/>
-                        <Route path="/article/:id" render={ ({ match }) => (
-                            <ShowArticle user={ this.props.user } articleId={ match.params.id }/>
-                        ) }/>
-                    </Switch>
+                    <Routes socket={ this.socket } {...this.props}/>
                 </main>
             </div>
         );

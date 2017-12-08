@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {gradeSummary} from "../actions/textActions";
+import {gradeSummary} from "../../actions/textActions";
 
 export default class StarSelection extends Component {
 

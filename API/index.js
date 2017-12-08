@@ -14,6 +14,7 @@ const queueActions = require('./actions/queue');
 const workerActions = require('./actions/workers');
 const vocabularyActions = require('./actions/vocabularies');
 const datasetActions = require('./actions/datasets');
+const modelActions = require('./actions/models');
 
 // Middlewares
 
@@ -70,6 +71,12 @@ app.get('/api/dataset/count', (req, res) => datasetActions.count(req, res));
 app.post('/api/dataset', (req, res) => datasetActions.add(req, res));
 app.get('/api/dataset', (req, res) => datasetActions.getArticles(req, res));
 app.get('/api/dataset/info', (req, res) => datasetActions.get(req, res));
+
+// Routes for model
+app.get('/api/models/all', utils.basicAuth, (req, res) => modelActions.getAll(req, res));
+app.post('/api/model', utils.basicAuth, (req, res) => modelActions.add(req, res));
+app.get('/api/model/actions', utils.basicAuth, (req, res) => modelActions.getActions(req, res));
+app.post('/api/model/preference', (req, res) => modelActions.addPreference(req, res));
 
 // Fallback *Must be the last route*
 

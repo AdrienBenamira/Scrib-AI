@@ -1,8 +1,8 @@
 import React from 'react';
-import Form from './glui/form/Form';
-import Input from './glui/form/Input';
-import * as statsActions from '../actions/statsActions';
-import Table from './glui/table/Table';
+import Form from '../glui/form/Form';
+import Input from '../glui/form/Input';
+import * as statsActions from '../../actions/statsActions';
+import Table from '../glui/table/Table';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import * as statsActions from '../actions/statsActions';
-import Message from './glui/messages/Message';
+import * as statsActions from '../../actions/statsActions';
+import Message from '../glui/messages/Message';
 import { Redirect } from 'react-router-dom';
-import { Panel } from './glui/ui/Panel';
+import { Panel } from '../glui/ui/Panel';
 
 
 export default class ShowArticle extends React.Component
@@ -36,23 +36,27 @@ export default class ShowArticle extends React.Component
         if (!this.state.isAuthorized) return <Redirect to="/"/>;
         const article = this.state.article !== null ? (
             <div>
-                <Panel title={ this.state.article.title !== null ? this.state.article.title : 'No title' }>
-                    <p>{ this.state.article.fullText }</p>
-                    <div className="author">{ this.state.article.author }</div>
-                </Panel>
-                <h2>Summaries</h2>
+                <h1>Summaries</h1>
                 <div className="cards">
                     { this.state.article.Summaries.map(summary => (
                         <div key={summary.id} className="card large">
-                            <div className="card-content">{ summary.content }</div>
+                            <div className="card-content" style={{
+                                textAlign: 'justify',
+                                lineHeight: '1.8em',
+                                fontSize: '17px'
+                            }}>{ summary.content }</div>
                             <ul className="card-list">
                                 {summary.Grades.map(grade => (
-                                    <li key={grade.id}>grade: {grade.grade}, isIncorrect? {grade.isIncorrect ? 'Yes' : 'No'}</li>
+                                    <li key={grade.id}>grade: {grade.grade}, is incorrect? {grade.isIncorrect ? 'Yes' : 'No'}</li>
                                 ))}
                             </ul>
                         </div>
                     )) }
                 </div>
+                <Panel title={ this.state.article.title !== null ? this.state.article.title : 'No title' }>
+                    <p className="article">{ this.state.article.fullText }</p>
+                    <div className="author">{ this.state.article.author }</div>
+                </Panel>
             </div>
         ) : null;
         return this.state.errorMessage !== null ? (

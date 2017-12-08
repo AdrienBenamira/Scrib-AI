@@ -1,4 +1,5 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
+import { models } from '../reducers/modelReducer';
 // import {logger} from "redux-logger";
 import {text} from "../reducers/textReducer";
 import {user} from "../reducers/userReducer";
@@ -10,7 +11,8 @@ const reducers = combineReducers({
     user,
     text,
     stats,
-    workers
+    workers,
+    models
 });
 
 const middlewares = applyMiddleware(

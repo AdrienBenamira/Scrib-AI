@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import StarSelection from './StarSelection';
-import * as textAction from '../actions/textActions';
-import { config } from '../config/default';
-import Input from './glui/form/Input';
+import StarSelection from '../Tools/StarSelection';
+import * as textAction from '../../actions/textActions';
+import { config } from '../../config/default';
+import Input from '../glui/form/Input';
 
 
 export default class Summarize extends Component

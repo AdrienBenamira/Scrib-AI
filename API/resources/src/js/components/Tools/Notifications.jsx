@@ -1,5 +1,5 @@
 import React from 'react';
-import Message from "./glui/messages/Message";
+import Message from "../glui/messages/Message";
 
 export default class Notifications extends React.Component {
 

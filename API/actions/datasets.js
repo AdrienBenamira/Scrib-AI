@@ -115,18 +115,17 @@ exports.addArticle = (req, res) => {
 exports.getArticles = (req, res) => {
     db.Dataset.findOne({where: {name: req.query.name}}).then(dataset => {
         if(dataset !== null) {
-            const limit = req.query.limit ? req.query.limit : 10;
-            const page = req.query.page ? req.query.page : 0;
-            const number = req.query.number ? req.query.number : limit;
-            const offset = req.query.offset ? req.query.offset : page*number;
+            const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+            const page = req.query.page ? parseInt(req.query.page) : 0;
+            const number = req.query.number ? parseInt(req.query.number) : limit;
+            const offset = req.query.offset ? parseInt(req.query.offset) : page*number;
 
             dataset.getArticles({
-                limit: parseInt(number),
+                limit: number,
                 offset: offset,
                 include: [
                     {
                         model: db.Summary,
-                        where: {}
                     }
                 ]
             }).then((articles) => {

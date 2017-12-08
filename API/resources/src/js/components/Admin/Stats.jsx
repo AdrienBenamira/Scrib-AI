@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Chart from './Chart';
 import { Link } from 'react-router-dom';
-import * as statsActions from '../actions/statsActions';
-import * as showArticle from '../actions/statsActions';
+import * as statsActions from '../../actions/statsActions';
+import * as showArticle from '../../actions/statsActions';
 
 
 export default class Stats extends Component

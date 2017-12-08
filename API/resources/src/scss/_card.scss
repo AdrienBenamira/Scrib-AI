@@ -11,8 +11,10 @@
     border: $card-border;
     margin: $card-margin;
     border-radius: $card-border-radius;
+    align-self: flex-start;
 
     .card-heading {
+      vertical-align: top;
       padding: $card-padding;
       font-size: $card-heading-font-size;
       font-weight: $card-heading-font-weight;

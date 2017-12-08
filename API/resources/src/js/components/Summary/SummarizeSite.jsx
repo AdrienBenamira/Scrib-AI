@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import Input from './glui/form/Input';
+import Input from '../glui/form/Input';
 // import Form from './glui/form/Form';
-import * as textAction from '../actions/textActions';
-import { config } from '../config/default';
+import * as textAction from '../../actions/textActions';
+import { config } from '../../config/default';
 import axios from 'axios';
 
 

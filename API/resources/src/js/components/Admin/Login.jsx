@@ -1,10 +1,10 @@
 import React from 'react';
-import Form from "./glui/form/Form";
-import Input from "./glui/form/Input";
+import Form from "../glui/form/Form";
+import Input from "../glui/form/Input";
 import axios from 'axios';
-import {config} from '../config/default';
-import {connectionFailed, connectUser, userConnected} from "../actions/userActions";
-import Message from "./glui/messages/Message";
+import {config} from '../../config/default';
+import {connectionFailed, connectUser, userConnected} from "../../actions/userActions";
+import Message from "../glui/messages/Message";
 import * as Cookies from 'js-cookie';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';

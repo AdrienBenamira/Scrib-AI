@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { Panel } from './glui/ui/Panel';
-import Form from './glui/form/Form';
-import Input from './glui/form/Input';
-import { config } from '../config/default';
-import * as userAction from '../actions/userActions';
-import Table from './glui/table/Table';
+import { Panel } from '../glui/ui/Panel';
+import Form from '../glui/form/Form';
+import Input from '../glui/form/Input';
+import { config } from '../../config/default';
+import * as userAction from '../../actions/userActions';
+import Table from '../glui/table/Table';
 
 
 export default class Settings extends React.Component
