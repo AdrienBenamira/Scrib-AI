@@ -26,11 +26,15 @@ def summarize(response):
     ratio=float(response["payload"]['ratio'])
     #print(ratio)
     nbre_words_output=int(nbre_words_input*ratio)
+    model = str(response['payload']['model'])
     #print(nbre_words_input,nbre_words_output)
     if nbre_words_input>400:
         with open("finished_files/original.source", "w") as output:
             output.write(str(response['payload']['article'].encode('utf-8')))
-        resultat=fonction_principale(nbre_words_input,nbre_words_output)
+        if model == 'google':
+            resultat=fonction_principale(nbre_words_input,nbre_words_output)
+        else:
+            pass
         t1=time.time()
         Nc=len(resultat.split())
         gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
@@ -66,16 +70,20 @@ def summarize_site(response):
     #print("START TRANSFORM SITE")
     t0=time.time()
     compteur=0
-    (art, titre,authors,publish_date,keywords, images)=article_from_url(str(response['payload']['url']))
+    (art, titre,authors, publish_date,keywords, images)=article_from_url(str(response['payload']['url']))
     nbre_words_input=len(art.encode('utf-8').split())
     nbre_words_input=nbre_words_input+int(nbre_words_input*0.1)
     ratio=float(response["payload"]['ratio'])
     nbre_words_output=int(nbre_words_input*ratio)
+    model = str(response['payload']['model'])
     #print(nbre_words_input,nbre_words_output)
     if nbre_words_input>400:
         with open("finished_files/original.source", "w") as output:
             output.write(str(art.encode('utf-8')))
-        resultat=fonction_principale(nbre_words_input,nbre_words_output)
+        if model == 'googe':
+            resultat=fonction_principale(nbre_words_input,nbre_words_output)
+        else:
+            pass
         t1=time.time()
         Nc=len(resultat.split())
         gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)

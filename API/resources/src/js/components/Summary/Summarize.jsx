@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import List from '../glui/form/List/List';
+import ListItem from '../glui/form/List/ListItem';
+import Select from '../glui/form/Select';
 import StarSelection from '../Tools/StarSelection';
 import * as textAction from '../../actions/textActions';
 import { config } from '../../config/default';
@@ -57,6 +60,7 @@ export default class Summarize extends Component
             window.scrollTo(0, 0);
             this.props.socket.emit('pushQueue', {
                 payload: {
+                    model: this.props.text.model,
                     article: this.props.text.fullText,
                     ratio: this.props.text.ratio
                 }
@@ -107,7 +111,13 @@ export default class Summarize extends Component
                 } } id="ratio" label="Ratio" required style={ { display: 'block', width: 400, margin: '0 auto' } }
                        value={ this.props.text.ratio }/>*/}
                 <h1><span className="oi" data-glyph="excerpt"/> Summarize</h1>
-
+                <List lable="Model" onChange={(_, model) => {
+                    this.props.dispatch(textAction.changeModel(model));
+                    console.log(model)
+                }}>
+                    <ListItem value="google" label="Get to the point"/>
+                    <ListItem value="onmt" label="ONMT"/>
+                </List>
                 <div className="scrib-container">
                     <div className="scrib-article">
                         <textarea ref={ (textarea) => this.articleTextarea = textarea } className="article"

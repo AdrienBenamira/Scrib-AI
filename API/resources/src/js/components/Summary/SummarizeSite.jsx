@@ -5,6 +5,8 @@ import Input from '../glui/form/Input';
 import * as textAction from '../../actions/textActions';
 import { config } from '../../config/default';
 import axios from 'axios';
+import List from '../glui/form/List/List';
+import ListItem from '../glui/form/List/ListItem';
 
 
 export default class SummarizeSite extends Component
@@ -33,6 +35,7 @@ export default class SummarizeSite extends Component
             console.log(this.state.origin);
             this.props.socket.emit('pushQueue', {
                 payload: {
+                    model: this.props.text.model,
                     type: 'url',
                     url: this.state.origin,
                     ratio: this.props.text.ratio
@@ -45,7 +48,13 @@ export default class SummarizeSite extends Component
         return this.state.redirect ? <Redirect to="/summarize"/> : (
             <div>
                 <h1><span className="oi" data-glyph="link-intact"/> Summarize from a website</h1>
-
+                <List lable="Model" onChange={(_, model) => {
+                    this.props.dispatch(textAction.changeModel(model));
+                    console.log(model)
+                }}>
+                    <ListItem value="google" label="Get to the point"/>
+                    <ListItem value="onmt" label="ONMT"/>
+                </List>
                 <form className="vertical">
                     <Input className="scrib-url" onChange={ (id, value, isCorrect, mess) => {
                         if (id === 'url') {

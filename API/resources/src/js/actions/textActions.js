@@ -12,6 +12,13 @@ export const summarize = (summary) => {
     };
 };
 
+export const changeModel = (model) => {
+    return {
+        type: 'CHANGE_MODEL',
+        payload: model
+    };
+};
+
 export const summarize_site = (origin) => {
     return {
         type: 'START_SUMMARIZATION_FROM_URL',

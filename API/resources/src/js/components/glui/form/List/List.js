@@ -143,7 +143,7 @@ export default class List extends Component {
         return (
             <div className={"form-group" + inputStatus}>
                 {this.state.inputs}
-                <div className="select-list" id={this.props.id}>
+                <div style={this.props.style} className={"select-list" + " " + this.props.className} id={this.props.id}>
                     <label htmlFor={this.props.id}>{this.props.label}</label>
                     <div className={"select-list-selector btn" + inputStatus}
                          onClick={this.handleClickButton}>{selectorMsg} <span

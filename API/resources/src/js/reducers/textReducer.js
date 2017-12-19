@@ -8,6 +8,7 @@ export const text = (state = {
     ratio: 0.4,
     summarizing: false,
     summarized: false,
+    model: '',
     summary: {
         content: null,
         chrono: null,
@@ -42,6 +43,9 @@ export const text = (state = {
                     isAccepted: false
                 }
             };
+            break;
+        case 'CHANGE_MODEL':
+            state = {...state, model: action.payload};
             break;
         case 'START_SUMMARIZATION_FROM_URL':
             state = {
