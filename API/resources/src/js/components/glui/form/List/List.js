@@ -141,7 +141,7 @@ export default class List extends Component {
         else if (this.props.default) inputStatus = ' default';
 
         return (
-            <div className={"form-group" + inputStatus}>
+            <div className={"select-form" + inputStatus}>
                 {this.state.inputs}
                 <div style={this.props.style} className={"select-list" + " " + this.props.className} id={this.props.id}>
                     <label htmlFor={this.props.id}>{this.props.label}</label>

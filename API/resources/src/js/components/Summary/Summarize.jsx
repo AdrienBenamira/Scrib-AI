@@ -111,13 +111,6 @@ export default class Summarize extends Component
                 } } id="ratio" label="Ratio" required style={ { display: 'block', width: 400, margin: '0 auto' } }
                        value={ this.props.text.ratio }/>*/}
                 <h1><span className="oi" data-glyph="excerpt"/> Summarize</h1>
-                <List lable="Model" onChange={(_, model) => {
-                    this.props.dispatch(textAction.changeModel(model));
-                    console.log(model)
-                }}>
-                    <ListItem value="google" label="Get to the point"/>
-                    <ListItem value="onmt" label="ONMT"/>
-                </List>
                 <div className="scrib-container">
                     <div className="scrib-article">
                         <textarea ref={ (textarea) => this.articleTextarea = textarea } className="article"
@@ -128,6 +121,15 @@ export default class Summarize extends Component
                                       e.target.style.height = 'auto';
                                       e.target.style.height = e.target.scrollHeight + 'px';
                                   } } value={ this.props.text.fullText } placeholder="Paste your article here..."/>
+
+                        <List lable="Model" onChange={(_, model) => {
+                            this.props.dispatch(textAction.changeModel(model));
+                            console.log(model)
+                        }}>
+                            <ListItem value="google" label="Get to the point"/>
+                            <ListItem value="ours_1layer" label="Ours (1 layer)"/>
+                            <ListItem value="ours_4layers" label="Ours (4 layer)"/>
+                        </List>
 
                         <button onClick={ this.onSummarizeHandler }
                                 disabled={ this.props.text.summarizing || this.props.workers.number <= 0 }
