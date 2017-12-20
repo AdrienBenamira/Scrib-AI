@@ -124,11 +124,10 @@ export default class Summarize extends Component
 
                         <List lable="Model" onChange={(_, model) => {
                             this.props.dispatch(textAction.changeModel(model));
-                            console.log(model)
                         }}>
                             <ListItem value="google" label="Get to the point"/>
                             <ListItem value="ours_1layer" label="Ours (1 layer)"/>
-                            <ListItem value="ours_4layers" label="Ours (4 layer)"/>
+                            <ListItem value="ours_4layers" label="Ours (4 layers)"/>
                         </List>
 
                         <button onClick={ this.onSummarizeHandler }
