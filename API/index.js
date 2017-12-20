@@ -21,10 +21,10 @@ const modelActions = require('./actions/models');
 app.use(express.static('resources/public'));
 
 // Use the basicAuth middleware for all /user routes
-app.use('/api/user', utils.basicAuth);
-app.use('/api/users', utils.basicAuth);
-app.use('/api/worker', utils.basicAuthWorkers);
-app.use('/api/queue', utils.basicAuthWorkers);
+// app.use('/api/user', utils.basicAuth);
+// app.use('/api/users', utils.basicAuth);
+// app.use('/api/worker', utils.basicAuthWorkers);
+// app.use('/api/queue', utils.basicAuthWorkers);
 
 // Routes
 
