@@ -17,7 +17,7 @@ def uppercase(matchobj):
 def capitalize(s):
     return re.sub('^([a-z])|[\.|\?|\!]\s*([a-z])|\s+([a-z])(?=\.)', uppercase, s)
 
-def fonction_principale(nbre_words_input,nbre_words_output):
+def fonction_principale(nbre_words_input,nbre_words_output, model="google"):
     print('START make data')
     os.system("python2 make_datafiles.py")
     print('END make data')

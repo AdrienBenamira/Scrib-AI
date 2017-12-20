@@ -31,10 +31,7 @@ def summarize(response):
     if nbre_words_input>400:
         with open("finished_files/original.source", "w") as output:
             output.write(str(response['payload']['article'].encode('utf-8')))
-        if model == 'google':
-            resultat=fonction_principale(nbre_words_input,nbre_words_output)
-        else:
-            pass
+        resultat=fonction_principale(nbre_words_input,nbre_words_output, model)
         t1=time.time()
         Nc=len(resultat.split())
         gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
@@ -80,10 +77,7 @@ def summarize_site(response):
     if nbre_words_input>400:
         with open("finished_files/original.source", "w") as output:
             output.write(str(art.encode('utf-8')))
-        if model == 'googe':
-            resultat=fonction_principale(nbre_words_input,nbre_words_output)
-        else:
-            pass
+        resultat=fonction_principale(nbre_words_input,nbre_words_output, model)
         t1=time.time()
         Nc=len(resultat.split())
         gain=(60*(nbre_words_input-Nc)/300)-(t1-t0)
