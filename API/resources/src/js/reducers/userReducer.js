@@ -2,7 +2,7 @@ export const user = (state = {
     username: '',
     password: '',
     failed: false,
-    connecting: false,
+    connecting: true,
     connected: false,
     signup: {
         signingup: false,
@@ -29,7 +29,7 @@ export const user = (state = {
             state = {...state, connecting: false, failed: true};
             break;
         case 'LOGOUT':
-            state = {...state, connected: false, username: '', password: ''};
+            state = {...state, connected: false, connecting:false, username: '', password: ''};
             break;
         case 'ADD_USER':
             state = {...state, signup: {...state.signup, signingup: true, failed: false, done: false}};

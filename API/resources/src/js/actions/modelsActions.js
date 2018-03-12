@@ -38,3 +38,32 @@ export const fetchActionsFailed = (err) => {
         payload: err
     }
 };
+
+export const changeCurrentModel = (modelId) => {
+    return {
+        type: 'CHANGE_CURRENT_MODEL',
+        payload: modelId
+    }
+};
+
+export const metricsFetched = (metrics) => {
+    return {
+        type: 'METRICS_FETCHED',
+        payload: metrics
+    };
+};
+
+export const addMetric = (metric) => {
+    return {
+        type: 'ADD_METRIC',
+        payload: metric
+    };
+};
+
+export const updateMetrics = (metrics) => {
+    return {
+        type: 'UPDATE_METRICS',
+        payload: metrics
+    };
+};
+

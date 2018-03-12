@@ -22,7 +22,7 @@ export default class Input extends Component {
                 message = this.props.ruleMessage ? this.props.ruleMessage : formMessages.incorrect;
             }
         }
-        this.props.onChange(this.props.id, value, isCorrect, message)
+        this.props.onChange(this.props.id, value, isCorrect, message);
     }
 
     render() {

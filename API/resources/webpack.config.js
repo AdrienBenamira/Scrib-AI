@@ -77,7 +77,7 @@ let config = {
             },
         ]
     },
-    devtool: dev ? 'cheap-module-eval-source-map ' : false,
+    devtool: dev ? 'source-map ' : false,
     devServer: {
         contentBase: path.resolve('./public'),
         historyApiFallback: true,

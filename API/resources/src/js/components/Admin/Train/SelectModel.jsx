@@ -31,7 +31,10 @@ export default class SelectModel extends React.Component
         return (
             <div>
                 <h1>Choose a model</h1>
-                <ul>{ this.props.models.models.map(model => <li key={model.id}><Link to={ '/train/' + model.name }>{model.name}</Link></li>) }</ul>
+                <ul>{ this.props.models.models.map(model =>
+                    <li key={model.id}>
+                        <Link onClick={() => this.props.dispatch(modelsActions.changeCurrentModel(model.id))} to={ '/train/' + model.name }>{model.name}</Link>
+                    </li>) }</ul>
                 <Panel title={ <div><span className="oi" data-glyph="justify-left"/> Add a new model</div> }>
                     <Form submit={ <div>
                         <span className="oi" data-glyph="plus"/>

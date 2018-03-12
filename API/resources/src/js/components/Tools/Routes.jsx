@@ -34,30 +34,30 @@ export const Routes = (propsRoutes) => {
             ) }/>
             <Route path="/stats" render={ (props) => {
                 console.log(propsRoutes.user);
-                return propsRoutes.user.connected ?
+                return propsRoutes.user.connected || propsRoutes.user.connecting ?
                     <Stats { ...props } user={ propsRoutes.user }/> :
                     <Redirect to='/'/>;
             } }/>
             <Route path="/search" render={ (props) => (
-                propsRoutes.user.connected ?
+                propsRoutes.user.connected || propsRoutes.user.connecting ?
                     <Search { ...props } stats={ propsRoutes.stats } dispatch={ propsRoutes.dispatch }
                             user={ propsRoutes.user }/> :
                     <Redirect to='/'/>
             ) }/>
             <Route path="/settings" render={ (props) => (
-                propsRoutes.user.connected ?
+                propsRoutes.user.connected || propsRoutes.user.connecting ?
                     <Settings dispatch={ propsRoutes.dispatch } socket={ propsRoutes.socket }
                               user={ propsRoutes.user } { ...props } /> :
                     <Redirect to='/'/>
             ) }/>
             <Route path="/train/:model" render={ ({ match }) => (
-                propsRoutes.user.connected ?
+                propsRoutes.user.connected || propsRoutes.user.connecting ?
                     <Train dispatch={ propsRoutes.dispatch } user={ propsRoutes.user } models={ propsRoutes.models }
-                           modelName={ match.params.model }/> :
+                           modelName={ match.params.model } socket={ propsRoutes.socket } /> :
                     <Redirect to='/'/>
             ) }/>
             <Route path="/train" render={ (props) => (
-                propsRoutes.user.connected ?
+                propsRoutes.user.connected || propsRoutes.user.connecting ?
                     <SelectModel dispatch={ propsRoutes.dispatch } user={ propsRoutes.user }
                                  models={ propsRoutes.models } { ...props } /> :
                     <Redirect to='/'/>

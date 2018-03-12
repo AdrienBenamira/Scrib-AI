@@ -2,19 +2,42 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import * as modelsActions from '../../../actions/modelsActions';
 import { config } from '../../../config/default';
+import AutomaticChoices from './AutomaticChoices';
+import RightLeftChoices from './RightLeftChoices';
 
 
 export default class Train extends Component
 {
-
     constructor() {
         super();
-        this.onClick = this.onClick.bind(this);
+        this.toggleAuto = this.toggleAuto.bind(this);
+    }
+
+    updateModels() {
+        axios.get(config.api.host + '/models/all', {
+            auth: {
+                username: this.props.user.username, password: this.props.user.password
+            }
+        }).then(
+            response => {
+                this.props.dispatch(dispatch => {
+                    dispatch(modelsActions.modelsFetched(response.data));
+                    const curModel = this.props.models.models.filter(model => model.name === this.props.modelName);
+                    if(curModel.length > 0)
+                        dispatch(modelsActions.changeCurrentModel(curModel[0].id));
+                });
+            })
+            .catch(err => this.props.dispatch(modelsActions.fetchingFailed(err)));
     }
 
     componentWillMount() {
+        if (!this.props.models.models[this.props.models.currentModelId]) {
+            this.props.dispatch(modelsActions.fetchModels());
+            this.updateModels();
+        }
         this.props.dispatch(modelsActions.fetchActions());
         this.fetchTwoActions();
+        console.log(this.props.models);
     }
 
     fetchTwoActions() {
@@ -29,69 +52,23 @@ export default class Train extends Component
         });
     }
 
-    onClick(e, preference) {
-        console.log(preference);
-        this.props.dispatch(modelsActions.fetchActions());
-        const url = config.api.host + '/model/preference?model=' + this.props.modelName + '&action_left=' +
-                this.props.models.actions.actions[0].id + '&action_right=' +
-                this.props.models.actions.actions[1].id + '&score=' + preference;
-        axios.post(url, {
+    async toggleAuto() {
+        const name = this.props.models.models[this.props.models.currentModelId].name;
+        await axios.put(config.api.host + '/model/toggle-auto?name=' + name, {
             auth: {
                 username: this.props.user.username, password: this.props.user.password
             }
-        }).then(response => {
-            console.log(response);
-            this.fetchTwoActions();
-        }).catch(err => {
-            console.log(err);
         });
+        this.updateModels();
     }
 
     render() {
         return (<div>
+            <button className="btn" onClick={ () => this.toggleAuto() }>Toggle auto/manual</button>
             <h1>Training</h1>
-            <p>
-                You will be shown two different summaries for a same article. Please click on the best summary.
-            </p>
-            { this.props.models.actions.actions.length > 0 ?
-                <div>
-                    <div className="cards">
-                        <button onClick={(e) => this.onClick(e, 1)} className="card large">
-                            <div className="card-heading">Choice 1</div>
-                            <div className="card-content" style={{
-                                textAlign: 'justify',
-                                lineHeight: '1.8em',
-                                fontSize: '17px'
-                            }}>
-                                { this.props.models.actions.actions[0].content }
-                            </div>
-                        </button>
-                        <button onClick={(e) => this.onClick(e, 2)} className="card large">
-                            <div className="card-heading">Choice 2</div>
-                            <div className="card-content" style={{
-                                textAlign: 'justify',
-                                lineHeight: '1.8em',
-                                fontSize: '17px'
-                            }}>
-                                { this.props.models.actions.actions[1].content }
-                            </div>
-                        </button>
-                    </div>
-                    <div style={{
-                        width: 200,
-                        display: "block",
-                        margin: "0 auto"
-                    }}>
-                        <button onClick={(e) => this.onClick(e, -1)} className="btn dark">Neither</button>
-                        <button onClick={(e) => this.onClick(e, 0)} className="btn default">Both</button>
-                    </div>
-                    <h2>Associated article</h2>
-                    <p className="article">{this.props.models.actions.actions[0].Article.fullText}</p>
-                </div>
-                : <p style={{
-                    marginTop: 60,
-                    textAlign: "center"
-                }}>There is no more examples... Wait until some appear.</p> }
+            { this.props.models.models[this.props.models.currentModelId] ? this.props.models.models[this.props.models.currentModelId].is_automatic ?
+                <AutomaticChoices { ...this.props } /> :
+                <RightLeftChoices { ...this.props } /> : null }
         </div>);
     }
 }

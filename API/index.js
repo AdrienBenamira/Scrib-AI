@@ -74,8 +74,13 @@ app.get('/api/dataset/info', (req, res) => datasetActions.get(req, res));
 
 // Routes for model
 app.get('/api/models/all', (req, res) => modelActions.getAll(req, res));
+app.put('/api/model/toggle-auto', (req, res) => modelActions.toggleAutomatic(req, res));
+app.get('/api/metrics', (req, res) => modelActions.getMetrics(req, res));
+app.post('/api/metric', (req, res) => modelActions.addMetric(req, res));
+app.put('/api/metric', bodyParser.json(), (req, res) => modelActions.changeOrder(req, res));
 app.post('/api/model', (req, res) => modelActions.add(req, res));
 app.get('/api/model/actions', (req, res) => modelActions.getActions(req, res));
+app.post('/api/model/action', bodyParser.json(), (req, res) => modelActions.addAction(req, res, io));
 app.post('/api/model/preference', (req, res) => modelActions.addPreference(req, res));
 
 // Fallback *Must be the last route*
@@ -89,8 +94,11 @@ io.on('connect', (socket) => {
 
     if(isWorker) {
         utils.authWorker(params.name, params.password, () => {
-            db.Queue.count({ where: { status: 0 } }).then(sizeQueue => socket.emit('pushQueue', sizeQueue));
             socket.join('workers');
+            socket.on('responseMetric', data => console.log(data));
+            socket.on('execMetricReady', () => modelActions.sendReadyActions(io));
+            socket.on('saveAutoPreference', (data) => modelActions.saveAutoPreference(io, data));
+            db.Queue.count({ where: { status: 0 } }).then(sizeQueue => socket.emit('pushQueue', sizeQueue));
             db.Worker.update({status: 1}, { where: { name: params.name } }).then(() =>
                 workerActions.add(io)
             );
@@ -98,6 +106,7 @@ io.on('connect', (socket) => {
     } else {
         socket.join('clients');
         socket.on('pushQueue', data => queueActions.push(io, socket, data));
+        socket.on('computeMetrics', () => io.sockets.to('workers').emit('execMetricRequest'));
     }
     socket.on('disconnect', (reason) => {
         if(isWorker) {

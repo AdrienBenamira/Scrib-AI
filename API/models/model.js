@@ -1,7 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     var Model = sequelize.define('Model', {
-        name: DataTypes.STRING(20)
+        name: DataTypes.STRING(20),
+        is_automatic: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+        }
     }, {
         tableName: 'Models',
         timestamps: false

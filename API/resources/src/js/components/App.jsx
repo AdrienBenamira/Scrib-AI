@@ -73,6 +73,8 @@ export default class App extends Component
                         dispatch(user.connectionFailed());
                     });
                 });
+            } else {
+                this.props.dispatch(user.logout());
             }
         }
         // Fetch number of workers
@@ -149,7 +151,7 @@ export default class App extends Component
                             <Message warning>There is no worker started... Please, come back later.</Message>
                         </div>
                     ) : null }
-                    <Routes socket={ this.socket } {...this.props}/>
+                    <Routes socket={ this.socket } { ...this.props }/>
                 </main>
             </div>
         );
