@@ -80,6 +80,8 @@ app.post('/api/metric', (req, res) => modelActions.addMetric(req, res));
 app.put('/api/metric', bodyParser.json(), (req, res) => modelActions.changeOrder(req, res));
 app.post('/api/model', (req, res) => modelActions.add(req, res));
 app.get('/api/model/actions', (req, res) => modelActions.getActions(req, res));
+app.get('/api/preference', (req, res) => modelActions.getPreferences(req, res));
+app.post('/api/preference/treated', (req, res) => modelActions.setPreferenceAsTreated(req, res));
 app.post('/api/model/action', bodyParser.json(), (req, res) => modelActions.addAction(req, res, io));
 app.post('/api/model/preference', (req, res) => modelActions.addPreference(req, res));
 

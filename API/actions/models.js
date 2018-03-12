@@ -174,6 +174,43 @@ exports.getActions = (req, res) => {
     });
 };
 
+exports.getPreferences = async (req, res) => {
+    const model = await db.Model.findOne({
+        where: { name: req.query.model }
+    });
+    const preference = await model.getModelPreferences({
+        order: [['treated', 'ASC']],
+        limit: 1
+    });
+    const preferences = await model.getModelPreferences({
+        where: {
+            treated: preference[0].treated 
+        },
+        include: [
+            {
+                model: db.ModelAction,
+                as: "action_right"
+            },
+            {
+                model: db.ModelAction,
+                as: "action_left"
+            },
+        ]
+    });
+    res.json(preferences);
+};
+
+exports.setPreferenceAsTreated = async (req, res) => {
+    const preference = await db.ModelPreference.findOne({
+        where: {
+            id: req.query.id 
+        }
+    });
+    preference.treated = preference.treated + 1;
+    await preference.save();
+    res.sendStatus(200);
+}
+
 exports.getMetrics = async (req, res) => {
     let metrics = await db.Metric.findAll({
         order: [['order', 'DESC']]
