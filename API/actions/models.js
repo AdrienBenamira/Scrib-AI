@@ -189,11 +189,13 @@ exports.getPreferences = async (req, res) => {
         include: [
             {
                 model: db.ModelAction,
-                as: "action_right"
+                as: "action_right",
+                include: [{model: db.Article}]
             },
             {
                 model: db.ModelAction,
-                as: "action_left"
+                as: "action_left",
+                include: [{model: db.Article}]
             },
         ]
     });
