@@ -9,13 +9,14 @@ class ScribAPI:
             self.config = ScribAPI.import_config(file)
         else:
             self.config = None
-        self.api_endpoint = self.config['url'] + '/api/'
+        self.api_endpoint = None
 
     def load_config(self, config, from_file=None):
         if from_file is not None:
             self.config = ScribAPI.import_config(from_file)
         else:
             self.config = config
+        self.api_endpoint = self.config['url'] + '/api/'
         return self
 
     def get_vocab(self, word=None, limit=None, page=None, number=None, offset=None):
