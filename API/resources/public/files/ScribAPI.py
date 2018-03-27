@@ -4,9 +4,19 @@ import requests
 
 
 class ScribAPI:
-    def __init__(self, file):
-        self.config = ScribAPI.import_config(file)
+    def __init__(self, file=None):
+        if file is not None:
+            self.config = ScribAPI.import_config(file)
+        else:
+            self.config = None
         self.api_endpoint = self.config['url'] + '/api/'
+
+    def load_config(self, config, from_file=None):
+        if from_file is not None:
+            self.config = ScribAPI.import_config(from_file)
+        else:
+            self.config = config
+        return self
 
     def get_vocab(self, word=None, limit=None, page=None, number=None, offset=None):
         """
