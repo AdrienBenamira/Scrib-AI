@@ -96,7 +96,7 @@ let config = {
 if (!dev) {
     config.plugins.unshift(new UglifyJSPlugin());
     config.plugins.push(new CleanWebpackPlugin(['public'], {
-        exclude: ['index.html'],
+        exclude: ['index.html', 'files'],
         root: path.resolve('./'),
         verbose: true,
         dry: false
