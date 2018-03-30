@@ -11,6 +11,7 @@ export const Search = (props) => (
     <div>
         <h1><span className="oi" data-glyph="magnifying-glass"/> Search</h1>
         <Form onSubmit={ (values) => {
+            if(props.match.params.page) values['page'] = props.match.params.page;
             Object.getOwnPropertyNames(values).forEach(function (key) {
                 if (values[key] === undefined || values[key] === '') values[key] = null;
             });
@@ -33,16 +34,18 @@ export const Search = (props) => (
             <Input type="checkbox" id="isGenerated" label="Is Generated?"/>
         </Form>
         <Table headers={ ['ID', 'Article ID', 'Date', 'Grades', 'See'] } data={ props.stats.results.map(result => {
-            return [
+            let value = [
                 result.id,
                 result.Article.id,
-                moment(result.createdAt).format('MMMM Do YYYY, h:mm:ss a'),
-                result.Grades.map(grade => grade.grade).join(', '),
+                moment(result.createdAt).format('MMMM Do YYYY, h:mm:ss a')];
+            if(result.Grades !== undefined) value.push(result.Grades.map(grade => grade.grade).join(', '));
+            else value.push('-');
+            value.push(
                 <Link className="btn" to={ '/article/' + result.Article.id }>
                     <span className="oi" data-glyph="eye"/>
                     See
-                </Link>
-            ];
+                </Link>);
+            return value;
         }) }/>
     </div>
 );

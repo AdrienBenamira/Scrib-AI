@@ -2,15 +2,29 @@ const db = require('../models');
 const moment = require('moment');
 
 exports.grade = (query, req) => {
+    console.log(query.grade);
     if (query.grade !== undefined) {
-        req.include.map(inc => {
-            if (inc.model === db.Grade) {
-                inc.where = {
-                    ...inc.where,
-                    grade: parseInt(query.grade)
-                };
+        let hasInclude = false;
+        req.include.forEach(inc => {
+            if(inc.model === db.Grade) {
+                hasInclude = true;
             }
-            return inc;
+        });
+        if(hasInclude) {
+            req.include.map(inc => {
+                if (inc.model === db.Grade) {
+                    inc.where = {
+                        ...inc.where,
+                        grade: parseInt(query.grade)
+                    };
+                }
+                return inc;
+            });
+        } else req.include.push({
+            model: db.Grade,
+            where: {
+                grade: parseInt(query.grade)
+            }
         });
     }
     return req;

@@ -54,6 +54,12 @@ export const Routes = (propsRoutes) => {
                     <Measurements { ...props } user={ propsRoutes.user }/> :
                     <Redirect to='/'/>;
             } }/>
+            <Route path="/search/:page" render={ (props) => (
+                propsRoutes.user.connected || propsRoutes.user.connecting ?
+                    <Search { ...props } stats={ propsRoutes.stats } dispatch={ propsRoutes.dispatch }
+                            user={ propsRoutes.user }/> :
+                    <Redirect to='/'/>
+            ) }/>
             <Route path="/search" render={ (props) => (
                 propsRoutes.user.connected || propsRoutes.user.connecting ?
                     <Search { ...props } stats={ propsRoutes.stats } dispatch={ propsRoutes.dispatch }

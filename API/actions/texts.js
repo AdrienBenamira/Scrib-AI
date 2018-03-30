@@ -99,10 +99,7 @@ exports.getSummary = (req, res) => {
     let dbReq = {
         where: {},
         include: [
-            {
-                model: db.Grade,
-                where: {}
-            }, {
+             {
                 model: db.Article,
                 where: {}
             }
@@ -119,6 +116,12 @@ exports.getSummary = (req, res) => {
     dbReq = statsSummaryQueries.articleId(query, dbReq);
     dbReq = statsSummaryQueries.fullText(query, dbReq);
     dbReq = statsSummaryQueries.isGenerated(query, dbReq);
+
+    if(req.query.limit) dbReq.limit = parseInt(req.query.limit);
+    if(req.query.page && req.query.limit) dbReq.offset = parseInt(req.query.limit) * parseInt(req.query.page);
+
+    console.log("summary");
+    console.log(dbReq);
 
     db.Summary.findAll(dbReq).then((result) => {
         res.json(result);
@@ -153,6 +156,12 @@ exports.getArticle = (req, res) => {
     dbReq = statsArticleQueries.id(query, dbReq);
     dbReq = statsArticleQueries.fullText(query, dbReq);
     dbReq = statsArticleQueries.isGenerated(query, dbReq);
+
+    if(req.query.limit) dbReq.limit = parseInt(req.query.limit);
+    if(req.query.page && req.query.limit) dbReq.offset = parseInt(req.query.limit) * parseInt(req.query.page);
+
+    console.log("article");
+    console.log(dbReq);
 
     db.Article.findAll(dbReq).then((result) => {
         res.json(result);

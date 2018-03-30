@@ -19,6 +19,8 @@ export const fetchStats = (opt, article=false) => {
     if(opt.fullText && opt.fullText !== null) params.push('fullText=' + opt.fullText);
     if(opt.isGenerated && opt.isGenerated !== null) params.push('fullText=' + opt.isGenerated);
 
+    if(opt.limit) params.push('limit=' + opt.limit.toString()); else params.push('limit=50');
+    if(opt.page) params.push('page=' + opt.page.toString()); else params.push('page=0');
     if(params.length > 0) url = url + '?' + params.join('&');
 
     return axios.get(url, {
