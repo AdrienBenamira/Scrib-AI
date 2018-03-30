@@ -2,6 +2,7 @@ import React from 'react';
 import Redirect from 'react-router-dom/es/Redirect';
 import Route from 'react-router-dom/es/Route';
 import Switch from 'react-router-dom/es/Switch';
+import Graph from '../Admin/Graph';
 import { Login } from '../Admin/Login';
 import { Search } from '../Admin/Search';
 import Settings from '../Admin/Settings';
@@ -10,6 +11,7 @@ import Stats from '../Admin/Stats';
 import SelectModel from '../Admin/Train/SelectModel';
 import Train from '../Admin/Train/Train';
 import { Intro } from '../Intro';
+import Measurements from '../Admin/Measurements';
 import Summarize from '../Summary/Summarize';
 import SummarizeSite from '../Summary/SummarizeSite';
 
@@ -18,7 +20,7 @@ export const Routes = (propsRoutes) => {
     return (
         <Switch>
             <Route exact path="/" component={ Intro }/>
-            <Route path="/summarize_site" render={ (props) => (
+            <Route path="/summarize-site" render={ (props) => (
                 <SummarizeSite { ...props } socket={ propsRoutes.socket } dispatch={ propsRoutes.dispatch }
                                text={ propsRoutes.text } workers={ propsRoutes.workers }/>
             ) }/>
@@ -28,14 +30,28 @@ export const Routes = (propsRoutes) => {
             ) }/>
             <Route path="/login" render={ (props) => (
                 propsRoutes.user.connected ?
-                    <Redirect to="/stats"/> :
+                    <Redirect to="/"/> :
                     <Login { ...props } dispatch={ propsRoutes.dispatch } failed={ propsRoutes.user.failed }
                            connecting={ propsRoutes.user.connecting }/>
             ) }/>
             <Route path="/stats" render={ (props) => {
-                console.log(propsRoutes.user);
                 return propsRoutes.user.connected || propsRoutes.user.connecting ?
                     <Stats { ...props } user={ propsRoutes.user }/> :
+                    <Redirect to='/'/>;
+            } }/>
+            <Route path="/measurements/:model/:graph" render={ (props) => {
+                return propsRoutes.user.connected || propsRoutes.user.connecting ?
+                    <Graph { ...props } socket={ propsRoutes.socket } user={ propsRoutes.user }/> :
+                    <Redirect to='/'/>;
+            } }/>
+            <Route path="/measurements/:model" render={ (props) => {
+                return propsRoutes.user.connected || propsRoutes.user.connecting ?
+                    <Measurements { ...props } user={ propsRoutes.user }/> :
+                    <Redirect to='/'/>;
+            } }/>
+            <Route path="/measurements" render={ (props) => {
+                return propsRoutes.user.connected || propsRoutes.user.connecting ?
+                    <Measurements { ...props } user={ propsRoutes.user }/> :
                     <Redirect to='/'/>;
             } }/>
             <Route path="/search" render={ (props) => (

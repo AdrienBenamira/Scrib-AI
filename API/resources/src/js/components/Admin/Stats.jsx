@@ -94,7 +94,7 @@ export default class Stats extends Component
     render() {
         return (
             <div>
-                <h1><span className="oi" data-glyph="graph"/> Statistics</h1>
+                <h1><span className="oi" data-glyph="bar-chart"/> Statistics</h1>
                 <div className="menu-bar">
                     <ul className="menu">
                         <li><Link to="#">Stats 1</Link></li>

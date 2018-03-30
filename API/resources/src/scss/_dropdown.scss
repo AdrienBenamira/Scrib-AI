@@ -20,6 +20,7 @@
         display: block;
         width: 100%;
         line-height: $dropdown-li-line-height;
+        white-space: nowrap;
 
         &:last-child {
           border-bottom: none;

@@ -40,17 +40,19 @@
     .menu, .dropdown {
       align-self: center;
       margin: 0;
-      display: inline-block;
       padding: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
 
       li {
-        display: inline-block;
         margin-right: 30px;
       }
       a {
         color: $navbar-menu-item-color;
         text-decoration: none;
-        font-size: 18px;
+        text-align: center;
+        font-size: 16px;
         border-bottom: 1px solid transparent;
         transition: color $animation-delay, border $animation-delay;
 

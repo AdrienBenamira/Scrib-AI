@@ -15,6 +15,7 @@ const workerActions = require('./actions/workers');
 const vocabularyActions = require('./actions/vocabularies');
 const datasetActions = require('./actions/datasets');
 const modelActions = require('./actions/models');
+const graphActions = require('./actions/graph');
 
 // Middlewares
 
@@ -84,6 +85,13 @@ app.get('/api/preference', (req, res) => modelActions.getPreferences(req, res));
 app.post('/api/preference/treated', (req, res) => modelActions.setPreferenceAsTreated(req, res));
 app.post('/api/model/action', bodyParser.json(), (req, res) => modelActions.addAction(req, res, io));
 app.post('/api/model/preference', (req, res) => modelActions.addPreference(req, res));
+
+// Routes for graphs and measurements
+app.get('/api/graphs', (req, res) => graphActions.getGraphs(req, res));
+app.get('/api/graph/measurements', (req, res) => graphActions.getMeasurements(req, res));
+app.post('/api/graph/measurement', bodyParser.json(), (req, res) => graphActions.addMeasurement(req, res, io));
+app.post('/api/graph/step', (req, res) => graphActions.addGraphStep(req, res, io));
+
 
 // Fallback *Must be the last route*
 

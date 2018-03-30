@@ -104,11 +104,15 @@ export default class App extends Component
                                 <li><Link to="/summarize"><span className="oi" data-glyph="excerpt"/> Summarize your
                                     text</Link>
                                 </li>
-                                <li><Link to="/summarize_site"><span className="oi" data-glyph="link-intact"/> Summarize
+                                <li><Link to="/summarize-site"><span className="oi" data-glyph="link-intact"/> Summarize
                                     from
                                     website</Link></li>
                                 { this.props.user.connected ?
-                                    <li><Link to="/stats"><span className="oi" data-glyph="graph"/> Statistics</Link>
+                                    <li><Link to="/stats"><span className="oi" data-glyph="bar-chart"/> Statistics</Link>
+                                    </li>
+                                    : null }
+                                { this.props.user.connected ?
+                                    <li><Link to="/measurements"><span className="oi" data-glyph="graph"/> Measurements</Link>
                                     </li>
                                     : null }
                                 { this.props.user.connected ?

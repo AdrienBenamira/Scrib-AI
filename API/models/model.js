@@ -11,8 +11,9 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
     });
     Model.associate = function (models) {
-        Model.ModelActions = Model.hasMany(models.ModelAction, { foreignKey: 'model_id'})
-        Model.ModelPreferences = Model.hasMany(models.ModelPreference, { foreignKey: 'model_id'})
+        Model.ModelActions = Model.hasMany(models.ModelAction, { foreignKey: 'model_id' });
+        Model.ModelPreferences = Model.hasMany(models.ModelPreference, { foreignKey: 'model_id' });
+        Model.Graphs = Model.hasMany(models.Graph, { foreignKey: 'model_id' });
     };
     return Model;
 };
