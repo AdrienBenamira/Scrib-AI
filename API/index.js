@@ -78,6 +78,7 @@ app.get('/api/models/all', (req, res) => modelActions.getAll(req, res));
 app.put('/api/model/toggle-auto', (req, res) => modelActions.toggleAutomatic(req, res));
 app.get('/api/metrics', (req, res) => modelActions.getMetrics(req, res));
 app.post('/api/metric', (req, res) => modelActions.addMetric(req, res));
+app.delete('/api/metric', (req, res) => modelActions.deleteMetric(req, res));
 app.put('/api/metric', bodyParser.json(), (req, res) => modelActions.changeOrder(req, res));
 app.post('/api/model', (req, res) => modelActions.add(req, res));
 app.get('/api/model/actions', (req, res) => modelActions.getActions(req, res));

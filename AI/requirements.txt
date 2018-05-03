@@ -1,2 +1,3 @@
 newspaper
 justext
+git+https://github.com/andersjo/pyrouge.git

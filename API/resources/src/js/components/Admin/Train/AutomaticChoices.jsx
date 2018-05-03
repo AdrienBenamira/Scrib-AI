@@ -56,6 +56,18 @@ export default class AutomaticChoices extends React.Component
 
     }
 
+    deleteMetric(name, order) {
+        let metrics = [...this.props.models.metrics];
+        metrics.splice(order, 1);
+        axios.delete(config.api.host + '/metric?name=' + name, {
+            auth: {
+                username: this.props.user.username, password: this.props.user.password
+            }
+        }).then(_ =>
+            this.props.dispatch(modelsActions.updateMetrics(metrics))
+        );
+    }
+
     async componentWillMount() {
         const response = await axios.get(config.api.host + '/metrics', {
             auth: {
@@ -74,8 +86,6 @@ export default class AutomaticChoices extends React.Component
                     <Form onChange={ (id, value, _, __) => {
                         this.setState({ addInputValue: value });
                     } } onSubmit={ elements => {
-                        console.log('add');
-                        console.log(this.state.addInputValue);
                         this.setState({ addInputValue: '' });
                         axios.post(config.api.host + '/metric?name=' + elements.name, {
                             auth: {
@@ -94,7 +104,7 @@ export default class AutomaticChoices extends React.Component
                     <tr>
                         <th>Execution order</th>
                         <th>Metric</th>
-                        <th>Change order</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -103,6 +113,9 @@ export default class AutomaticChoices extends React.Component
                             <td>{ metric.order + 1 }</td>
                             <td>{ metric.name }</td>
                             <td>
+                                <button onClick={(e) => this.deleteMetric(metric.name, metric.order)} className="btn error small round">
+                                    <Icon type="x"/>
+                                </button>
                                 { order !== 0 &&
                                 <button onClick={ (e) => this.decrOrder(metric.name, metric.order) }
                                         className="btn small round">

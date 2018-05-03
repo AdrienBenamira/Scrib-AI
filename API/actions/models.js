@@ -234,6 +234,12 @@ exports.addMetric = async (req, res) => {
     res.sendStatus(200);
 };
 
+exports.deleteMetric = async (req, res) => {
+    let elem = await db.Metric.findOne({ where: { name: req.query.name } });
+    await elem.destroy();
+    res.sendStatus(200);
+};
+
 exports.changeOrder = async (req, res) => {
     console.log('oui');
     let elem = await db.Metric.findOne({ where: { name: req.query.name } });
