@@ -6,7 +6,7 @@
     "prod": "npm run build"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.21.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "js-cookie": "^2.1.4",
     "moment": "^2.19.1",
